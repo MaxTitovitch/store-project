@@ -21,6 +21,7 @@ class CreateSalesTable extends Migration
             $table->bigInteger('product_id')->unsigned();
             $table->bigInteger('sale_category_id')->unsigned();
             $table->timestamps();
+            $table->softDeletes();
 
 
             $table->foreign('product_id')->references('id')->on('products');

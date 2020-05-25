@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Characteristic extends Model
 {
+    protected $fillable = [
+        'name', 'type', 'int_value_start', 'int_value_end'
+    ];
+
     public function categories()
     {
         return $this->belongsToMany('App\Category');

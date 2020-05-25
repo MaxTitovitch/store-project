@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ranking extends Model
 {
+    protected $fillable = [
+        'point', 'user_id', 'product_id'
+    ];
+
     public function user()
     {
         return $this->belongsTo('App\User');

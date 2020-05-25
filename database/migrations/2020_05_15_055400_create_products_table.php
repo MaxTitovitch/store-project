@@ -21,6 +21,7 @@ class CreateProductsTable extends Migration
             $table->unsignedDouble('ranking', 3, 2);
             $table->bigInteger('category_id')->unsigned();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('category_id')->references('id')->on('categories');
         });

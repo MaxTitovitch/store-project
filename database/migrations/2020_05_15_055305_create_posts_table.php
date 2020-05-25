@@ -21,6 +21,7 @@ class CreatePostsTable extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->bigInteger('top_id')->unsigned()->nullable(true);
             $table->timestamps();
+            $table->softDeletes();
 
 
             $table->foreign('user_id')->references('id')->on('users');

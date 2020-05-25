@@ -18,6 +18,7 @@ class CreateProductTopTable extends Migration
             $table->bigInteger('product_id')->unsigned();
             $table->bigInteger('top_id')->unsigned();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('product_id')->references('id')->on('products');
             $table->foreign('top_id')->references('id')->on('tops');

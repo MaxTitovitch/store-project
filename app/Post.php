@@ -3,9 +3,16 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
 {
+    use SoftDeletes;
+
+    protected $fillable = [
+        'name', 'date', 'text', 'user_id', 'top_id'
+    ];
+
     public function comments()
     {
         return $this->morphMany('App\Comment', 'entity');
