@@ -2,13 +2,15 @@
 
 namespace App;
 
+use App\Notifications\ApiResetPasswordNotification;
+use App\Notifications\VerifyNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Passport\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use SoftDeletes, Notifiable, HasApiTokens;
 
@@ -76,8 +78,11 @@ class User extends Authenticatable
 
     public function sendPasswordResetNotification($token)
     {
-        $this->notify(new ResetPasswordNotification($token));
+        $this->notify(new ApiResetPasswordNotification($token));
     }
 
-
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyNotification());
+    }
 }

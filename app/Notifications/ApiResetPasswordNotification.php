@@ -2,15 +2,13 @@
 
 namespace App\Notifications;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
+use Illuminate\Support\Facades\Lang;
 
 class ApiResetPasswordNotification extends ResetPasswordNotification
 {
-    private $uriChangePassword = '/change-password/';
+    protected $uriChangePassword = '/change-password/';
 
     public function toMail($notifiable)
     {
