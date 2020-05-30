@@ -29,6 +29,7 @@ trait ApiRequest
     {
         $response = [
             'success' => false,
+//            'message' => $this->request->all()['entity_type'],
             'message' => $error,
         ];
         if(!empty($errorMessages)){

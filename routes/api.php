@@ -28,9 +28,26 @@ Route::post('verify/save', 'API\RegisterController@verifySave');
 
 Route::middleware('api-auth:true,false,admin')->group( function () {
     Route::resource('tags', 'API\TagController')->except(['create', 'edit']);
-    Route::resource('addresses', 'API\AddressController')->except(['create', 'edit']);
     Route::resource('categories', 'API\CategoryController')->except(['create', 'edit']);
     Route::resource('characteristics', 'API\CharacteristicController')->except(['create', 'edit']);
     Route::resource('characteristic-values', 'API\CharacteristicValueController')->except(['create', 'edit']);
+    Route::resource('comments', 'API\CommentController')->except(['create', 'edit']);
+    Route::resource('likes', 'API\LikeController')->except(['create', 'edit']);
+    Route::resource('views', 'API\ViewController')->except(['create', 'edit']);
+    Route::resource('posts', 'API\PostController')->except(['create', 'edit']);
+    Route::resource('products', 'API\ProductController')->except(['create', 'edit']);
+
+    Route::resource('product-characteristics', 'API\ProductCharacteristicController')->except(['create', 'edit']);
+    Route::resource('rankings', 'API\RankingController')->except(['create', 'edit']);
+    Route::resource('sales', 'API\SaleController')->except(['create', 'edit']);
+    Route::resource('sale-categories', 'API\SaleCategoryController')->except(['create', 'edit']);
+    Route::resource('users', 'API\UserController')->except(['create', 'edit']);
+    Route::resource('tops', 'API\TopController')->except(['create', 'edit']);
+
+});
+
+Route::middleware('api-auth:true,true,admin')->group( function () {
+    Route::resource('addresses', 'API\AddressController')->except(['create', 'edit']);
+    Route::resource('orders', 'API\OrderController')->except(['create', 'edit']);
 
 });
