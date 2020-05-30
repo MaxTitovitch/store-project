@@ -2,9 +2,13 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Requests\API\ApiRequest;
+use Illuminate\Foundation\Http\FormRequest;
 
-class AddressRequest extends ApiRequest
+class AddressRequest extends FormRequest
 {
+    use ApiRequest;
+
     public function rules()
     {
         return [

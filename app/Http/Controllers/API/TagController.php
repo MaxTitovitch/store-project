@@ -32,23 +32,27 @@ class TagController extends ApiController
     }
 
     private function filtrateQuery($input){
-        $entity = Tag::select();
+        try {
+            $entity = Tag::select();
 //        if(isset($input['trash'])) {
 //            $entity = $entity->onlyTrashed();
 //        }
-        if(isset($input['offset'])) {
-            $entity = $entity->offset($input['offset']);
+            if (isset($input['offset'])) {
+                $entity = $entity->offset($input['offset']);
+            }
+            if (isset($input['limit'])) {
+                $entity = $entity->limit($input['limit']);
+            }
+            if (isset($input['where'])) {
+                $entity = $entity->whereRaw($input['where']);
+            }
+            if (isset($input['order'])) {
+                $entity = $entity->orderByRaw($input['order']);
+            }
+            return $entity->get();
+        } catch (\Exception $ex) {
+            return null;
         }
-        if(isset($input['limit'])) {
-            $entity = $entity->limit($input['limit']);
-        }
-        if(isset($input['where'])) {
-            $entity = $entity->whereRaw($input['where']);
-        }
-        if(isset($input['order'])) {
-            $entity = $entity->orderByRaw($input['order']);
-        }
-        return $entity->get();
     }
 
     public function update(TagRequest $request, $id)
