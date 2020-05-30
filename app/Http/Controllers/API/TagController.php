@@ -2,63 +2,73 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\TagRequest;
-use Illuminate\Http\Request;
 use App\Tag;
+use Illuminate\Http\Request;
 
 class TagController extends ApiController
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $products = Tag::all();
-        return $this->sendResponse($products->toArray(), 'Tags retrieved successfully.');
+        $entities = $this->filtrateQuery($request->all());
+        return $this->sendResponse($entities->toArray(), 'Tags retrieved successfully.');
     }
-
-
-    public function create()
-    {
-        //
-    }
-
 
     public function store(TagRequest $request)
     {
         $input = $request->all();
-        $tag = Tag::create($input);
-        return $this->sendResponse($tag->toArray(), 'Tag created successfully.');
+        $entity = Tag::create($input);
+        return $this->sendResponse($entity->toArray(), 'Tag created successfully.');
     }
 
-
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $tag = Tag::find($id);
-        if (is_null($tag)) {
+        $entity  = Tag::find($id);
+        if (is_null($entity)) {
             return $this->sendError('Tag not found.');
         }
-        return $this->sendResponse($tag->toArray(), 'Tag retrieved successfully.');
+        return $this->sendResponse($entity->toArray(), 'Tag retrieved successfully.');
     }
 
-
-    public function edit($id)
-    {
+    private function filtrateQuery($input){
+        $entity = Tag::select();
+//        if(isset($input['trash'])) {
+//            $entity = $entity->onlyTrashed();
+//        }
+        if(isset($input['offset'])) {
+            $entity = $entity->offset($input['offset']);
+        }
+        if(isset($input['limit'])) {
+            $entity = $entity->limit($input['limit']);
+        }
+        if(isset($input['where'])) {
+            $entity = $entity->whereRaw($input['where']);
+        }
+        if(isset($input['order'])) {
+            $entity = $entity->orderByRaw($input['order']);
+        }
+        return $entity->get();
     }
-
 
     public function update(TagRequest $request, $id)
     {
         $input = $request->all();
-        $tag  = Tag::find($id);
-        $tag->name = $input['name'];
-        $tag->save();
-        return $this->sendResponse($tag->toArray(), 'Tag updated successfully.');
+        $entity  = Tag::find($id);
+        if (is_null($entity)) {
+            return $this->sendError('Tag not found.');
+        }
+        $entity->update($input);
+        return $this->sendResponse($entity->toArray(), 'Tag updated successfully.');
     }
 
     public function destroy($id)
     {
-        $tag  = Tag::find($id);
-        $tag->delete();
-        return $this->sendResponse($tag->toArray(), 'Tag deleted successfully.');
+        $entity  = Tag::find($id);
+        if (is_null($entity)) {
+            return $this->sendError('Tag not found.');
+        }
+        $entity->delete();
+        return $this->sendResponse($entity->toArray(), 'Tag deleted successfully.');
     }
 }

@@ -24,8 +24,10 @@ class CreatePostsTable extends Migration
             $table->softDeletes();
 
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('top_id')->references('id')->on('tops');
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onDelete('set null')->onUpdate('set null');
+            $table->foreign('top_id')->references('id')->on('tops')
+                ->onDelete('set null')->onUpdate('set null');
         });
     }
 

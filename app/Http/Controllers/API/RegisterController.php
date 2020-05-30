@@ -24,7 +24,7 @@ class RegisterController extends ApiController
         SendsPasswordResetEmails::credentials as credentials;
     }
 
-    public function verifyResend(Request $request){
+    public function verifySend(Request $request){
         $user = auth('api')->user();
         if ($user->hasVerifiedEmail()) {
             return $this->sendError('Verify error', 'Email is verified.');

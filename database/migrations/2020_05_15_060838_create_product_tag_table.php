@@ -19,8 +19,10 @@ class CreateProductTagTable extends Migration
             $table->bigInteger('tag_id')->unsigned();
             $table->timestamps();
 
-            $table->foreign('product_id')->references('id')->on('products');
-            $table->foreign('tag_id')->references('id')->on('tags');
+            $table->foreign('product_id')->references('id')->on('products')
+                ->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('tag_id')->references('id')->on('tags')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

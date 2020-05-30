@@ -25,8 +25,10 @@ class CreateOrdersTable extends Migration
             $table->softDeletes();
 
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('address_id')->references('id')->on('addresses');
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onDelete('set null')->onUpdate('set null');
+            $table->foreign('address_id')->references('id')->on('addresses')
+                ->onDelete('set null')->onUpdate('set null');
         });
     }
 

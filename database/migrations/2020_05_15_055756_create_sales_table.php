@@ -24,8 +24,10 @@ class CreateSalesTable extends Migration
             $table->softDeletes();
 
 
-            $table->foreign('product_id')->references('id')->on('products');
-            $table->foreign('sale_category_id')->references('id')->on('sale_categories');
+            $table->foreign('product_id')->references('id')->on('products')
+                ->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('sale_category_id')->references('id')->on('sale_categories')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

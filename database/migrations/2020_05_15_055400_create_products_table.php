@@ -18,12 +18,13 @@ class CreateProductsTable extends Migration
             $table->string('name')->unique();
             $table->unsignedDouble('price', 7, 2);
             $table->text('description');
-            $table->unsignedDouble('ranking', 3, 2);
+            $table->unsignedDouble('ranking', 3, 2)->default(5);
             $table->bigInteger('category_id')->unsigned();
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('category_id')->references('id')->on('categories');
+            $table->foreign('category_id')->references('id')->on('categories')
+                ->onDelete('set null')->onUpdate('set null');
         });
     }
 

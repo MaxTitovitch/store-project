@@ -19,7 +19,8 @@ class CreateCharacteristicValuesTable extends Migration
             $table->bigInteger('characteristic_id')->unsigned();
             $table->timestamps();
 
-            $table->foreign('characteristic_id')->references('id')->on('characteristics');
+            $table->foreign('characteristic_id')->references('id')->on('characteristics')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

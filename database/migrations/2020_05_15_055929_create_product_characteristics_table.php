@@ -22,8 +22,10 @@ class CreateProductCharacteristicsTable extends Migration
             $table->bigInteger('characteristic_id')->unsigned();
             $table->timestamps();
 
-            $table->foreign('product_id')->references('id')->on('products');
-            $table->foreign('characteristic_id')->references('id')->on('characteristics');
+            $table->foreign('product_id')->references('id')->on('products')
+                ->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('characteristic_id')->references('id')->on('characteristics')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

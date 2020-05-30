@@ -20,8 +20,10 @@ class CreateProductTopTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('product_id')->references('id')->on('products');
-            $table->foreign('top_id')->references('id')->on('tops');
+            $table->foreign('product_id')->references('id')->on('products')
+                ->onDelete('set null')->onUpdate('set null');
+            $table->foreign('top_id')->references('id')->on('tops')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

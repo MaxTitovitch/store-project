@@ -14,19 +14,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
 
 
 Route::post('register', 'API\RegisterController@register');
 Route::post('login', 'API\RegisterController@login');
 Route::post('reset/send', 'API\RegisterController@sendResetLinkEmail');
 Route::post('reset/save', 'API\RegisterController@reset');
-Route::post('verify/send', 'API\RegisterController@verifyResend')->middleware('api-auth:false');
+Route::post('verify/send', 'API\RegisterController@verifySend');
+//->middleware('api-auth:false,false,user');
 Route::post('verify/save', 'API\RegisterController@verifySave');
 
-Route::middleware('api-auth:true')->group( function () {
-    Route::resource('tags', 'API\TagController');
+Route::middleware('api-auth:true,false,admin')->group( function () {
+    Route::resource('tags', 'API\TagController')->except(['create', 'edit']);
 
 });

@@ -19,8 +19,10 @@ class CreateCategoryCharacteristicTable extends Migration
             $table->bigInteger('characteristic_id')->unsigned();
             $table->timestamps();
 
-            $table->foreign('category_id')->references('id')->on('categories');
-            $table->foreign('characteristic_id')->references('id')->on('characteristics');
+            $table->foreign('category_id')->references('id')->on('categories')
+                ->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('characteristic_id')->references('id')->on('characteristics')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
