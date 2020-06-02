@@ -34,9 +34,9 @@ class TopController extends ApiController
     private function filtrateQuery($input){
         try {
             $entity = Top::select();
-            if(isset($input['trash'])) {
-                $entity = $entity->onlyTrashed();
-            }
+//            if(isset($input['trash'])) {
+//                $entity = $entity->onlyTrashed();
+//            }
             if (isset($input['offset'])) {
                 $entity = $entity->offset($input['offset']);
             }

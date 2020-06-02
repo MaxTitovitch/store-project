@@ -36,13 +36,17 @@ Route::middleware('api-auth:true,false,admin')->group( function () {
     Route::resource('views', 'API\ViewController')->except(['create', 'edit']);
     Route::resource('posts', 'API\PostController')->except(['create', 'edit']);
     Route::resource('products', 'API\ProductController')->except(['create', 'edit']);
-
     Route::resource('product-characteristics', 'API\ProductCharacteristicController')->except(['create', 'edit']);
     Route::resource('rankings', 'API\RankingController')->except(['create', 'edit']);
     Route::resource('sales', 'API\SaleController')->except(['create', 'edit']);
     Route::resource('sale-categories', 'API\SaleCategoryController')->except(['create', 'edit']);
     Route::resource('users', 'API\UserController')->except(['create', 'edit']);
     Route::resource('tops', 'API\TopController')->except(['create', 'edit']);
+
+    Route::resource('category-characteristic', 'API\CategoryCharacteristicController')->only(['index', 'store', 'destroy']);
+    Route::resource('product-top', 'API\ProductTopController')->only(['index', 'store', 'destroy']);
+    Route::resource('product-tag', 'API\ProductTagController')->only(['index', 'store', 'destroy']);
+    Route::resource('product-order', 'API\ProductOrderController')->only(['index', 'store', 'destroy']);
 
 });
 
@@ -51,3 +55,9 @@ Route::middleware('api-auth:true,true,admin')->group( function () {
     Route::resource('orders', 'API\OrderController')->except(['create', 'edit']);
 
 });
+//
+//Route::middleware('api-auth:true,false,user')->group( function () {
+//    Route::get('users/update-user', 'API\UserController@updateUser');
+//    Route::get('users/delete-user', 'API\UserController@deleteUser');
+//
+//});
