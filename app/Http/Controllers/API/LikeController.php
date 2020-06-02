@@ -88,7 +88,7 @@ class LikeController extends ApiController
     public function destroyUser($id)
     {
         $user = auth('api')->user();
-        $entity  = Like::where('user_id', $user->id)->andWhere('id', $id)->first();
+        $entity  = Like::where('user_id', $user->id)->where('id', $id)->first();
         if (is_null($entity)) {
             return $this->sendError('Like not found.');
         }

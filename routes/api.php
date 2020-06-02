@@ -26,6 +26,31 @@ Route::post('reset/save', 'API\RegisterController@reset');
 Route::post('verify/send', 'API\RegisterController@verifySend')->middleware('api-auth:false,false,user');
 Route::post('verify/save', 'API\RegisterController@verifySave');
 
+Route::middleware('api-auth:true,false,user')->group( function () {
+    Route::put('users/update-user/{id}', 'API\UserController@updateUser');
+    Route::delete('users/delete-user/{id}', 'API\UserController@destroyUser');
+
+    Route::post('rankings/store-user/{id}', 'API\RankingController@storeUser');
+    Route::put('rankings/update-user/{id}', 'API\RankingController@updateUser');
+    Route::delete('rankings/delete-user/{id}', 'API\RankingController@destroyUser');
+
+    Route::post('orders/store-user/{id}', 'API\OrderController@storeUser');
+    Route::put('orders/update-user/{id}', 'API\OrderController@updateUser');
+
+    Route::post('likes/store-user/{id}', 'API\LikeController@storeUser');
+    Route::delete('likes/delete-user/{id}', 'API\LikeController@destroyUser');
+
+    Route::post('comments/store-user/{id}', 'API\CommentController@storeUser');
+    Route::delete('comments/delete-user/{id}', 'API\CommentController@destroyUser');
+
+    Route::get('addresses/index-user', 'API\AddressController@indexUser');
+    Route::get('addresses/show-user/{id}', 'API\AddressController@showUser');
+    Route::post('addresses/store-user/{id}', 'API\AddressController@storeUser');
+    Route::put('addresses/update-user/{id}', 'API\AddressController@updateUser');
+    Route::delete('addresses/delete-user/{id}', 'API\AddressController@destroyUser');
+
+});
+
 Route::middleware('api-auth:true,false,admin')->group( function () {
     Route::resource('tags', 'API\TagController')->except(['create', 'edit']);
     Route::resource('categories', 'API\CategoryController')->except(['create', 'edit']);
@@ -53,30 +78,5 @@ Route::middleware('api-auth:true,false,admin')->group( function () {
 Route::middleware('api-auth:true,true,admin')->group( function () {
     Route::resource('addresses', 'API\AddressController')->except(['create', 'edit']);
     Route::resource('orders', 'API\OrderController')->except(['create', 'edit']);
-
-});
-
-Route::middleware('api-auth:true,false,user')->group( function () {
-    Route::get('users/update-user', 'API\UserController@updateUser');
-    Route::get('users/delete-user', 'API\UserController@destroyUser');
-
-    Route::get('rankings/store-user', 'API\RankingController@storeUser');
-    Route::get('rankings/update-user', 'API\RankingController@updateUser');
-    Route::get('rankings/delete-user', 'API\RankingController@destroyUser');
-
-    Route::get('orders/store-user', 'API\OrderController@storeUser');
-    Route::get('orders/update-user', 'API\OrderController@updateUser');
-
-    Route::get('likes/store-user', 'API\LikeController@storeUser');
-    Route::get('likes/delete-user', 'API\LikeController@destroyUser');
-
-    Route::get('comments/store-user', 'API\CommentController@storeUser');
-    Route::get('comments/delete-user', 'API\CommentController@destroyUser');
-
-    Route::get('addresses/index-user', 'API\AddressController@indexUser');
-    Route::get('addresses/show-user', 'API\AddressController@showUser');
-    Route::get('addresses/store-user', 'API\AddressController@storeUser');
-    Route::get('addresses/update-user', 'API\AddressController@updateUser');
-    Route::get('addresses/delete-user', 'API\AddressController@destroyUser');
 
 });

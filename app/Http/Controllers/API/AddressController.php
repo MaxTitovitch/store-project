@@ -49,7 +49,7 @@ class AddressController extends ApiController
     public function showUser(Request $request, $id)
     {
         $user = auth('api')->user();
-        $entity = Address::where('user_id', $user->id)->andWhere('id', $id)->first();
+        $entity = Address::where('user_id', $user->id)->where('id', $id)->first();
         if (is_null($entity)) {
             return $this->sendError('Address not found.');
         }
@@ -97,7 +97,7 @@ class AddressController extends ApiController
     {
         $input = $request->all();
         $user = auth('api')->user();
-        $entity = Address::where('user_id', $user->id)->andWhere('id', $id)->first();
+        $entity = Address::where('user_id', $user->id)->where('id', $id)->first();
         if (is_null($entity)) {
             return $this->sendError('Address not found.');
         }
@@ -118,7 +118,7 @@ class AddressController extends ApiController
     public function destroyUser($id)
     {
         $user = auth('api')->user();
-        $entity = Address::where('user_id', $user->id)->andWhere('id', $id)->first();
+        $entity = Address::where('user_id', $user->id)->where('id', $id)->first();
         if (is_null($entity)) {
             return $this->sendError('Address not found.');
         }

@@ -79,7 +79,7 @@ class OrderController extends ApiController
     {
         $input = $request->all();
         $user = auth('api')->user();
-        $entity  = Order::where('user_id', $user->id)->andWhere('id', $id)->first();
+        $entity  = Order::where('user_id', $user->id)->where('id', $id)->first();
         if (is_null($entity)) {
             return $this->sendError('Order not found.');
         }
