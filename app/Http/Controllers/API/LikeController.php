@@ -22,6 +22,15 @@ class LikeController extends ApiController
         return $this->sendResponse($entity->toArray(), 'Like created successfully.');
     }
 
+    public function storeUser(LikeRequest $request)
+    {
+        $user = auth('api')->user();
+        $input = $request->all();
+        $input['user_id'] = $user->id;
+        $entity = Like::create($input);
+        return $this->sendResponse($entity->toArray(), 'Like created successfully.');
+    }
+
     public function show(Request $request, $id)
     {
         $entity  = Like::find($id);
@@ -69,6 +78,17 @@ class LikeController extends ApiController
     public function destroy($id)
     {
         $entity  = Like::find($id);
+        if (is_null($entity)) {
+            return $this->sendError('Like not found.');
+        }
+        $entity->delete();
+        return $this->sendResponse($entity->toArray(), 'Like deleted successfully.');
+    }
+
+    public function destroyUser($id)
+    {
+        $user = auth('api')->user();
+        $entity  = Like::where('user_id', $user->id)->andWhere('id', $id)->first();
         if (is_null($entity)) {
             return $this->sendError('Like not found.');
         }

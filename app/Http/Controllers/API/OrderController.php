@@ -22,6 +22,15 @@ class OrderController extends ApiController
         return $this->sendResponse($entity->toArray(), 'Order created successfully.');
     }
 
+    public function storeUser(OrderRequest $request)
+    {
+        $user = auth('api')->user();
+        $input = $request->all();
+        $input['user_id'] = $user->id;
+        $entity = Order::create($input);
+        return $this->sendResponse($entity->toArray(), 'Order created successfully.');
+    }
+
     public function show(Request $request, $id)
     {
         $entity  = Order::find($id);
@@ -59,6 +68,18 @@ class OrderController extends ApiController
     {
         $input = $request->all();
         $entity  = Order::find($id);
+        if (is_null($entity)) {
+            return $this->sendError('Order not found.');
+        }
+        $entity->update($input);
+        return $this->sendResponse($entity->toArray(), 'Order updated successfully.');
+    }
+
+    public function updateStore(OrderRequest $request, $id)
+    {
+        $input = $request->all();
+        $user = auth('api')->user();
+        $entity  = Order::where('user_id', $user->id)->andWhere('id', $id)->first();
         if (is_null($entity)) {
             return $this->sendError('Order not found.');
         }

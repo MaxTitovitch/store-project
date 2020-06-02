@@ -66,9 +66,31 @@ class UserController extends ApiController
         return $this->sendResponse($entity->toArray(), 'User updated successfully.');
     }
 
+    public function updateUser(UserRequest $request, $id)
+    {
+        $input = $request->all();
+        $entity = auth('api')->user();
+
+        if (is_null($entity)) {
+            return $this->sendError('User not found.');
+        }
+        $entity->update($input);
+        return $this->sendResponse($entity->toArray(), 'User updated successfully.');
+    }
+
     public function destroy($id)
     {
         $entity  = User::find($id);
+        if (is_null($entity)) {
+            return $this->sendError('User not found.');
+        }
+        $entity->delete();
+        return $this->sendResponse($entity->toArray(), 'User deleted successfully.');
+    }
+
+    public function destroyUser($id)
+    {
+        $entity = auth('api')->user();
         if (is_null($entity)) {
             return $this->sendError('User not found.');
         }

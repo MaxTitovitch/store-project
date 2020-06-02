@@ -22,6 +22,15 @@ class CommentController extends ApiController
         return $this->sendResponse($entity->toArray(), 'Comment created successfully.');
     }
 
+    public function storeUser(CommentRequest $request)
+    {
+        $user = auth('api')->user();
+        $input = $request->all();
+        $input['user_id'] = $user->id;
+        $entity = Comment::create($input);
+        return $this->sendResponse($entity->toArray(), 'Comment created successfully.');
+    }
+
     public function show(Request $request, $id)
     {
         $entity  = Comment::find($id);
@@ -69,6 +78,17 @@ class CommentController extends ApiController
     public function destroy($id)
     {
         $entity  = Comment::find($id);
+        if (is_null($entity)) {
+            return $this->sendError('Comment not found.');
+        }
+        $entity->delete();
+        return $this->sendResponse($entity->toArray(), 'Comment deleted successfully.');
+    }
+
+    public function destroyUser($id)
+    {
+        $user = auth('api')->user();
+        $entity  = Comment::where('user_id', $user->id)->andWhere('id', $id)->first();
         if (is_null($entity)) {
             return $this->sendError('Comment not found.');
         }

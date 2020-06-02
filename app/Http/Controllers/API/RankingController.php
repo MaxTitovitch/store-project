@@ -22,6 +22,15 @@ class RankingController extends ApiController
         return $this->sendResponse($entity->toArray(), 'Ranking created successfully.');
     }
 
+    public function storeUser(RankingRequest $request)
+    {
+        $user = auth('api')->user();
+        $input = $request->all();
+        $input['user_id'] = $user->id;
+        $entity = Ranking::create($input);
+        return $this->sendResponse($entity->toArray(), 'Ranking created successfully.');
+    }
+
     public function show(Request $request, $id)
     {
         $entity  = Ranking::find($id);
@@ -66,9 +75,32 @@ class RankingController extends ApiController
         return $this->sendResponse($entity->toArray(), 'Ranking updated successfully.');
     }
 
+    public function updateUser(RankingRequest $request, $id)
+    {
+        $input = $request->all();
+        $user = auth('api')->user();
+        $entity  = Ranking::where('user_id', $user->id)->andWhere('id', $id)->first();
+        if (is_null($entity)) {
+            return $this->sendError('Ranking not found.');
+        }
+        $entity->update($input);
+        return $this->sendResponse($entity->toArray(), 'Ranking updated successfully.');
+    }
+
     public function destroy($id)
     {
         $entity  = Ranking::find($id);
+        if (is_null($entity)) {
+            return $this->sendError('Ranking not found.');
+        }
+        $entity->delete();
+        return $this->sendResponse($entity->toArray(), 'Ranking deleted successfully.');
+    }
+
+    public function destroyUser($id)
+    {
+        $user = auth('api')->user();
+        $entity  = Ranking::where('user_id', $user->id)->andWhere('id', $id)->first();
         if (is_null($entity)) {
             return $this->sendError('Ranking not found.');
         }
