@@ -62,6 +62,7 @@ class RegisterController extends ApiController
         $input['password'] = bcrypt($input['password']);
         $input['role'] = 'Пользователь';
         $user = User::create($input);
+        $user->sendEmailVerificationNotification();
 
         $success['token'] =  $user->createToken('MyApp')->accessToken;
         $success['user'] =  $user->toArray();

@@ -14,11 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::middleware('auth:api')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
-
-
 Route::post('register', 'API\RegisterController@register');
 Route::post('login', 'API\RegisterController@login');
 Route::post('reset/send', 'API\RegisterController@sendResetLinkEmail');
@@ -73,6 +68,9 @@ Route::middleware('api-auth:true,false,admin')->group( function () {
     Route::resource('product-tag', 'API\ProductTagController')->only(['index', 'store', 'destroy']);
     Route::resource('product-order', 'API\ProductOrderController')->only(['index', 'store', 'destroy']);
 
+    Route::get('line-chart/{entity}/{param}', 'API\DiagramController@showLineChart');
+    Route::get('bar-chart/{entity}/{param}', 'API\DiagramController@showBarChart');
+    Route::get('pie-chart/{param}', 'API\DiagramController@showPieChart');
 });
 
 Route::middleware('api-auth:true,true,admin')->group( function () {
