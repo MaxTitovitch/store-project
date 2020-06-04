@@ -68,7 +68,7 @@ Route::middleware('api-auth:true,false,admin')->group( function () {
     Route::resource('product-tag', 'API\ProductTagController')->only(['index', 'store', 'destroy']);
     Route::resource('product-order', 'API\ProductOrderController')->only(['index', 'store', 'destroy']);
 
-    Route::get('line-chart/{entity}/{param}', 'API\DiagramController@showLineChart');
+    Route::get('line-chart/{entity}/{id}/{param}', 'API\DiagramController@showLineChart');
     Route::get('bar-chart/{entity}/{param}', 'API\DiagramController@showBarChart');
     Route::get('pie-chart/{param}', 'API\DiagramController@showPieChart');
 });

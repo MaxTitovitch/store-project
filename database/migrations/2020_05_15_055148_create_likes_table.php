@@ -15,7 +15,7 @@ class CreateLikesTable extends Migration
     {
         Schema::create('likes', function (Blueprint $table) {
             $table->id();
-            $table->enum('entity_type', ['post', 'like']);
+            $table->enum('entity_type', ['post', 'product']);
             $table->bigInteger('entity_id')->unsigned();
             $table->bigInteger('user_id')->unsigned();
             $table->timestamps();
