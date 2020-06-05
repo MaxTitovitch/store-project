@@ -2,6 +2,7 @@
 
 use App\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
@@ -18,8 +19,8 @@ class UserSeeder extends Seeder
         $user->sex = 'Мужчина';
         $user->date_of_birth = '2000-01-01';
         $user->phone = 293038811;
-        $user->email = env('MAIL_USERNAME');//'maxtitovitch@mail.ru';
-        $user->password = env('MAIL_PASSWORD');//Hash::make('password');
+        $user->email = env('MAIL_USERNAME');
+        $user->password = Hash::make(env('MAIL_PASSWORD'));
         $user->role = 'Главный администратор';
         $user->save();
     }

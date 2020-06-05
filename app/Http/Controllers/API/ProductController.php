@@ -18,6 +18,7 @@ class ProductController extends ApiController
     public function store(ProductRequest $request)
     {
         $input = $request->all();
+        $input['slug'] = str_slug($input['name']);
         $entity = Product::create($input);
         return $this->sendResponse($entity->toArray(), 'Product created successfully.');
     }
@@ -58,6 +59,7 @@ class ProductController extends ApiController
     public function update(ProductRequest $request, $id)
     {
         $input = $request->all();
+        $input['slug'] = str_slug($input['name']);
         $entity  = Product::find($id);
         if (is_null($entity)) {
             return $this->sendError('Product not found.');

@@ -18,6 +18,7 @@ class UserController extends ApiController
     public function store(UserRequest $request)
     {
         $input = $request->all();
+        $input['slug'] = str_slug($input['email']);
         $entity = User::create($input);
         return $this->sendResponse($entity->toArray(), 'User created successfully.');
     }
@@ -58,6 +59,7 @@ class UserController extends ApiController
     public function update(UserRequest $request, $id)
     {
         $input = $request->all();
+        $input['slug'] = str_slug($input['email']);
         $entity  = User::find($id);
         if (is_null($entity)) {
             return $this->sendError('User not found.');
@@ -69,6 +71,7 @@ class UserController extends ApiController
     public function updateUser(UserRequest $request, $id)
     {
         $input = $request->all();
+        $input['slug'] = str_slug($input['name']);
         $entity = auth('api')->user();
 
         if (is_null($entity)) {

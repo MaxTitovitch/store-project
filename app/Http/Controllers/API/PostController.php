@@ -18,6 +18,7 @@ class PostController extends ApiController
     public function store(PostRequest $request)
     {
         $input = $request->all();
+        $input['slug'] = str_slug($input['name']);
         $entity = Post::create($input);
         return $this->sendResponse($entity->toArray(), 'Post created successfully.');
     }
@@ -58,6 +59,7 @@ class PostController extends ApiController
     public function update(PostRequest $request, $id)
     {
         $input = $request->all();
+        $input['slug'] = str_slug($input['name']);
         $entity  = Post::find($id);
         if (is_null($entity)) {
             return $this->sendError('Post not found.');

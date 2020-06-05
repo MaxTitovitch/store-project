@@ -61,6 +61,7 @@ class RegisterController extends ApiController
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
         $input['role'] = 'Пользователь';
+        $input['slug'] = str_slug($input['email']);
         $user = User::create($input);
         $user->sendEmailVerificationNotification();
 
