@@ -44,6 +44,8 @@ Route::middleware('api-auth:true,false,user')->group( function () {
     Route::put('addresses/update-user/{id}', 'API\AddressController@updateUser');
     Route::delete('addresses/delete-user/{id}', 'API\AddressController@destroyUser');
 
+    Route::post('photo/user-image/{id}', 'API\PhotoController@createUserPhoto');
+
 });
 
 Route::middleware('api-auth:true,false,admin')->group( function () {
@@ -76,6 +78,6 @@ Route::middleware('api-auth:true,false,admin')->group( function () {
 Route::middleware('api-auth:true,true,admin')->group( function () {
     Route::resource('addresses', 'API\AddressController')->except(['create', 'edit']);
     Route::resource('orders', 'API\OrderController')->except(['create', 'edit']);
-    Route::post('photo/post', 'API\PhotoController@createPostPhoto');
 
+    Route::post('photo', 'API\PhotoController@createPhoto');
 });
