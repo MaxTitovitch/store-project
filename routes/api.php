@@ -76,6 +76,6 @@ Route::middleware('api-auth:true,false,admin')->group( function () {
 Route::middleware('api-auth:true,true,admin')->group( function () {
     Route::resource('addresses', 'API\AddressController')->except(['create', 'edit']);
     Route::resource('orders', 'API\OrderController')->except(['create', 'edit']);
-    Route::post('photo/post/{id}', 'API\PhotoController@createPostPhoto');
+    Route::post('photo/post', 'API\PhotoController@createPostPhoto');
 
 });

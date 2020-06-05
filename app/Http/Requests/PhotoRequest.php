@@ -14,6 +14,7 @@ class PhotoRequest extends FormRequest
         return [
             'image' => 'required|file|mimes:jpeg,gif,png',
             'slug' => 'required|string|max:255',
+            'delete-slug' => 'string|max:255',
             'type' => 'required|in:posts,users,products',
         ];
     }
