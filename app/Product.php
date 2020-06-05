@@ -22,4 +22,9 @@ class Product extends Model
     {
         return $this->morphMany('App\View', 'entity');
     }
+
+    public function orders()
+    {
+        return $this->belongsToMany('App\Order', 'product_order');
+    }
 }
