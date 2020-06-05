@@ -45,7 +45,6 @@ Route::middleware('api-auth:true,false,user')->group( function () {
     Route::delete('addresses/delete-user/{id}', 'API\AddressController@destroyUser');
 
     Route::post('photo/user-image/{id}', 'API\PhotoController@createUserPhoto');
-
 });
 
 Route::middleware('api-auth:true,false,admin')->group( function () {
@@ -62,7 +61,6 @@ Route::middleware('api-auth:true,false,admin')->group( function () {
     Route::resource('rankings', 'API\RankingController')->except(['create', 'edit']);
     Route::resource('sales', 'API\SaleController')->except(['create', 'edit']);
     Route::resource('sale-categories', 'API\SaleCategoryController')->except(['create', 'edit']);
-    Route::resource('users', 'API\UserController')->except(['create', 'edit']);
     Route::resource('tops', 'API\TopController')->except(['create', 'edit']);
 
     Route::resource('category-characteristic', 'API\CategoryCharacteristicController')->only(['index', 'store', 'destroy']);
@@ -73,11 +71,18 @@ Route::middleware('api-auth:true,false,admin')->group( function () {
     Route::get('line-chart/{entity}/{id}/{param}', 'API\DiagramController@showLineChart');
     Route::get('bar-chart/{entity}/{param}', 'API\DiagramController@showBarChart');
     Route::get('pie-chart/{param}', 'API\DiagramController@showPieChart');
+
+    Route::post('photo', 'API\PhotoController@createPhoto');
+});
+
+Route::middleware('api-auth:true,false,main')->group( function () {
+    Route::resource('users', 'API\UserController')->except(['create', 'edit']);
+
+    Route::post('mass-upload', 'API\MassUploadController@store');
 });
 
 Route::middleware('api-auth:true,true,admin')->group( function () {
     Route::resource('addresses', 'API\AddressController')->except(['create', 'edit']);
     Route::resource('orders', 'API\OrderController')->except(['create', 'edit']);
 
-    Route::post('photo', 'API\PhotoController@createPhoto');
 });

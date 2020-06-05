@@ -13,6 +13,11 @@ class Category extends Model
         'name', 'parent_id'
     ];
 
+    public static function findOrCreate($name){
+        $category = self::where('name', $name)->first();
+        return $category ?? false;
+    }
+
     public function parentCategory()
     {
         return $this->belongsTo('App\Category', 'parent_id');
