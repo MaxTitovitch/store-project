@@ -11,8 +11,6 @@ use Illuminate\Support\Facades\DB;
 
 class JsonParser extends Parser
 {
-    private $categories = [];
-
     public function parseProducts(string $type) : bool {
         $jsonData = json_decode($this->file, false, 10);
         if($type == 'hard') {
@@ -23,6 +21,7 @@ class JsonParser extends Parser
                     }
                 });
             } catch (\Exception $ex) {
+                echo $ex->getMessage();
                 return false;
             }
         } else {
@@ -39,7 +38,7 @@ class JsonParser extends Parser
         return true;
     }
 
-    private function parseProduct(object $jsonCategory) : void {
+    protected function parseProduct(object $jsonCategory) : void {
         $category = $this->parseCategory($jsonCategory->name, $jsonCategory->parent);
         foreach ($jsonCategory->products as $jsonProduct) {
             $product = new Product();
@@ -50,36 +49,11 @@ class JsonParser extends Parser
             $product->category_id = $category->id;
             $product->save();
             $this->parseCharacteristics($jsonProduct->characteristics, $category, $product);
-            var_dump($jsonProduct);
-            echo ",";
+            $this->parsePhotos($jsonProduct->photos, $product->slug);
         }
     }
 
-    public function parseCategory(string $name, ?string $parentName): Category {
-        $category = Category::findOrCreate($name);
-        if(!$category) {
-            $category = new Category();
-            $category->name = $name;
-            if ($parentName == null) {
-                $category->parent_id = null;
-            } else {
-                $parent = Category::findOrCreate($parentName);
-                if ($parent != false) {
-                    $category->parent_id = $parent->id;
-                } else {
-                    $parent = new Category();
-                    $parent->name = $parentName;
-                    $parent->parent_id = null;
-                    $parent->save();
-                    $category->parent_id = $parent->id;
-                }
-            }
-        }
-        $category->save();
-        return $category;
-    }
-
-    private function parseCharacteristics(array $jsonCharacteristics, Category $category, Product $product) : void {
+    private function parseCharacteristics(iterable $jsonCharacteristics, Category $category, Product $product) : void {
         foreach ($jsonCharacteristics as $jsonCharacteristic) {
             $characteristic = Characteristic::findByNameAndCategory($jsonCharacteristic->name, $category);
             if (!$characteristic) {
