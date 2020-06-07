@@ -20,7 +20,7 @@ class CreateProductsTable extends Migration
             $table->unsignedDouble('price', 7, 2);
             $table->text('description');
             $table->unsignedDouble('ranking', 3, 2)->default(5);
-            $table->bigInteger('category_id')->unsigned();
+            $table->bigInteger('category_id')->unsigned()->nullable();
             $table->timestamps();
             $table->softDeletes();
 

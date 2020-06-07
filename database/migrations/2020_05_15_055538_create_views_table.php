@@ -18,7 +18,7 @@ class CreateViewsTable extends Migration
             $table->date('date');
             $table->enum('entity_type', ['post', 'product']);
             $table->bigInteger('entity_id')->unsigned();
-            $table->bigInteger('user_id')->unsigned()->nullable(true);
+            $table->bigInteger('user_id')->unsigned()->nullable();
             $table->timestamps();
 
 

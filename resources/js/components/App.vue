@@ -2,6 +2,11 @@
     <v-app id="inspire">
         <v-navigation-drawer v-model="drawer" app temporary class="gradient-project">
             <v-list>
+                <v-toolbar-title class="hidden-md-and-up">
+                    <router-link to="/" >
+                        <v-img src="/Logo-big.png" class="logo-image logo-image-small"/>
+                    </router-link>
+                </v-toolbar-title>
                 <v-list-item
                         link v-for="link in linkList"
                         :key="link.title"
@@ -15,26 +20,134 @@
                         <v-list-item-title>{{ link.title }}</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
+
+                <v-list-item
+                    class="gradient-project"
+                >
+                    <v-text-field
+                        hide-details
+                        prepend-icon="mdi-magnify"
+                        label="Искать..."
+                        color="black"
+                        regular
+                    />
+                </v-list-item>
+                <v-expansion-panels class="hidden-md-and-up">
+                    <v-expansion-panel
+                        class="gradient-project"
+                    >
+                        <v-expansion-panel-header>
+                            {{ isLoggedName }}
+                            <v-icon x-large>mdi-account-circle-outline</v-icon>
+                        </v-expansion-panel-header>
+                        <v-expansion-panel-content >
+                            <v-list dark class="gradient-project" style="padding: 0px">
+                                <v-list-item
+                                    link v-for="link in userLinkList"
+                                    :key="link.title"
+                                    :to="link.url"
+                                    class="gradient-project"
+                                    light
+                                    style="border: 1px solid #222"
+                                    v-if="!isLoggedInForVerify"
+                                >
+                                    <v-list-item-icon>
+                                        <v-icon left>{{ link.icon }}</v-icon>
+                                    </v-list-item-icon>
+                                    <v-list-item-content>
+                                        <v-list-item-title>{{ link.title }}</v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                                <v-list-item
+                                    to="/admin"
+                                    class="gradient-project"
+                                    light
+                                    style="border: 1px solid #222"
+                                    v-if="isLoggedInForVerify && isLoggedRole === 'Главный администратор' || isLoggedRole === 'Администратор'"
+                                >
+                                    <v-list-item-icon>
+                                        <v-icon left>mdi-account-details-outline</v-icon>
+                                    </v-list-item-icon>
+                                    <v-list-item-content>
+                                        <v-list-item-title>Админка</v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                                <v-list-item
+                                    to="/personal"
+                                    class="gradient-project"
+                                    light
+                                    style="border: 1px solid #222"
+                                    v-if="isLoggedInForVerify"
+                                >
+                                    <v-list-item-icon>
+                                        <v-icon left>mdi-account-details-outline</v-icon>
+                                    </v-list-item-icon>
+                                    <v-list-item-content>
+                                        <v-list-item-title>Кабинет</v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                                <v-list-item
+                                    class="gradient-project"
+                                    light
+                                    style="border: 1px solid #222"
+                                    v-on:click="logout"
+                                    v-if="isLoggedInForVerify"
+                                >
+                                    <v-list-item-icon>
+                                        <v-icon left>mdi-exit-run</v-icon>
+                                    </v-list-item-icon>
+                                    <v-list-item-content>
+                                        <v-list-item-title>Выйти</v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-list>
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
+                </v-expansion-panels>
+                <v-row>
+                    <v-btn href="tel:+375333038199" text target="_blank" color="white">+375333038199</v-btn>
+                </v-row>
+
+                <v-row>
+                    <v-btn href="mailto://maxtitovitch@mail.ru" text target="_blank" color="white">maxtitovitch@mail.ru</v-btn>
+                </v-row>
             </v-list>
         </v-navigation-drawer>
 
-        <v-app-bar app class="gradient-project" dark>
+        <v-system-bar height="20px" class="background-clear hidden-sm-and-down" style="position:fixed; left: 0; right: 0;">
+            <v-btn href="tel:+375333038199" text target="_blank">+375333038199</v-btn>
+            <v-btn href="mailto://maxtitovitch@mail.ru" text target="_blank">maxtitovitch@mail.ru</v-btn>
+            <v-spacer/>
+            <v-btn
+                link v-for="link in storeLinkList"
+                :key="link.title"
+                :to="link.url"
+            >
+                {{ link.title }}
+            </v-btn>
+        </v-system-bar>
+
+        <v-app-bar app class="gradient-project mt-5" dark>
+
+
             <v-app-bar-nav-icon
                     @click.stop="drawer = !drawer"
                     class="hidden-md-and-up"
             />
             <v-toolbar-title class="hidden-sm-and-down">
                 <router-link to="/" >
-                    <v-img src="/Logo-big.png" class="logo-image"></v-img>
+                    <v-img src="/Logo-big.png" class="logo-image"/>
                 </router-link>
             </v-toolbar-title>
             <v-spacer />
 
             <v-toolbar-title class="hidden-md-and-up">
                 <router-link to="/" >
-                    <v-img src="/Logo-big.png" class="logo-image logo-image-small"></v-img>
+                    <v-img src="/Logo-big.png" class="logo-image logo-image-small"/>
                 </router-link>
             </v-toolbar-title>
+
+
             <v-toolbar-items class="hidden-sm-and-down">
                 <v-btn
                         class="gradient-project"
@@ -46,6 +159,88 @@
                     <v-icon left>{{ link.icon }}</v-icon>
                     {{ link.title }}
                 </v-btn>
+                <v-list-item
+                    class="gradient-project"
+                >
+                    <v-text-field
+                        hide-details
+                        prepend-icon="mdi-magnify"
+                        label="Искать..."
+                        color="white"
+                        regular
+                    />
+                </v-list-item>
+                <v-expansion-panels>
+                    <v-expansion-panel
+                        class="gradient-project">
+                        <v-expansion-panel-header>
+                            {{ isLoggedName }}
+                            <v-icon x-large>mdi-account-circle-outline</v-icon>
+                        </v-expansion-panel-header>
+                        <v-expansion-panel-content >
+                            <v-list light class="gradient-project" style="padding: 0px">
+                                <v-list-item
+                                    link v-for="link in userLinkList"
+                                    :key="link.title"
+                                    :to="link.url"
+                                    class="gradient-project"
+                                    dark
+                                    style="border: 1px solid white"
+                                    v-if="!isLoggedInForVerify"
+                                >
+                                    <v-list-item-icon>
+                                        <v-icon left>{{ link.icon }}</v-icon>
+                                    </v-list-item-icon>
+                                    <v-list-item-content>
+                                        <v-list-item-title>{{ link.title }}</v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                                <v-list-item
+                                    to="/admin"
+                                    class="gradient-project"
+                                    dark
+                                    style="border: 1px solid white"
+                                    v-if="isLoggedInForVerify && isLoggedRole === 'Главный администратор' || isLoggedRole === 'Администратор'"
+                                >
+                                    <v-list-item-icon>
+                                        <v-icon left>mdi-account-details-outline</v-icon>
+                                    </v-list-item-icon>
+                                    <v-list-item-content>
+                                        <v-list-item-title>Админка</v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                                <v-list-item
+                                    to="/personal"
+                                    class="gradient-project"
+                                    dark
+                                    style="border: 1px solid white"
+                                    v-if="isLoggedInForVerify"
+                                >
+                                    <v-list-item-icon>
+                                        <v-icon left>mdi-account-details-outline</v-icon>
+                                    </v-list-item-icon>
+                                    <v-list-item-content>
+                                        <v-list-item-title>Личный кабинет</v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                                <v-list-item
+                                    class="gradient-project"
+                                    dark
+                                    style="border: 1px solid white"
+                                    v-on:click="logout"
+                                    v-if="isLoggedInForVerify"
+                                >
+                                    <v-list-item-icon>
+                                        <v-icon left>mdi-exit-run</v-icon>
+                                    </v-list-item-icon>
+                                    <v-list-item-content>
+                                        <v-list-item-title>Выйти</v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-list>
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
+                </v-expansion-panels>
             </v-toolbar-items>
         </v-app-bar>
 
@@ -56,8 +251,28 @@
         <v-footer app class="text-center gradient-project">
                 <v-container fluid>
                     <v-row>
-                        <v-col cols="12">
-                            <span class="white--text">НаНастолке<sup>&copy;</sup> {{(new Date).getFullYear() }}</span>
+                        <v-col cols="4" class="hidden-sm-and-down">
+
+                            <v-row>
+                                <v-btn href="tel:+375333038199" text target="_blank" color="white">+375333038199</v-btn>
+                            </v-row>
+
+                            <v-row>
+                                <v-btn href="mailto://maxtitovitch@mail.ru" text target="_blank" color="white">maxtitovitch@mail.ru</v-btn>
+                            </v-row>
+                        </v-col>
+                        <v-col cols="4" class="hidden-sm-and-down">
+                            <span class="white--text">НаНастолке<sup>&copy;</sup> {{(new Date).getFullYear() }} - Все права защищены</span>
+                        </v-col>
+                        <v-col cols="4"class="hidden-sm-and-down">
+                            <v-toolbar-title >
+                                <router-link to="/" >
+                                    <v-img src="/Logo-big.png" class="logo-image" style="margin: auto"/>
+                                </router-link>
+                            </v-toolbar-title>
+                        </v-col>
+                        <v-col cols="12" class="hidden-md-and-up">
+                            <span class="white--text">НаНастолке<sup>&copy;</sup> {{(new Date).getFullYear() }} - Все права защищены</span>
                         </v-col>
                     </v-row>
                 </v-container>
@@ -75,17 +290,52 @@
                 { title: 'Товары', icon: 'mdi-cart-outline', url: '/products' },
                 { title: 'Статьи', icon: 'mdi-post-outline', url: '/pages' },
                 { title: 'Топы', icon: 'mdi-medal-outline', url: '/tops' }
-            ]
-        })
+            ],
+            userLinkList: [
+                { title: 'Вход', icon: 'mdi-login-variant', url: '/login' },
+                { title: 'Регистрация', icon: 'mdi-account-plus-outline', url: '/register' },
+                // { title: 'Выход', icon: 'mdi-exit-run', url: '/logout' },
+            ],
+            storeLinkList: [
+                { title: 'О компании',  url: '/about' },
+                { title: 'Оплата и доставка', url: '/delivery' },
+                { title: 'Контакты', url: '/contacts' },
+            ],
+        }),
+        methods: {
+            logout() {
+                console.log(this.isLoggedIn)
+                this.$store.dispatch('logout').then(() => {
+                    if (this.$router.history.current.fullPath !== '/')
+                        this.$router.push('/')
+                })
+            }
+        },
+        computed : {
+            isLoggedIn : function(){ return this.$store.getters.isLoggedIn },
+            isLoggedInForVerify : function(){ return this.$store.getters.isLoggedInForVerify },
+            isLoggedRole : function(){ return this.$store.getters.isLoggedRole },
+            isLoggedName : function(){  return this.$store.getters.isLoggedName },
+        },
+        created () {
+            this.$http.interceptors.response.use(undefined, function (err) {
+                return new Promise(function (resolve, reject) {
+                    if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
+                        this.$store.dispatch("logout")
+                    }
+                    throw err;
+                });
+            });
+        },
     }
 </script>
 
-<style scoped>
+<style>
     .pointer {
         cursor: pointer;
     }
 
-    main {
+    body, main {
         background: url(/background.jpg) repeat;
         background-size: 100%;
     }
@@ -101,11 +351,14 @@
     }
 
     .logo-image-small {
-        height: 50px;
-        background-size: 80%;
+        margin: auto;
+        background-size: auto 100%;
+        height: 40px;
+        width: 150px;
     }
 
-    .logo-image-small>* {
-        background-size: 80%;
+    .background-clear {
+        background: url(/background.jpg) repeat;
     }
+
 </style>

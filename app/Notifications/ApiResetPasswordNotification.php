@@ -19,8 +19,8 @@ class ApiResetPasswordNotification extends ResetPasswordNotification
         if (static::$createUrlCallback) {
             $url = call_user_func(static::$createUrlCallback, $notifiable, $this->token);
         } else {
-            $url = url( $this->uriChangePassword . $this->token
-                . '?email=' . $notifiable->getEmailForPasswordReset());
+            $url = url( $this->uriChangePassword . '?token=' . $this->token
+                . '&email=' . $notifiable->getEmailForPasswordReset());
         }
 
         return (new MailMessage)

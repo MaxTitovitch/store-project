@@ -9,6 +9,7 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends ApiController
 {
@@ -59,7 +60,7 @@ class RegisterController extends ApiController
     public function register(UserRequest $request)
     {
         $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
+        $input['password'] = Hash::make($input['password']);
         $input['role'] = 'Пользователь';
         $input['slug'] = str_slug($input['email']);
         $user = User::create($input);
@@ -73,12 +74,13 @@ class RegisterController extends ApiController
     public function login(UserLoginRequest $request)
     {
         $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
 
         $user = User::where('phone', $input['login'])->orWhere('email', $input['login'])->first();
-        if($user != null || $user->password != bcrypt($input['password'])) {
+
+
+        if($user != null && Hash::check($input['password'], $user->password) ) {
             $success['token'] = $user->createToken('MyApp')->accessToken;
-            $success['name'] = $user->toArray();
+            $success['user'] = $user->toArray();
             return $this->sendResponse($success, 'User login successfully.');
         } else {
             return $this->sendError('Login Error', 'Login isn\'t corrected');
@@ -110,14 +112,14 @@ class RegisterController extends ApiController
         $request->validate($this->rules(), $this->validationErrorMessages());
         $response = $this->brokerReset()->reset(
             $this->credentialsReset($request), function ($user, $password) {
-            $this->resetPassword($user, $password);
-        }
+                $this->resetPassword($user, $password);
+            }
         );
 
         $user = User::where('email', $request['email'])->first();
         if($user != null) {
             $success['token'] = $user->createToken('MyApp')->accessToken;
-            $success['name'] = $user->toArray();
+            $success['user'] = $user->toArray();
             return $this->sendResponse($success, 'Password reset successfully.');
         } else {
             return $this->sendError('Login Error', ['Login isn\'t corrected']);

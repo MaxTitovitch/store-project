@@ -18,8 +18,8 @@ class CreateCommentsTable extends Migration
             $table->text('text');
             $table->date('date');
             $table->enum('entity_type', ['post', 'product']);
-            $table->bigInteger('entity_id')->unsigned();
-            $table->bigInteger('user_id')->unsigned();
+            $table->bigInteger('entity_id')->unsigned()->nullable();
+            $table->bigInteger('user_id')->unsigned()->nullable();
             $table->timestamps();
             $table->softDeletes();
 

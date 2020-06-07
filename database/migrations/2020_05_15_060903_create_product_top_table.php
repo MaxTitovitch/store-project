@@ -15,7 +15,7 @@ class CreateProductTopTable extends Migration
     {
         Schema::create('product_top', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('product_id')->unsigned();
+            $table->bigInteger('product_id')->unsigned()->nullable();
             $table->bigInteger('top_id')->unsigned();
             $table->timestamps();
             $table->softDeletes();
