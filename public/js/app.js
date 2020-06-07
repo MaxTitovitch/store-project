@@ -157,32 +157,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       drawer: false,
       mainColor: 'red darken-4',
-      linkList: [// {title: 'Домой', icon: 'mdi-home', url: '/'},
-      {
-        title: 'Авторизация',
-        icon: 'mdi-login',
-        url: '/login'
+      linkList: [{
+        title: 'Акции',
+        icon: 'mdi-sale',
+        url: '/sales'
       }, {
-        title: 'Регистрация',
-        icon: 'mdi-target',
-        url: '/registry'
+        title: 'Товары',
+        icon: 'mdi-cart-outline',
+        url: '/products'
       }, {
-        title: 'Новости',
-        icon: 'mdi-newspaper',
-        url: '/news'
+        title: 'Статьи',
+        icon: 'mdi-post-outline',
+        url: '/pages'
       }, {
-        title: 'Добавить',
-        icon: 'mdi-plus',
-        url: '/append'
-      }, {
-        title: 'Мои',
-        icon: 'mdi-account-outline',
-        url: '/my-news'
+        title: 'Топы',
+        icon: 'mdi-medal-outline',
+        url: '/tops'
       }]
     };
   }
@@ -254,7 +254,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.pointer[data-v-332fccf4] {\n    cursor: pointer;\n}\n", ""]);
+exports.push([module.i, "\n.pointer[data-v-332fccf4] {\n    cursor: pointer;\n}\nmain[data-v-332fccf4] {\n    background: url(/background.jpg) repeat;\n    background-size: 100%;\n}\n.gradient-project[data-v-332fccf4] {\n    background: linear-gradient(180deg, #ff5f66, #ff9765);\n}\n.logo-image[data-v-332fccf4] {\n    height: 62px;\n    width: 220px;\n    background-size: auto 100%;\n}\n.logo-image-small[data-v-332fccf4] {\n    height: 50px;\n    background-size: 80%;\n}\n.logo-image-small>*[data-v-332fccf4] {\n    background-size: 80%;\n}\n", ""]);
 
 // exports
 
@@ -1377,6 +1377,7 @@ var render = function() {
       _c(
         "v-navigation-drawer",
         {
+          staticClass: "gradient-project",
           attrs: { app: "", temporary: "" },
           model: {
             value: _vm.drawer,
@@ -1394,7 +1395,8 @@ var render = function() {
                 "v-list-item",
                 {
                   key: link.title,
-                  attrs: { link: "", to: link.url, color: _vm.mainColor }
+                  staticClass: "gradient-project",
+                  attrs: { link: "", to: link.url }
                 },
                 [
                   _c(
@@ -1424,7 +1426,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "v-app-bar",
-        { attrs: { app: "", color: _vm.mainColor, dark: "" } },
+        { staticClass: "gradient-project", attrs: { app: "", dark: "" } },
         [
           _c("v-app-bar-nav-icon", {
             staticClass: "hidden-md-and-up",
@@ -1438,17 +1440,43 @@ var render = function() {
           _vm._v(" "),
           _c(
             "v-toolbar-title",
+            { staticClass: "hidden-sm-and-down" },
             [
               _c(
                 "router-link",
-                { staticClass: "pointer", attrs: { to: "/", tag: "span" } },
-                [_vm._v("\n                NEWS\n            ")]
+                { attrs: { to: "/" } },
+                [
+                  _c("v-img", {
+                    staticClass: "logo-image",
+                    attrs: { src: "/Logo-big.png" }
+                  })
+                ],
+                1
               )
             ],
             1
           ),
           _vm._v(" "),
           _c("v-spacer"),
+          _vm._v(" "),
+          _c(
+            "v-toolbar-title",
+            { staticClass: "hidden-md-and-up" },
+            [
+              _c(
+                "router-link",
+                { attrs: { to: "/" } },
+                [
+                  _c("v-img", {
+                    staticClass: "logo-image logo-image-small",
+                    attrs: { src: "/Logo-big.png" }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          ),
           _vm._v(" "),
           _c(
             "v-toolbar-items",
@@ -1458,12 +1486,8 @@ var render = function() {
                 "v-btn",
                 {
                   key: link.title,
-                  attrs: {
-                    color: _vm.mainColor,
-                    elevation: "0",
-                    link: "",
-                    to: link.url
-                  }
+                  staticClass: "gradient-project",
+                  attrs: { elevation: "0", link: "", to: link.url }
                 },
                 [
                   _c("v-icon", { attrs: { left: "" } }, [
@@ -1486,10 +1510,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "v-footer",
-        {
-          staticClass: "text-center",
-          attrs: { color: _vm.mainColor, app: "" }
-        },
+        { staticClass: "text-center gradient-project", attrs: { app: "" } },
         [
           _c(
             "v-container",
@@ -1500,7 +1521,9 @@ var render = function() {
                 [
                   _c("v-col", { attrs: { cols: "12" } }, [
                     _c("span", { staticClass: "white--text" }, [
-                      _vm._v("News топ: © " + _vm._s(new Date().getFullYear()))
+                      _vm._v("НаНастолке"),
+                      _c("sup", [_vm._v("©")]),
+                      _vm._v(" " + _vm._s(new Date().getFullYear()))
                     ])
                   ])
                 ],

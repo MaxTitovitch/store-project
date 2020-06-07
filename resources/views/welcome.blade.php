@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="shortcut icon" href="{{ asset('logo.png') }}" type="image/x-icon">
-    <title>На настолке</title>
+    <title>НаНастолке! - Онлайн-магазин</title>
 </head>
 <body>
     <div id="app"></div>
