@@ -2241,6 +2241,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -4788,6 +4789,7 @@ var render = function() {
                   {
                     key: link.title,
                     staticClass: "gradient-project",
+                    staticStyle: { "text-decoration": "none" },
                     attrs: { elevation: "0", link: "", to: link.url }
                   },
                   [

@@ -185,8 +185,9 @@
                         link v-for="link in linkList"
                         :key="link.title"
                         :to="link.url"
+                        style="text-decoration: none;"
                 >
-                    <v-icon left>{{ link.icon }}</v-icon>
+                    <v-icon left >{{ link.icon }}</v-icon>
                     {{ link.title }}
                 </v-btn>
                 <v-list-item
