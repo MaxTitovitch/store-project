@@ -2209,10 +2209,43 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       drawer: false,
+      drawerAdmin: false,
       mainColor: 'red darken-4',
       linkList: [{
         title: 'Акции',
@@ -2250,6 +2283,37 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         title: 'Контакты',
         url: '/contacts'
+      }],
+      adminLinkList: [{
+        title: 'Товары',
+        url: '/admin/products'
+      }, {
+        title: 'Категории',
+        url: '/admin/categories'
+      }, {
+        title: 'Заказы',
+        url: '/admin/orders'
+      }, {
+        title: 'Характеристики',
+        url: '/admin/characteristics'
+      }, {
+        title: 'Посты',
+        url: '/admin/posts'
+      }, {
+        title: 'Акции',
+        url: '/admin/sale-categories'
+      }, {
+        title: 'Теги',
+        url: '/admin/tags'
+      }, {
+        title: 'Комментарии',
+        url: '/admin/comments'
+      }, {
+        title: 'Пользователи',
+        url: '/admin/users'
+      }, {
+        title: 'Массовая загрузка',
+        url: '/admin/mass-upload'
       }]
     };
   },
@@ -2257,7 +2321,6 @@ __webpack_require__.r(__webpack_exports__);
     logout: function logout() {
       var _this = this;
 
-      console.log(this.isLoggedIn);
       this.$store.dispatch('logout').then(function () {
         if (_this.$router.history.current.fullPath !== '/') _this.$router.push('/');
       });
@@ -2998,7 +3061,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.pointer {\n    cursor: pointer;\n}\nbody, main {\n    background: url(/background.jpg) repeat;\n    background-size: 100%;\n}\n.gradient-project {\n    background: linear-gradient(180deg, #ff5f66, #ff9765);\n}\n.logo-image {\n    height: 62px;\n    width: 220px;\n    background-size: auto 100%;\n}\n.logo-image-small {\n    margin: auto;\n    background-size: auto 100%;\n    height: 40px;\n    width: 150px;\n}\n.background-clear {\n    background: url(/background.jpg) repeat;\n}\n\n", ""]);
+exports.push([module.i, "\n.pointer {\n    cursor: pointer;\n}\nbody, main {\n    background: url(/background.jpg) repeat;\n    background-size: 100%;\n}\n.gradient-project {\n    background: linear-gradient(180deg, #ff5f66, #ff9765);\n}\n.logo-image {\n    height: 62px;\n    width: 220px;\n    background-size: auto 100%;\n}\n.logo-image-small {\n    margin: auto;\n    background-size: auto 100%;\n    height: 40px;\n    width: 150px;\n}\n.background-clear {\n    background: url(/background.jpg) repeat;\n}\n*::-webkit-scrollbar-track\n{\n    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);\n    border-radius: 10px;\n    background-color: #F5F5F5;\n}\n*::-webkit-scrollbar\n{\n    width: 10px;\n    background-color: #F5F5F5;\n}\n*::-webkit-scrollbar-thumb\n{\n    border-radius: 10px;\n    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);\n    background-color: #9E9897;\n}\n.main-header {\n    margin-top: 20px!important;\n}\n@media only screen and (max-width: 960px) {\n.main-header {\n        margin-top: 0!important;\n}\n}\n", ""]);
 
 // exports
 
@@ -4194,6 +4257,80 @@ var render = function() {
       _c(
         "v-navigation-drawer",
         {
+          attrs: { app: "", temporary: "", dark: "" },
+          model: {
+            value: _vm.drawerAdmin,
+            callback: function($$v) {
+              _vm.drawerAdmin = $$v
+            },
+            expression: "drawerAdmin"
+          }
+        },
+        [
+          _c(
+            "v-list",
+            [
+              _c(
+                "v-list-item",
+                {
+                  staticStyle: { "text-decoration": "none" },
+                  attrs: { to: "/admin" }
+                },
+                [
+                  _c(
+                    "v-list-item-icon",
+                    [
+                      _c("v-icon", { attrs: { "x-large": "", left: "" } }, [
+                        _vm._v("mdi-account-outline")
+                      ])
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-list-item-content",
+                    [
+                      _c("v-list-item-title", { staticClass: "h2" }, [
+                        _vm._v("Панель")
+                      ]),
+                      _vm._v(" "),
+                      _c("v-list-item-title", { staticClass: "h2" }, [
+                        _vm._v("Администратора")
+                      ])
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _vm._l(_vm.adminLinkList, function(link) {
+                return _c(
+                  "v-list-item",
+                  {
+                    key: link.title,
+                    attrs: { link: "", to: link.url, dark: "" }
+                  },
+                  [
+                    _c(
+                      "v-list-item-content",
+                      [_c("v-list-item-title", [_vm._v(_vm._s(link.title))])],
+                      1
+                    )
+                  ],
+                  1
+                )
+              })
+            ],
+            2
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-navigation-drawer",
+        {
           staticClass: "gradient-project",
           attrs: { app: "", temporary: "" },
           model: {
@@ -4275,7 +4412,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "v-expansion-panels",
-                { staticClass: "hidden-md-and-up" },
+                { staticClass: "hidden-md-and-up", attrs: { expandable: "" } },
                 [
                   _c(
                     "v-expansion-panel",
@@ -4527,7 +4664,12 @@ var render = function() {
         "v-system-bar",
         {
           staticClass: "background-clear hidden-sm-and-down",
-          staticStyle: { position: "fixed", left: "0", right: "0" },
+          staticStyle: {
+            position: "fixed",
+            left: "0",
+            right: "0",
+            "z-index": "4"
+          },
           attrs: { height: "20px" }
         },
         [
@@ -4566,8 +4708,26 @@ var render = function() {
       _vm._v(" "),
       _c(
         "v-app-bar",
-        { staticClass: "gradient-project mt-5", attrs: { app: "", dark: "" } },
+        {
+          staticClass: "gradient-project main-header",
+          attrs: { app: "", dark: "" }
+        },
         [
+          (_vm.isLoggedInForVerify &&
+            _vm.isLoggedRole === "Главный администратор") ||
+          _vm.isLoggedRole === "Администратор"
+            ? _c("v-app-bar-nav-icon", {
+                staticClass: "mr-3",
+                staticStyle: { background: "black", "border-radius": "5px" },
+                on: {
+                  click: function($event) {
+                    $event.stopPropagation()
+                    _vm.drawerAdmin = !_vm.drawerAdmin
+                  }
+                }
+              })
+            : _vm._e(),
+          _vm._v(" "),
           _c("v-app-bar-nav-icon", {
             staticClass: "hidden-md-and-up",
             on: {
@@ -4666,10 +4826,14 @@ var render = function() {
                 [
                   _c(
                     "v-expansion-panel",
-                    { staticClass: "gradient-project" },
+                    {
+                      staticClass: "gradient-project",
+                      attrs: { expandable: "" }
+                    },
                     [
                       _c(
                         "v-expansion-panel-header",
+                        { attrs: { tabindex: "0" } },
                         [
                           _vm._v(
                             "\n                        " +
@@ -4685,6 +4849,12 @@ var render = function() {
                       _vm._v(" "),
                       _c(
                         "v-expansion-panel-content",
+                        {
+                          attrs: {
+                            onclick:
+                              "this.parentElement.querySelectorAll('button')[0].click()"
+                          }
+                        },
                         [
                           _c(
                             "v-list",
@@ -64166,7 +64336,7 @@ if (token) {
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(_plugins_vuetify__WEBPACK_IMPORTED_MODULE_3__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.config.productionTip = false;
-new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
+var vue = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#app',
   router: _router__WEBPACK_IMPORTED_MODULE_2__["default"],
   store: _store_index__WEBPACK_IMPORTED_MODULE_4__["default"],

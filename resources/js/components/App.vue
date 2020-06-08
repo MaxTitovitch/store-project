@@ -1,5 +1,29 @@
 <template>
     <v-app id="inspire">
+        <v-navigation-drawer v-model="drawerAdmin" app temporary dark>
+            <v-list>
+            <v-list-item  to="/admin" style="text-decoration: none;">
+                        <v-list-item-icon>
+                            <v-icon x-large left>mdi-account-outline</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title class="h2">Панель</v-list-item-title>
+                            <v-list-item-title class="h2">Администратора</v-list-item-title>
+                        </v-list-item-content>
+            </v-list-item>
+                <v-list-item
+                    link v-for="link in adminLinkList"
+                    :key="link.title"
+                    :to="link.url"
+                    dark
+                >
+                    <v-list-item-content>
+                        <v-list-item-title>{{ link.title }}</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+            </v-list>
+        </v-navigation-drawer>
+
         <v-navigation-drawer v-model="drawer" app temporary class="gradient-project">
             <v-list>
                 <v-toolbar-title class="hidden-md-and-up">
@@ -32,7 +56,7 @@
                         regular
                     />
                 </v-list-item>
-                <v-expansion-panels class="hidden-md-and-up">
+                <v-expansion-panels class="hidden-md-and-up" expandable>
                     <v-expansion-panel
                         class="gradient-project"
                     >
@@ -114,7 +138,7 @@
             </v-list>
         </v-navigation-drawer>
 
-        <v-system-bar height="20px" class="background-clear hidden-sm-and-down" style="position:fixed; left: 0; right: 0;">
+        <v-system-bar height="20px" class="background-clear hidden-sm-and-down" style="position:fixed; left: 0; right: 0; z-index: 4">
             <v-btn href="tel:+375333038199" text target="_blank">+375333038199</v-btn>
             <v-btn href="mailto://maxtitovitch@mail.ru" text target="_blank">maxtitovitch@mail.ru</v-btn>
             <v-spacer/>
@@ -127,13 +151,19 @@
             </v-btn>
         </v-system-bar>
 
-        <v-app-bar app class="gradient-project mt-5" dark>
-
+        <v-app-bar app class="gradient-project main-header" dark>
+            <v-app-bar-nav-icon
+                @click.stop="drawerAdmin = !drawerAdmin"
+                style="background: black; border-radius: 5px;"
+                class="mr-3"
+                v-if="isLoggedInForVerify && isLoggedRole === 'Главный администратор' || isLoggedRole === 'Администратор'"
+            />
 
             <v-app-bar-nav-icon
                     @click.stop="drawer = !drawer"
                     class="hidden-md-and-up"
             />
+
             <v-toolbar-title class="hidden-sm-and-down">
                 <router-link to="/" >
                     <v-img src="/Logo-big.png" class="logo-image"/>
@@ -172,12 +202,14 @@
                 </v-list-item>
                 <v-expansion-panels>
                     <v-expansion-panel
-                        class="gradient-project">
-                        <v-expansion-panel-header>
+                        class="gradient-project"
+                        expandable
+                    >
+                        <v-expansion-panel-header tabindex="0">
                             {{ isLoggedName }}
                             <v-icon x-large>mdi-account-circle-outline</v-icon>
                         </v-expansion-panel-header>
-                        <v-expansion-panel-content >
+                        <v-expansion-panel-content onclick="this.parentElement.querySelectorAll('button')[0].click()">
                             <v-list light class="gradient-project" style="padding: 0px">
                                 <v-list-item
                                     link v-for="link in userLinkList"
@@ -281,9 +313,11 @@
 </template>
 
 <script>
-    export default {
+
+export default {
         data: () => ({
             drawer: false,
+            drawerAdmin: false,
             mainColor: 'red darken-4',
             linkList: [
                 { title: 'Акции', icon: 'mdi-sale', url: '/sales' },
@@ -301,10 +335,21 @@
                 { title: 'Оплата и доставка', url: '/delivery' },
                 { title: 'Контакты', url: '/contacts' },
             ],
+            adminLinkList: [
+                { title: 'Товары', url: '/admin/products' },
+                { title: 'Категории', url: '/admin/categories' },
+                { title: 'Заказы', url: '/admin/orders' },
+                { title: 'Характеристики', url: '/admin/characteristics' },
+                { title: 'Посты', url: '/admin/posts' },
+                { title: 'Акции', url: '/admin/sale-categories' },
+                { title: 'Теги', url: '/admin/tags' },
+                { title: 'Комментарии', url: '/admin/comments' },
+                { title: 'Пользователи', url: '/admin/users' },
+                { title: 'Массовая загрузка',  url: '/admin/mass-upload' },
+            ],
         }),
         methods: {
             logout() {
-                console.log(this.isLoggedIn)
                 this.$store.dispatch('logout').then(() => {
                     if (this.$router.history.current.fullPath !== '/')
                         this.$router.push('/')
@@ -361,4 +406,32 @@
         background: url(/background.jpg) repeat;
     }
 
+    *::-webkit-scrollbar-track
+    {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        border-radius: 10px;
+        background-color: #F5F5F5;
+    }
+
+    *::-webkit-scrollbar
+    {
+        width: 10px;
+        background-color: #F5F5F5;
+    }
+
+    *::-webkit-scrollbar-thumb
+    {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+        background-color: #9E9897;
+    }
+    .main-header {
+        margin-top: 20px!important;
+    }
+
+    @media only screen and (max-width: 960px) {
+        .main-header {
+            margin-top: 0!important;
+        }
+    }
 </style>

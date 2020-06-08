@@ -15,7 +15,7 @@ if (token) {
 Vue.use(vuetify);
 Vue.config.productionTip = false;
 
-new Vue({
+let vue = new Vue({
     el: '#app',
     router,
     store,
