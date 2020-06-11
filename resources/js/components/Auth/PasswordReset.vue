@@ -29,9 +29,9 @@
                                 :rules="confirmPasswordRules"
 
                             />
-                            <div v-if="error" class="red--text">
+                            <v-alert type="error" v-if="error">
                                 {{ error }}
-                            </div>
+                            </v-alert>
                         </v-form>
                     </v-card-text>
                     <v-card-actions>

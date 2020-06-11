@@ -18,7 +18,7 @@ class ApiController extends Controller
         return response()->json($response, 200);
     }
 
-    public function sendError($error, $errorMessages = [], $code = 200)
+    public function sendError($error, $errorMessages = [], $code = 400)
     {
         $response = [
             'success' => false,
@@ -27,6 +27,6 @@ class ApiController extends Controller
         if(!empty($errorMessages)){
             $response['data'] = $errorMessages;
         }
-        return response()->json($response, 200);
+        return response()->json($response, 400);
     }
 }

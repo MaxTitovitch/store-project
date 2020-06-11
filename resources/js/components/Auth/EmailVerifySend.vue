@@ -7,9 +7,12 @@
             <v-toolbar-title>Вы не подтвердили свой email. Отправить письмо ещё раз?</v-toolbar-title>
           </v-toolbar>
           <v-card-text>
-            <div class="green--text text-center">
-              <h2>{{ message }}</h2>
-            </div>
+            <v-alert type="success" v-if="message">
+              {{ message }}
+            </v-alert>
+            <v-alert type="error" v-if="error">
+              {{ error }}
+            </v-alert>
           </v-card-text>
           <v-card-actions>
             <v-layout align-center justify-center>
@@ -34,7 +37,8 @@
   export default {
     data () {
       return {
-        message: ''
+        message: '',
+        error: '',
       }
     },
     methods: {
@@ -43,7 +47,9 @@
           .then(() => {
             this.message = 'Письмо отправлено вам на почту'
           })
-          .catch(err => {console.log(err)})
+          .catch(err => {
+            this.error = 'Ошибка верификации'
+          })
       }
     }
   }

@@ -7,9 +7,13 @@
                         <v-toolbar-title>Вход в систему</v-toolbar-title>
                     </v-toolbar>
                     <v-card-text>
-                        <div  class="green--text text-center">
-                            <h2>{{ message }}</h2>
-                        </div>
+                        <v-alert type="success" v-if="message">
+                                {{ message }}
+                        </v-alert>
+                        <v-alert type="error" v-if="error">
+                                {{ error }}
+                        </v-alert>
+
                         <v-form v-model="valid" ref="form" validation>
                             <v-text-field
                                 prepend-icon="mdi-account"
@@ -20,9 +24,6 @@
                                 aria-required="true"
                                 :rules="emailRules"
                             />
-                            <div v-if="error" class="red--text">
-                                {{ error }}
-                            </div>
                         </v-form>
                     </v-card-text>
                     <v-card-actions>

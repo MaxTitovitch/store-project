@@ -2242,6 +2242,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2345,7 +2355,7 @@ __webpack_require__.r(__webpack_exports__);
     this.$http.interceptors.response.use(undefined, function (err) {
       return new Promise(function (resolve, reject) {
         if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
-          this.$store.dispatch("logout");
+          this.$store.dispatch('logout');
         }
 
         throw err;
@@ -2374,7 +2384,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
@@ -2392,6 +2401,8 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (err) {
         return _this.$router.push('/');
       });
+    } else {
+      this.$router.push('/');
     }
   }
 });
@@ -2439,10 +2450,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      message: ''
+      message: '',
+      error: ''
     };
   },
   methods: {
@@ -2452,7 +2467,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.dispatch('verifySend').then(function () {
         _this.message = 'Письмо отправлено вам на почту';
       })["catch"](function (err) {
-        console.log(err);
+        _this.error = 'Ошибка верификации';
       });
     }
   }
@@ -2469,6 +2484,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
 //
 //
 //
@@ -2941,6 +2959,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3062,7 +3081,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.pointer {\n    cursor: pointer;\n}\nbody, main {\n    background: url(/background.jpg) repeat;\n    background-size: 100%;\n}\n.gradient-project {\n    background: linear-gradient(180deg, #ff5f66, #ff9765);\n}\n.logo-image {\n    height: 62px;\n    width: 220px;\n    background-size: auto 100%;\n}\n.logo-image-small {\n    margin: auto;\n    background-size: auto 100%;\n    height: 40px;\n    width: 150px;\n}\n.background-clear {\n    background: url(/background.jpg) repeat;\n}\n*::-webkit-scrollbar-track\n{\n    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);\n    border-radius: 10px;\n    background-color: #F5F5F5;\n}\n*::-webkit-scrollbar\n{\n    width: 10px;\n    background-color: #F5F5F5;\n}\n*::-webkit-scrollbar-thumb\n{\n    border-radius: 10px;\n    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);\n    background-color: #9E9897;\n}\n.main-header {\n    margin-top: 20px!important;\n}\n@media only screen and (max-width: 960px) {\n.main-header {\n        margin-top: 0!important;\n}\n}\n", ""]);
+exports.push([module.i, "\n.pointer {\n  cursor: pointer;\n}\nbody, main {\n  background: url(/background.jpg) repeat;\n  background-size: 100%;\n}\n.gradient-project {\n  background: linear-gradient(180deg, #FF5F66, #FF9765);\n}\n.gradient-project-text {\n  color: #FF9765;\n}\n.logo-image {\n  height: 62px;\n  width: 220px;\n  background-size: auto 100%;\n}\n.logo-image-small {\n  margin: auto;\n  background-size: auto 100%;\n  height: 40px;\n  width: 150px;\n}\n.background-clear {\n  background: url(/background.jpg) repeat;\n}\n*::-webkit-scrollbar-track {\n  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);\n  border-radius: 10px;\n  background-color: #F5F5F5;\n}\n*::-webkit-scrollbar {\n  width: 10px;\n  background-color: #F5F5F5;\n}\n*::-webkit-scrollbar-thumb {\n  border-radius: 10px;\n  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);\n  background-color: #9E9897;\n}\n.main-header {\n  margin-top: 20px !important;\n}\n@media only screen and (max-width: 960px) {\n.main-header {\n    margin-top: 0 !important;\n}\n}\n", ""]);
 
 // exports
 
@@ -4423,9 +4442,9 @@ var render = function() {
                         "v-expansion-panel-header",
                         [
                           _vm._v(
-                            "\n                        " +
+                            "\n            " +
                               _vm._s(_vm.isLoggedName) +
-                              "\n                        "
+                              "\n            "
                           ),
                           _c("v-icon", { attrs: { "x-large": "" } }, [
                             _vm._v("mdi-account-circle-outline")
@@ -4453,7 +4472,7 @@ var render = function() {
                                         key: link.title,
                                         staticClass: "gradient-project",
                                         staticStyle: {
-                                          border: "1px solid #222"
+                                          border: "1px solid #222222"
                                         },
                                         attrs: {
                                           link: "",
@@ -4496,7 +4515,9 @@ var render = function() {
                                     "v-list-item",
                                     {
                                       staticClass: "gradient-project",
-                                      staticStyle: { border: "1px solid #222" },
+                                      staticStyle: {
+                                        border: "1px solid #222222"
+                                      },
                                       attrs: { to: "/admin", light: "" }
                                     },
                                     [
@@ -4535,7 +4556,9 @@ var render = function() {
                                     "v-list-item",
                                     {
                                       staticClass: "gradient-project",
-                                      staticStyle: { border: "1px solid #222" },
+                                      staticStyle: {
+                                        border: "1px solid #222222"
+                                      },
                                       attrs: { to: "/personal", light: "" }
                                     },
                                     [
@@ -4574,7 +4597,9 @@ var render = function() {
                                     "v-list-item",
                                     {
                                       staticClass: "gradient-project",
-                                      staticStyle: { border: "1px solid #222" },
+                                      staticStyle: {
+                                        border: "1px solid #222222"
+                                      },
                                       attrs: { light: "" },
                                       on: { click: _vm.logout }
                                     },
@@ -4700,7 +4725,7 @@ var render = function() {
             return _c(
               "v-btn",
               { key: link.title, attrs: { link: "", to: link.url } },
-              [_vm._v("\n            " + _vm._s(link.title) + "\n        ")]
+              [_vm._v("\n      " + _vm._s(link.title) + "\n    ")]
             )
           })
         ],
@@ -4796,11 +4821,7 @@ var render = function() {
                     _c("v-icon", { attrs: { left: "" } }, [
                       _vm._v(_vm._s(link.icon))
                     ]),
-                    _vm._v(
-                      "\n                " +
-                        _vm._s(link.title) +
-                        "\n            "
-                    )
+                    _vm._v("\n        " + _vm._s(link.title) + "\n      ")
                   ],
                   1
                 )
@@ -4824,221 +4845,192 @@ var render = function() {
               ),
               _vm._v(" "),
               _c(
-                "v-expansion-panels",
+                "v-menu",
+                {
+                  attrs: {
+                    "close-on-click": true,
+                    "close-on-content-click": true,
+                    "offset-y": true
+                  },
+                  scopedSlots: _vm._u([
+                    {
+                      key: "activator",
+                      fn: function(ref) {
+                        var on = ref.on
+                        var attrs = ref.attrs
+                        return [
+                          _c(
+                            "v-btn",
+                            _vm._g(
+                              _vm._b(
+                                {
+                                  staticClass: "gradient-project",
+                                  attrs: { color: "primary", dark: "" }
+                                },
+                                "v-btn",
+                                attrs,
+                                false
+                              ),
+                              on
+                            ),
+                            [
+                              _vm._v(
+                                "\n            " +
+                                  _vm._s(_vm.isLoggedName) +
+                                  "\n            "
+                              ),
+                              _c("v-icon", { attrs: { "x-large": "" } }, [
+                                _vm._v("mdi-account-circle-outline")
+                              ])
+                            ],
+                            1
+                          )
+                        ]
+                      }
+                    }
+                  ])
+                },
                 [
+                  _vm._v(" "),
                   _c(
-                    "v-expansion-panel",
+                    "v-list",
                     {
                       staticClass: "gradient-project",
-                      attrs: { expandable: "" }
+                      staticStyle: { padding: "0px" },
+                      attrs: { light: "" }
                     },
                     [
-                      _c(
-                        "v-expansion-panel-header",
-                        { attrs: { tabindex: "0" } },
-                        [
-                          _vm._v(
-                            "\n                        " +
-                              _vm._s(_vm.isLoggedName) +
-                              "\n                        "
-                          ),
-                          _c("v-icon", { attrs: { "x-large": "" } }, [
-                            _vm._v("mdi-account-circle-outline")
-                          ])
-                        ],
-                        1
-                      ),
+                      _vm._l(_vm.userLinkList, function(link) {
+                        return !_vm.isLoggedInForVerify
+                          ? _c(
+                              "v-list-item",
+                              {
+                                key: link.title,
+                                staticClass: "gradient-project",
+                                staticStyle: { border: "1px solid white" },
+                                attrs: { link: "", to: link.url, dark: "" }
+                              },
+                              [
+                                _c(
+                                  "v-list-item-icon",
+                                  [
+                                    _c("v-icon", { attrs: { left: "" } }, [
+                                      _vm._v(_vm._s(link.icon))
+                                    ])
+                                  ],
+                                  1
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-list-item-content",
+                                  [
+                                    _c("v-list-item-title", [
+                                      _vm._v(_vm._s(link.title))
+                                    ])
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          : _vm._e()
+                      }),
                       _vm._v(" "),
-                      _c(
-                        "v-expansion-panel-content",
-                        {
-                          attrs: {
-                            onclick:
-                              "this.parentElement.querySelectorAll('button')[0].click()"
-                          }
-                        },
-                        [
-                          _c(
-                            "v-list",
+                      (_vm.isLoggedInForVerify &&
+                        _vm.isLoggedRole === "Главный администратор") ||
+                      _vm.isLoggedRole === "Администратор"
+                        ? _c(
+                            "v-list-item",
                             {
                               staticClass: "gradient-project",
-                              staticStyle: { padding: "0px" },
-                              attrs: { light: "" }
+                              staticStyle: { border: "1px solid white" },
+                              attrs: { to: "/admin", dark: "" }
                             },
                             [
-                              _vm._l(_vm.userLinkList, function(link) {
-                                return !_vm.isLoggedInForVerify
-                                  ? _c(
-                                      "v-list-item",
-                                      {
-                                        key: link.title,
-                                        staticClass: "gradient-project",
-                                        staticStyle: {
-                                          border: "1px solid white"
-                                        },
-                                        attrs: {
-                                          link: "",
-                                          to: link.url,
-                                          dark: ""
-                                        }
-                                      },
-                                      [
-                                        _c(
-                                          "v-list-item-icon",
-                                          [
-                                            _c(
-                                              "v-icon",
-                                              { attrs: { left: "" } },
-                                              [_vm._v(_vm._s(link.icon))]
-                                            )
-                                          ],
-                                          1
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "v-list-item-content",
-                                          [
-                                            _c("v-list-item-title", [
-                                              _vm._v(_vm._s(link.title))
-                                            ])
-                                          ],
-                                          1
-                                        )
-                                      ],
-                                      1
-                                    )
-                                  : _vm._e()
-                              }),
+                              _c(
+                                "v-list-item-icon",
+                                [
+                                  _c("v-icon", { attrs: { left: "" } }, [
+                                    _vm._v("mdi-account-details-outline")
+                                  ])
+                                ],
+                                1
+                              ),
                               _vm._v(" "),
-                              (_vm.isLoggedInForVerify &&
-                                _vm.isLoggedRole === "Главный администратор") ||
-                              _vm.isLoggedRole === "Администратор"
-                                ? _c(
-                                    "v-list-item",
-                                    {
-                                      staticClass: "gradient-project",
-                                      staticStyle: {
-                                        border: "1px solid white"
-                                      },
-                                      attrs: { to: "/admin", dark: "" }
-                                    },
-                                    [
-                                      _c(
-                                        "v-list-item-icon",
-                                        [
-                                          _c(
-                                            "v-icon",
-                                            { attrs: { left: "" } },
-                                            [
-                                              _vm._v(
-                                                "mdi-account-details-outline"
-                                              )
-                                            ]
-                                          )
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-list-item-content",
-                                        [
-                                          _c("v-list-item-title", [
-                                            _vm._v("Админка")
-                                          ])
-                                        ],
-                                        1
-                                      )
-                                    ],
-                                    1
-                                  )
-                                : _vm._e(),
-                              _vm._v(" "),
-                              _vm.isLoggedInForVerify
-                                ? _c(
-                                    "v-list-item",
-                                    {
-                                      staticClass: "gradient-project",
-                                      staticStyle: {
-                                        border: "1px solid white"
-                                      },
-                                      attrs: { to: "/personal", dark: "" }
-                                    },
-                                    [
-                                      _c(
-                                        "v-list-item-icon",
-                                        [
-                                          _c(
-                                            "v-icon",
-                                            { attrs: { left: "" } },
-                                            [
-                                              _vm._v(
-                                                "mdi-account-details-outline"
-                                              )
-                                            ]
-                                          )
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-list-item-content",
-                                        [
-                                          _c("v-list-item-title", [
-                                            _vm._v("Личный кабинет")
-                                          ])
-                                        ],
-                                        1
-                                      )
-                                    ],
-                                    1
-                                  )
-                                : _vm._e(),
-                              _vm._v(" "),
-                              _vm.isLoggedInForVerify
-                                ? _c(
-                                    "v-list-item",
-                                    {
-                                      staticClass: "gradient-project",
-                                      staticStyle: {
-                                        border: "1px solid white"
-                                      },
-                                      attrs: { dark: "" },
-                                      on: { click: _vm.logout }
-                                    },
-                                    [
-                                      _c(
-                                        "v-list-item-icon",
-                                        [
-                                          _c(
-                                            "v-icon",
-                                            { attrs: { left: "" } },
-                                            [_vm._v("mdi-exit-run")]
-                                          )
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "v-list-item-content",
-                                        [
-                                          _c("v-list-item-title", [
-                                            _vm._v("Выйти")
-                                          ])
-                                        ],
-                                        1
-                                      )
-                                    ],
-                                    1
-                                  )
-                                : _vm._e()
+                              _c(
+                                "v-list-item-content",
+                                [_c("v-list-item-title", [_vm._v("Админка")])],
+                                1
+                              )
                             ],
-                            2
+                            1
                           )
-                        ],
-                        1
-                      )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.isLoggedInForVerify
+                        ? _c(
+                            "v-list-item",
+                            {
+                              staticClass: "gradient-project",
+                              staticStyle: { border: "1px solid white" },
+                              attrs: { to: "/personal", dark: "" }
+                            },
+                            [
+                              _c(
+                                "v-list-item-icon",
+                                [
+                                  _c("v-icon", { attrs: { left: "" } }, [
+                                    _vm._v("mdi-account-details-outline")
+                                  ])
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-list-item-content",
+                                [
+                                  _c("v-list-item-title", [
+                                    _vm._v("Личный кабинет")
+                                  ])
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.isLoggedInForVerify
+                        ? _c(
+                            "v-list-item",
+                            {
+                              staticClass: "gradient-project",
+                              staticStyle: { border: "1px solid white" },
+                              attrs: { dark: "" },
+                              on: { click: _vm.logout }
+                            },
+                            [
+                              _c(
+                                "v-list-item-icon",
+                                [
+                                  _c("v-icon", { attrs: { left: "" } }, [
+                                    _vm._v("mdi-exit-run")
+                                  ])
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-list-item-content",
+                                [_c("v-list-item-title", [_vm._v("Выйти")])],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        : _vm._e()
                     ],
-                    1
+                    2
                   )
                 ],
                 1
@@ -5099,7 +5091,7 @@ var render = function() {
                                 color: "white"
                               }
                             },
-                            [_vm._v("maxtitovitch@mail.ru")]
+                            [_vm._v("maxtitovitch@mail.ru\n            ")]
                           )
                         ],
                         1
@@ -5265,11 +5257,31 @@ var render = function() {
                     1
                   ),
                   _vm._v(" "),
-                  _c("v-card-text", [
-                    _c("div", { staticClass: "green--text text-center" }, [
-                      _c("h2", [_vm._v(_vm._s(_vm.message))])
-                    ])
-                  ]),
+                  _c(
+                    "v-card-text",
+                    [
+                      _vm.message
+                        ? _c("v-alert", { attrs: { type: "success" } }, [
+                            _vm._v(
+                              "\n            " +
+                                _vm._s(_vm.message) +
+                                "\n          "
+                            )
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.error
+                        ? _c("v-alert", { attrs: { type: "error" } }, [
+                            _vm._v(
+                              "\n            " +
+                                _vm._s(_vm.error) +
+                                "\n          "
+                            )
+                          ])
+                        : _vm._e()
+                    ],
+                    1
+                  ),
                   _vm._v(" "),
                   _c(
                     "v-card-actions",
@@ -5415,9 +5427,9 @@ var render = function() {
                           _vm.error
                             ? _c("div", { staticClass: "red--text" }, [
                                 _vm._v(
-                                  "\n                            " +
+                                  "\n              " +
                                     _vm._s(_vm.error) +
-                                    "\n                        "
+                                    "\n            "
                                 )
                               ])
                             : _vm._e()
@@ -5437,7 +5449,15 @@ var render = function() {
                         "v-btn",
                         { attrs: { href: "/reset-send", text: "" } },
                         [_vm._v("Забыли пароль? Востонавить?")]
-                      ),
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-card-actions",
+                    [
+                      _c("v-spacer"),
                       _vm._v(" "),
                       _c(
                         "v-btn",
@@ -5450,7 +5470,7 @@ var render = function() {
                           },
                           on: { click: _vm.onSubmit }
                         },
-                        [_vm._v("Вход\n                    ")]
+                        [_vm._v("Вход\n          ")]
                       )
                     ],
                     1
@@ -5568,7 +5588,7 @@ var render = function() {
                           }),
                           _vm._v(" "),
                           _vm.error
-                            ? _c("div", { staticClass: "red--text" }, [
+                            ? _c("v-alert", { attrs: { type: "error" } }, [
                                 _vm._v(
                                   "\n                            " +
                                     _vm._s(_vm.error) +
@@ -6009,9 +6029,25 @@ var render = function() {
                   _c(
                     "v-card-text",
                     [
-                      _c("div", { staticClass: "green--text text-center" }, [
-                        _c("h2", [_vm._v(_vm._s(_vm.message))])
-                      ]),
+                      _vm.message
+                        ? _c("v-alert", { attrs: { type: "success" } }, [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(_vm.message) +
+                                "\n                    "
+                            )
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.error
+                        ? _c("v-alert", { attrs: { type: "error" } }, [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(_vm.error) +
+                                "\n                    "
+                            )
+                          ])
+                        : _vm._e(),
                       _vm._v(" "),
                       _c(
                         "v-form",
@@ -6043,17 +6079,7 @@ var render = function() {
                               },
                               expression: "user.email"
                             }
-                          }),
-                          _vm._v(" "),
-                          _vm.error
-                            ? _c("div", { staticClass: "red--text" }, [
-                                _vm._v(
-                                  "\n                            " +
-                                    _vm._s(_vm.error) +
-                                    "\n                        "
-                                )
-                              ])
-                            : _vm._e()
+                          })
                         ],
                         1
                       )
