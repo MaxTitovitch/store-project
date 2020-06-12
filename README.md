@@ -12,6 +12,8 @@ This project written by `Laravel` and `VueJS`
 5) Run `php artisan db:seed` command
 6) Run `php artisan key:generate` command 
 7) Run `npm install` command
+8) Run `php artisan storage:link` command
 
 #How to run?
-1) Run `npm run wath` command
+1) Run `PHP web server` 
+2) Run `npm run dev` command

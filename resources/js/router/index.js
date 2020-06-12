@@ -9,6 +9,7 @@ import EmailVerify from '../components/Auth/EmailVerify';
 import PasswordReset from '../components/Auth/PasswordReset';
 import EmailVerifySend from '../components/Auth/EmailVerifySend';
 import AdminMain from '../components/Admin/Main';
+import MassUpload from '../components/Admin/MassUpload';
 import store from '../store/index'
 
 Vue.use(Router);
@@ -49,6 +50,14 @@ let router = new Router({
             }
         },
         {
+            name: 'mass-upload',
+            path: '/admin/mass-upload',
+            component: MassUpload,
+            meta: {
+                requiredRole: ['Главный администратор']
+            }
+        },
+        {
             name: 'personal',
             path: '/personal',
             component: AdminMain,
@@ -80,10 +89,10 @@ let router = new Router({
             name: '404',
             component: NotFound,
         },
-        // {
-        //     path: '*',
-        //     redirect: '/404'
-        // }
+        {
+            path: '*',
+            redirect: '/404'
+        }
     ],
     mode: 'history'
 })

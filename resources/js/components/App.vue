@@ -285,7 +285,8 @@
     </v-app-bar>
 
     <v-content>
-      <router-view></router-view>
+          <div v-if="isLoading" class="loading-image"></div>
+      <router-view :style="isLoading ? 'opacity: 0' : ''"></router-view>
     </v-content>
 
     <v-footer app class="text-center gradient-project">
@@ -372,6 +373,7 @@
       isLoggedInForVerify: function () { return this.$store.getters.isLoggedInForVerify },
       isLoggedRole: function () { return this.$store.getters.isLoggedRole },
       isLoggedName: function () { return this.$store.getters.isLoggedName },
+      isLoading: function () {return this.$store.getters.isLoading }
     },
     created () {
       this.$http.interceptors.response.use(undefined, function (err) {
@@ -446,5 +448,17 @@
     .main-header {
       margin-top: 0 !important;
     }
+  }
+
+  .loading-image {
+    width: 100%;
+    height: 100%;
+    background-image: url(/loading.gif);
+    background-position: center;
+    background-size: 50px;
+    background-color: rgba(0,0,0,0.5);
+    position: absolute;
+    left: 0;
+    top: 0;
   }
 </style>

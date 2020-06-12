@@ -10,7 +10,7 @@ class MassUploadController extends ApiController
 {
     public function store(MassUploadRequest $request) {
         $file = $request->file('file');
-        $path = Storage::put('data-file', $file);
+        $path = Storage::put('', $file);
 
         $typeParsing  = $request->get('type');
         $nameParts = explode('.', $file->getClientOriginalName());

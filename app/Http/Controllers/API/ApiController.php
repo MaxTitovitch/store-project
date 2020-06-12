@@ -27,6 +27,6 @@ class ApiController extends Controller
         if(!empty($errorMessages)){
             $response['data'] = $errorMessages;
         }
-        return response()->json($response, 400);
+        return response()->json($response, $code);
     }
 }

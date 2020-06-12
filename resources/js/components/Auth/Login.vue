@@ -7,6 +7,9 @@
             <v-toolbar-title>Вход в систему</v-toolbar-title>
           </v-toolbar>
           <v-card-text>
+            <v-alert type="error" v-if="error">
+              {{ error }}
+            </v-alert>
             <v-form v-model="valid" ref="form" validation>
               <v-text-field
                   prepend-icon="mdi-account"
@@ -16,6 +19,7 @@
                   v-model="user.login"
                   aria-required="true"
                   :rules="emailRules"
+                  color="#ff9966"
               />
               <v-text-field
                   prepend-icon="mdi-lock"
@@ -26,11 +30,8 @@
                   counter=">6"
                   aria-required="true"
                   :rules="passwordRules"
+                  color="#ff9966"
               />
-              <div v-if="error" class="red--text">
-                {{ error }}
-              </div>
-
             </v-form>
           </v-card-text>
             <v-card-actions>

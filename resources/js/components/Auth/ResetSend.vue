@@ -23,6 +23,7 @@
                                 v-model="user.email"
                                 aria-required="true"
                                 :rules="emailRules"
+                                color="#ff9966"
                             />
                         </v-form>
                     </v-card-text>

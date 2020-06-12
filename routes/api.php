@@ -68,21 +68,21 @@ Route::middleware('api-auth:true,false,admin')->group( function () {
     Route::resource('product-tag', 'API\ProductTagController')->only(['index', 'store', 'destroy']);
     Route::resource('product-order', 'API\ProductOrderController')->only(['index', 'store', 'destroy']);
 
-    Route::get('line-chart/{entity}/{id}/{param}', 'API\DiagramController@showLineChart');
-    Route::get('bar-chart/{entity}/{param}', 'API\DiagramController@showBarChart');
-    Route::get('pie-chart/{param}', 'API\DiagramController@showPieChart');
 
     Route::post('photo', 'API\PhotoController@createPhoto');
 });
 
 Route::middleware('api-auth:true,false,main')->group( function () {
     Route::resource('users', 'API\UserController')->except(['create', 'edit']);
-
     Route::post('mass-upload', 'API\MassUploadController@store');
 });
 
 Route::middleware('api-auth:true,true,admin')->group( function () {
     Route::resource('addresses', 'API\AddressController')->except(['create', 'edit']);
     Route::resource('orders', 'API\OrderController')->except(['create', 'edit']);
+    Route::get('line-chart/{entity}/{id}/{param}', 'API\DiagramController@showLineChart');
+    Route::get('bar-chart/{entity}/{param}', 'API\DiagramController@showBarChart');
+    Route::get('pie-chart/{param}', 'API\DiagramController@showPieChart');
+    Route::get('statistic', 'API\StatisticController@index');
 
 });

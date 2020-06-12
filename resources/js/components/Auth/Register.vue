@@ -15,6 +15,7 @@
                                 v-model="user.name"
                                 aria-required="true"
                                 :rules="nameRules"
+                                color="#ff9966"
                             />
                             <v-text-field
                                 name="last_name"
@@ -23,6 +24,7 @@
                                 v-model="user.last_name"
                                 aria-required="true"
                                 :rules="lastNameRules"
+                                color="#ff9966"
                             />
                             <v-select
                                 name="sex"
@@ -30,6 +32,7 @@
                                 v-model="user.sex"
                                 :rules="sexRules"
                                 label="Пол"
+                                color="#ff9966"
                             />
                             <v-text-field
                                 name="phone"
@@ -38,6 +41,7 @@
                                 v-model="user.phone"
                                 aria-required="true"
                                 :rules="phoneRules"
+                                color="#ff9966"
                             />
 
                             <v-menu
@@ -47,6 +51,7 @@
                                 transition="scale-transition"
                                 offset-y
                                 min-width="290px"
+                                color="#ff9966"
                             >
                                 <template v-slot:activator="{ on }">
                                     <v-text-field
@@ -55,6 +60,7 @@
                                         readonly
                                         v-on="on"
                                         :rules="dateRules"
+                                        color="#ff9966"
                                     />
                                 </template>
                                 <v-date-picker
@@ -79,6 +85,7 @@
                                 v-model="user.email"
                                 aria-required="true"
                                 :rules="emailRules"
+                                color="#ff9966"
                             />
                             <v-text-field
                                 prepend-icon="mdi-lock"
@@ -89,6 +96,7 @@
                                 counter=">6"
                                 aria-required="true"
                                 :rules="passwordRules"
+                                color="#ff9966"
                             />
                             <v-text-field
                                 prepend-icon="mdi-lock"
@@ -98,6 +106,7 @@
                                 v-model="user.confirm_password"
                                 aria-required="true"
                                 :rules="confirmPasswordRules"
+                                color="#ff9966"
 
                             />
                             <div v-if="error" class="red--text">

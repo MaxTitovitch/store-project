@@ -41,6 +41,9 @@ class ProductController extends ApiController
             if (isset($input['offset'])) {
                 $entity = $entity->offset($input['offset']);
             }
+            if (isset($input['withCount'])) {
+                $entity = $entity->withCount($input['withCount']);
+            }
             if (isset($input['limit'])) {
                 $entity = $entity->limit($input['limit']);
             }

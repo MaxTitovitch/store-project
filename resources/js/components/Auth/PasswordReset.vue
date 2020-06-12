@@ -18,6 +18,7 @@
                                 counter=">6"
                                 aria-required="true"
                                 :rules="passwordRules"
+                                color="#ff9966"
                             />
                             <v-text-field
                                 prepend-icon="mdi-lock"
@@ -27,7 +28,7 @@
                                 v-model="user.password_confirmation"
                                 aria-required="true"
                                 :rules="confirmPasswordRules"
-
+                                color="#ff9966"
                             />
                             <v-alert type="error" v-if="error">
                                 {{ error }}
