@@ -17,13 +17,13 @@ class ApiAuthenticate
 
         $user = auth('api')->user();
         if ($user == null) {
-            return $this->sendErrorMessage('User isn\'t authenticated.');
+            return $this->sendErrorMessage('Users isn\'t authenticated.');
         } else if ($isNeedVerify == "true" && $user instanceof MustVerifyEmail && !$user->hasVerifiedEmail()) {
-            return $this->sendErrorMessage('User isn\'t verify email.');
+            return $this->sendErrorMessage('Users isn\'t verify email.');
         } else if ($routeFor == 'admin' && $user->role == 'Пользователь') {
-            return $this->sendErrorMessage('User isn\'t admin.');
+            return $this->sendErrorMessage('Users isn\'t admin.');
         }else if ($routeFor == 'main' && $user->role != 'Главный администратор') {
-            return $this->sendErrorMessage('User isn\'t main admin.');
+            return $this->sendErrorMessage('Users isn\'t main admin.');
         }
 
         return $next($request);

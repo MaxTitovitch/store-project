@@ -20,16 +20,16 @@ class UserController extends ApiController
         $input = $request->all();
         $input['slug'] = str_slug($input['email']);
         $entity = User::create($input);
-        return $this->sendResponse($entity->toArray(), 'User created successfully.');
+        return $this->sendResponse($entity->toArray(), 'Users created successfully.');
     }
 
     public function show(Request $request, $id)
     {
         $entity  = User::find($id);
         if (is_null($entity)) {
-            return $this->sendError('User not found.');
+            return $this->sendError('Users not found.');
         }
-        return $this->sendResponse($entity->toArray(), 'User retrieved successfully.');
+        return $this->sendResponse($entity->toArray(), 'Users retrieved successfully.');
     }
 
     private function filtrateQuery($input){
@@ -62,10 +62,10 @@ class UserController extends ApiController
         $input['slug'] = str_slug($input['email']);
         $entity  = User::find($id);
         if (is_null($entity)) {
-            return $this->sendError('User not found.');
+            return $this->sendError('Users not found.');
         }
         $entity->update($input);
-        return $this->sendResponse($entity->toArray(), 'User updated successfully.');
+        return $this->sendResponse($entity->toArray(), 'Users updated successfully.');
     }
 
     public function updateUser(UserRequest $request, $id)
@@ -75,29 +75,29 @@ class UserController extends ApiController
         $entity = auth('api')->user();
 
         if (is_null($entity)) {
-            return $this->sendError('User not found.');
+            return $this->sendError('Users not found.');
         }
         $entity->update($input);
-        return $this->sendResponse($entity->toArray(), 'User updated successfully.');
+        return $this->sendResponse($entity->toArray(), 'Users updated successfully.');
     }
 
     public function destroy($id)
     {
         $entity  = User::find($id);
         if (is_null($entity)) {
-            return $this->sendError('User not found.');
+            return $this->sendError('Users not found.');
         }
         $entity->delete();
-        return $this->sendResponse($entity->toArray(), 'User deleted successfully.');
+        return $this->sendResponse($entity->toArray(), 'Users deleted successfully.');
     }
 
     public function destroyUser($id)
     {
         $entity = auth('api')->user();
         if (is_null($entity)) {
-            return $this->sendError('User not found.');
+            return $this->sendError('Users not found.');
         }
         $entity->delete();
-        return $this->sendResponse($entity->toArray(), 'User deleted successfully.');
+        return $this->sendResponse($entity->toArray(), 'Users deleted successfully.');
     }
 }

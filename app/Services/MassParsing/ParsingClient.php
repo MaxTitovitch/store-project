@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Max
+ * Users: Max
  * Date: 05.06.2020
  * Time: 16:36
  */

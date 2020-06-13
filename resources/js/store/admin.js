@@ -3,20 +3,13 @@ import axios from 'axios'
 let sendRequest = function (commit, data, path, method, file = false) {
   return new Promise((resolve, reject) => {
     commit('request')
-    let sendParams = method !== 'GET' ? { url: path, data: data, method: method } : {
-      url: path,
-      params: data,
-      method: method
-    }
-    console.log(sendParams)
+    let sendParams = method === 'POST' ? { url: path, data: data, method: method } : { url: path, params: data, method: method }
     axios(sendParams)
       .then(resp => {
-        console.log(resp)
         commit('request_success')
         resolve(resp.data)
       })
       .catch(err => {
-        console.log(err)
         commit('request_error', err)
         reject(err)
       })
@@ -61,6 +54,18 @@ export default {
     },
     getProducts ({ commit }, data) {
       return sendRequest(commit, data, '/api/products', 'GET')
+    },
+    getUsers ({ commit }, data) {
+      return sendRequest(commit, data, '/api/users', 'GET')
+    },
+    postUsers ({ commit }, data) {
+      return sendRequest(commit, data, '/api/users', 'POST')
+    },
+    putUsers ({ commit }, data) {
+      return sendRequest(commit, data.data, '/api/users/' + data.id, 'PUT')
+    },
+    deleteUsers ({ commit }, data) {
+      return sendRequest(commit, null, '/api/users/' + data.id, 'DELETE')
     },
   },
   getters: {

@@ -6,7 +6,6 @@ let authUser = (commit, user, domain) => {
     axios({ url:  domain, data: user, method: 'POST' })
       .then(resp => {
         let data = resp.data.data;
-        console.log(resp.data.data)
         const token = data.token;
         const user = data.user
         localStorage.setItem('token', token)
@@ -19,7 +18,6 @@ let authUser = (commit, user, domain) => {
         resolve(resp)
       })
       .catch(err => {
-        console.log(err)
         commit('auth_error', err)
         localStorage.removeItem('token')
         localStorage.removeItem('tokenRole')
@@ -81,7 +79,6 @@ export default {
             commit('auth_request')
             axios({ url:  '/api/verify/send', data: user, method: 'POST' })
               .then(resp => {
-                console.log(resp.data)
                 commit('send_success')
                 resolve(resp)
               })
@@ -96,12 +93,10 @@ export default {
             commit('auth_request')
             axios({ url:  '/api/reset/send', data: user, method: 'POST' })
               .then(resp => {
-                console.log(resp.data)
                 commit('send_success')
                 resolve(resp)
               })
               .catch(err => {
-                console.log(err)
                 commit('auth_error', err)
                 reject(err)
               })

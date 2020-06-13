@@ -25,7 +25,7 @@ class PhotoController extends ApiController
         $type  = 'users';
         $user = User::find($id);
         if($user == null){
-            return $this->sendError('Store error', 'User isn\'t found.');
+            return $this->sendError('Store error', 'Users isn\'t found.');
         }
         if($user->slug != $slug) {
             return $this->sendError('Store error', 'It isn\'t your photo.');

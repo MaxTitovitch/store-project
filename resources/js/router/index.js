@@ -10,6 +10,7 @@ import PasswordReset from '../components/Auth/PasswordReset';
 import EmailVerifySend from '../components/Auth/EmailVerifySend';
 import AdminMain from '../components/Admin/Main';
 import MassUpload from '../components/Admin/MassUpload';
+import UsersList from '../components/Admin/Users/List';
 import store from '../store/index'
 
 Vue.use(Router);
@@ -42,22 +43,6 @@ let router = new Router({
             component: ResetSend
         },
         {
-            name: 'main-admin',
-            path: '/admin',
-            component: AdminMain,
-            meta: {
-                requiredRole: ['Администратор', 'Главный администратор']
-            }
-        },
-        {
-            name: 'mass-upload',
-            path: '/admin/mass-upload',
-            component: MassUpload,
-            meta: {
-                requiredRole: ['Главный администратор']
-            }
-        },
-        {
             name: 'personal',
             path: '/personal',
             component: AdminMain,
@@ -85,14 +70,38 @@ let router = new Router({
             }
         },
         {
+            name: 'main-admin',
+            path: '/admin',
+            component: AdminMain,
+            meta: {
+                requiredRole: ['Администратор', 'Главный администратор']
+            }
+        },
+        {
+            name: 'mass-upload',
+            path: '/admin/mass-upload',
+            component: MassUpload,
+            meta: {
+                requiredRole: ['Главный администратор']
+            }
+        },
+        {
+            name: 'users',
+            path: '/admin/users',
+            component: UsersList,
+            meta: {
+                requiredRole: ['Главный администратор']
+            }
+        },
+        {
             path: '/404',
             name: '404',
             component: NotFound,
         },
-        {
-            path: '*',
-            redirect: '/404'
-        }
+        // {
+        //     path: '*',
+        //     redirect: '/404'
+        // }
     ],
     mode: 'history'
 })

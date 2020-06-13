@@ -142,13 +142,30 @@
 
     <v-system-bar height="20px" class="background-clear hidden-sm-and-down"
                   style="position:fixed; left: 0; right: 0; z-index: 4">
-      <v-btn href="tel:+375333038199" text target="_blank">+375333038199</v-btn>
-      <v-btn href="mailto://maxtitovitch@mail.ru" text target="_blank">maxtitovitch@mail.ru</v-btn>
+      <v-btn
+          text
+          :key="'phone'"
+          href="tel:+375333038199"
+          target="_blank"
+          class="font-weight-bold"
+      >
+        +375333038199
+      </v-btn>
+      <v-btn
+          text
+          :key="'mail'"
+          href="mailto://maxtitovitch@mail.ru"
+          target="_blank"
+          class="font-weight-bold"
+      >
+        maxtitovitch@mail.ru
+      </v-btn>
       <v-spacer/>
       <v-btn
-          link v-for="link in storeLinkList"
+          text v-for="link in storeLinkList"
           :key="link.title"
           :to="link.url"
+          class="font-weight-bold"
       >
         {{ link.title }}
       </v-btn>
@@ -394,8 +411,9 @@
   }
 
   body, main {
-    background: url(/background.jpg) repeat;
+    background-image: linear-gradient(rgba(255,255,255,.6), rgba(255,255,255,.6)), url(/fon.png);
     background-size: 100%;
+    background-repeat: repeat;
   }
 
   .gradient-project {
@@ -420,7 +438,9 @@
   }
 
   .background-clear {
-    background: url(/background.jpg) repeat;
+    background-image: linear-gradient(rgba(255,255,255,.6), rgba(255,255,255,.6)), url(/fon.png);
+    background-size: 100%;
+    background-repeat: repeat;
   }
 
   *::-webkit-scrollbar-track {

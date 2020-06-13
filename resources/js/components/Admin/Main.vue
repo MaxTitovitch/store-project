@@ -1,7 +1,7 @@
 <template>
   <v-container grid-list-md text-xs-center class="mt-5">
     <v-layout row wrap>
-      <v-flex v-for="statistic in statistics" :key="id++" md4 xs12>
+      <v-flex v-for="statistic in statistics" :key="statistic.link" md4 xs12>
         <v-card class="card-info d-flex flex-wrap flex-column" color="#d0d0d0" fill-height hover>
           <v-card-title class="p-1 text-gray-head headline">{{statistic.name}}</v-card-title>
           <v-card-text class="p-1 text-gray-main display-4 flex-grow-1 d-flex justify-content-center align-items-center">
@@ -15,7 +15,7 @@
       <v-flex  xs12 mt-5>
         <h2 class="display-1 subheader-card title-admin">Самые рейтинговые товары</h2>
       </v-flex>
-      <v-flex v-for="product in productsByRank" :key="id++" md3 xs12 mt-5 px-5 align-items-center>
+      <v-flex v-for="product in productsByRank" :key="'a-' + product.id" md3 xs12 mt-5 px-5 align-items-center>
         <v-card class="card-info card-product d-flex flex-wrap flex-column" color="#white" fill-height hover>
           <a :href="'/products/' + product.id" style="height: 100%; width: 100%; display: flex; justify-content: center; align-items: center">
             <img :src="'/storage/products/' + product.slug + '-1.png'" :alt="product.name" style="max-height: 100%; max-width: 100%">
@@ -28,7 +28,7 @@
       <v-flex  xs12 mt-5>
         <h2 class="display-1 subheader-card title-admin">Самые просматриваемые товары</h2>
       </v-flex>
-      <v-flex v-for="product in productsByViews" :key="id++" md3 xs12 mt-5 px-5 align-items-center>
+      <v-flex v-for="product in productsByViews" :key="'b-' + product.id" md3 xs12 mt-5 px-5 align-items-center>
         <v-card class="card-info card-product d-flex flex-wrap flex-column" color="#white" fill-height hover>
           <a :href="'/products/' + product.id" style="height: 100%; width: 100%; display: flex; justify-content: center; align-items: center">
             <img :src="'/storage/products/' + product.slug + '-1.png'" :alt="product.name" style="max-height: 100%; max-width: 100%">
@@ -41,7 +41,7 @@
       <v-flex  xs12 mt-5>
         <h2 class="display-1 subheader-card title-admin">Самые покупаемые товары</h2>
       </v-flex>
-      <v-flex v-for="product in productsByOrders" :key="id++" md3 xs12 mt-5 px-5 align-items-center>
+      <v-flex v-for="product in productsByOrders" :key="'c-' + product.id" md3 xs12 mt-5 px-5 align-items-center>
         <v-card class="card-info card-product d-flex flex-wrap flex-column" color="#white" fill-height hover>
           <a :href="'/products/' + product.id" style="height: 100%; width: 100%; display: flex; justify-content: center; align-items: center">
             <img :src="'/storage/products/' + product.slug + '-1.png'" :alt="product.name" style="max-height: 100%; max-width: 100%">
@@ -60,13 +60,13 @@
     data () {
       return {
         id: 0,
-        statistics: [],
-        productsByRank: [],
-        productsByViews: [],
-        productsByOrders: [],
+        statistics: {},
+        productsByRank: {},
+        productsByViews: {},
+        productsByOrders: {},
       }
     },
-    mounted () {
+    created () {
       this.$store.dispatch('getStatistics', null)
         .then((resp) => {
           this.statistics = resp.data
@@ -74,26 +74,20 @@
         .catch(err => this.$router.push('/'));
       this.$store.dispatch('getProducts', {limit: 4, order: 'ranking desc'})
         .then((resp) => {
-          console.log(resp.data)
           this.productsByRank = resp.data
         })
         .catch(err => this.$router.push('/'));
       this.$store.dispatch('getProducts', {limit: 4, withCount: 'views', order: 'views_count desc'})
         .then((resp) => {
-          console.log(resp.data)
           this.productsByViews = resp.data
         })
         .catch(err => this.$router.push('/'));
       this.$store.dispatch('getProducts', {limit: 4, withCount: 'orders', order: 'orders_count desc'})
         .then((resp) => {
-          console.log(resp.data)
           this.productsByOrders = resp.data
         })
         .catch(err => this.$router.push('/'));
     },
-    computed: {
-      isLoading: function () {return this.$store.getters.isLoading }
-    }
   }
 </script>
 

@@ -40,13 +40,13 @@ class RegisterController extends ApiController
         $input = $request->all();
         $user = User::find($input['id']);
         if ($user == null) {
-            return $this->sendError('Verify error', 'User isn\' corrected.');
+            return $this->sendError('Verify error', 'Users isn\' corrected.');
         }
         if ($user->hasVerifiedEmail()) {
             return $this->sendError('Verify error', 'Email is verified.');
         }
         if (! hash_equals( $input['token'], sha1($user->getEmailForVerification()))) {
-            return $this->sendError('Verify error', 'User data isn\'t corrected.');
+            return $this->sendError('Verify error', 'Users data isn\'t corrected.');
         }
         if ($user->markEmailAsVerified()) {
             event(new Verified($request->user()));
@@ -68,7 +68,7 @@ class RegisterController extends ApiController
 
         $success['token'] =  $user->createToken('MyApp')->accessToken;
         $success['user'] =  $user->toArray();
-        return $this->sendResponse($success, 'User register successfully.');
+        return $this->sendResponse($success, 'Users register successfully.');
     }
 
     public function login(UserLoginRequest $request)
@@ -81,7 +81,7 @@ class RegisterController extends ApiController
         if($user != null && Hash::check($input['password'], $user->password) ) {
             $success['token'] = $user->createToken('MyApp')->accessToken;
             $success['user'] = $user->toArray();
-            return $this->sendResponse($success, 'User login successfully.');
+            return $this->sendResponse($success, 'Users login successfully.');
         } else {
             return $this->sendError('Login Error', 'Login isn\'t corrected');
         }

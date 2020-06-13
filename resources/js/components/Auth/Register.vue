@@ -31,6 +31,7 @@
                                 :items="sexItems"
                                 v-model="user.sex"
                                 :rules="sexRules"
+                                item-color="#ff9966"
                                 label="Пол"
                                 color="#ff9966"
                             />
@@ -174,7 +175,7 @@
                 ],
                 phoneRules: [
                     v => !!v || 'Введите номер телефона!',
-                    v => (v && v.length === 9 && !isNaN(v))|| 'Введите номер в формате: YYXXXXXXX!'
+                    v => (v && !isNaN(v) && (v + '').length === 9) || 'Введите номер в формате: YYXXXXXXX!',
                 ],
                 dateRules: [
                     v => !!v || 'Введите дату!'
