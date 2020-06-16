@@ -16,6 +16,25 @@ let sendRequest = function (commit, data, path, method, file = false) {
   })
 }
 
+let sendFileRequest = function (commit, data, path) {'/api/mass-upload'
+  return new Promise((resolve, reject) => {
+    let formData = new FormData()
+    formData.append('file', data.file.imageFile, data.file.name)
+    formData.append('type', data.type)
+    if(data.slug !== undefined) {
+      formData.append('slug', data.slug)
+    }
+    axios.post(path, formData, {'Content-Type': 'multipart/form-data' })
+      .then(resp => {
+        commit('request_success')
+        resolve(resp.data)
+      }).catch(err => {
+      commit('request_error', err)
+      reject(err)
+    })
+  })
+}
+
 export default {
   state: {
     status: '',
@@ -38,19 +57,10 @@ export default {
       return sendRequest(commit, data, '/api/statistic', 'GET')
     },
     uploadFile ({ commit }, data) {
-      return new Promise((resolve, reject) => {
-        let formData = new FormData()
-        formData.append('file', data.file, data.file.name)
-        formData.append('type', data.type)
-        axios.post('/api/mass-upload', formData, {'Content-Type': 'multipart/form-data' })
-          .then(resp => {
-            commit('request_success')
-            resolve(resp.data)
-          }).catch(err => {
-          commit('request_error', err)
-          reject(err)
-        })
-      })
+      return sendFileRequest (commit, data, '/api/mass-upload');
+    },
+    uploadPhoto ({ commit }, data) {
+      return sendFileRequest (commit, data, '/api/photo');
     },
     getProducts ({ commit }, data) {
       return sendRequest(commit, data, '/api/products', 'GET')

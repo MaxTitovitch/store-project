@@ -61,6 +61,24 @@
 
               <v-card-text>
                 <v-container>
+                  <div class="file-input-area">
+                    <ImagePicker
+                        v-model="images"
+                        :max="1"
+                        :activeImageUploads="activeImageUploads"
+                        exceedMaxImagesError="Вы выбрали слишком много картинок"
+                        invalidFileTypeError="Загрузите картинку типа: png, jpg или gif"
+                        maxImagesUnit="Изображений"
+                        clearedImagesMessage="Очищено"
+                        clearImagesLabel="Очистить"
+                        :addImagesLabel="addImagesLabel"
+                        justify-content
+                    >
+                      <v-flex xs4 md3>
+                        <img :src="placeholderImage" width="100%" height="100%">
+                      </v-flex>
+                    </ImagePicker>
+                  </div>
                   <v-form v-model="valid" ref="form" validation>
                     <v-row>
                       <v-col cols="12" sm="6" md="4">
@@ -117,10 +135,12 @@
                         </v-menu>
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
-                        <v-text-field color="#FF9765" :disabled="editedIndex > -1" v-model="editedItem.email" :rules="emailRules" label="Почта"/>
+                        <v-text-field color="#FF9765" :disabled="editedIndex > -1" v-model="editedItem.email"
+                                      :rules="emailRules" label="Почта"/>
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
-                        <v-text-field color="#FF9765" :disabled="editedIndex > -1" v-model="editedItem.phone" :rules="phoneRules" label="Телефон"/>
+                        <v-text-field color="#FF9765" :disabled="editedIndex > -1" v-model="editedItem.phone"
+                                      :rules="phoneRules" label="Телефон"/>
                       </v-col>
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field color="#FF9765" v-model="password" type="password"
@@ -210,15 +230,29 @@
 </template>
 
 <script>
+  import { ImagePicker, imageUploadingStates } from '@nagoos/vue-image-picker'
+
+  let placeholderImage
+  placeholderImage = require('../../../assets/empty-user.jpg')
+
   export default {
+    components: {
+      ImagePicker
+    },
     data () {
       return {
+        addImagesLabel: 'Добавить',
         search: '',
         menu: '',
         message: '',
         error: '',
         dialog: false,
         valid: false,
+        hasImage: false,
+        isChange: null,
+        images: [],
+        activeImageUploads: {},
+        placeholderImage,
         selected: [],
         roleItems: ['Пользователь', 'Администратор', 'Главный администратор'],
         sexItems: ['Мужчина', 'Женщина'],
@@ -229,7 +263,7 @@
           { text: 'Пол', value: 'sex' },
           { text: 'Дата рождения', value: 'date_of_birth' },
           { text: 'Почта', value: 'email' },
-          { text: 'Верифицирован?', value: 'email_verified_at', sortable: false},
+          { text: 'Верифицирован?', value: 'email_verified_at', sortable: false },
           { text: 'Телефон', value: 'phone' },
           { text: 'Роль', value: 'role' },
           { text: 'Действия', value: 'actions', sortable: false },
@@ -281,7 +315,7 @@
         passwordRulesEdit: [
           v => {
             if (!v) {
-              return true;
+              return true
             }
             return (v.length >= 8) || 'Пароль должен быть длинной более 8-ми символов'
           }
@@ -303,7 +337,6 @@
     },
     created () {
       this.initialize()
-
     },
     computed: {
       formTitle () {
@@ -347,24 +380,33 @@
       },
 
       editItem (item) {
-        this.password = '';
-        this.confirm_password = '';
-        this.passwordRules = this.passwordRulesEdit;
+        console.log (item.slug)
+        try {
+          this.placeholderImage = require(`../../../../../storage/app/public/users/${item.slug}.png`)
+          this.addImagesLabel = 'Сменить'
+        } catch (e) {
+          console.log (e)
+        }
+        this.password = ''
+        this.confirm_password = ''
+        this.passwordRules = this.passwordRulesEdit
         this.editedIndex = this.items.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
+        setTimeout(()=> {document.querySelectorAll('.v-btn--depressed')[0].click()}, 100);
       },
 
       createItem () {
-        this.password = '';
-        this.confirm_password = '';
-        this.passwordRules = this.passwordRulesCreate;
-        this.editedIndex = -1;
+        this.password = ''
+        this.confirm_password = ''
+        this.passwordRules = this.passwordRulesCreate
+        this.editedIndex = -1
         this.dialog = true
+        setTimeout(()=> {document.querySelectorAll('.v-btn--depressed')[0].click()}, 100);
       },
 
       deleteItem (item) {
-        this.$store.dispatch('deleteUsers', {id: item.id})
+        this.$store.dispatch('deleteUsers', { id: item.id })
           .then((resp) => {
             const index = this.items.indexOf(item)
             this.items.splice(index, 1)
@@ -383,16 +425,19 @@
       },
 
       close () {
+        this.addImagesLabel = 'Добавить'
+        this.placeholderImage = require('../../../assets/empty-user.jpg')
         this.dialog = false
         this.$nextTick(() => {
-          this.password = '';
-          this.confirm_password = '';
+          this.password = ''
+          this.confirm_password = ''
           this.editedItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
         })
       },
 
       save () {
+        // console.log(this.images[0])
         let user = {
           name: this.editedItem.name,
           last_name: this.editedItem.last_name,
@@ -401,40 +446,78 @@
           date_of_birth: this.editedItem.date_of_birth,
           email: this.editedItem.email,
           phone: this.editedItem.phone
-        };
-        if(this.password != '') {
-          user.password = this.password;
-          user.confirm_password = this.confirm_password;
+        }
+        if (this.password != '') {
+          user.password = this.password
+          user.confirm_password = this.confirm_password
         }
         if (this.editedIndex > -1) {
-          this.$store.dispatch('putUsers', {data: user, id: this.editedItem.id})
-          .then((resp) => {
-            this.initialize()
-          })
-          .catch(err => {
-              this.initialize()
-              this.error = 'Ошибка обновления'
-            }
-          )
-        } else {
-          console.log(user)
-          this.$store.dispatch('postUsers', user)
+          this.$store.dispatch('putUsers', { data: user, id: this.editedItem.id })
             .then((resp) => {
+              this.createPhoto(resp.data)
               this.initialize()
             })
             .catch(err => {
-              this.initialize()
-              this.error = 'Ошибка добавления'
+                this.initialize()
+                this.error = 'Ошибка обновления'
               }
-            )
+            ).finally(() => {
+              document.querySelectorAll('.v-btn--depressed')[0].click()
+            })
+        } else {
+          this.$store.dispatch('postUsers', user)
+            .then((resp) => {
+              this.createPhoto(resp.data)
+              this.initialize()
+            })
+            .catch(err => {
+                this.initialize()
+                this.error = 'Ошибка добавления'
+              }
+            ).finally(() => {
+              document.querySelectorAll('.v-btn--depressed')[0].click()
+            })
         }
         this.close()
       },
+      createPhoto (user) {
+        if (this.images.length > 0) {
+          this.$store.dispatch('uploadPhoto', { type: 'users', file: this.images[0], slug: user.slug })
+            .then((resp) => {
+              console.log(resp)
+            }).catch(err => {
+            console.log(err)
+          })
+        }
+      }
     }
   }
 </script>
 
-<style scoped>
+<style>
+  .file-input {
+    display: none !important;
+  }
 
+  .file-input-area i {
+    display: none !important;
+  }
+
+  .file-input-area .layout {
+    display: flex;
+    justify-content: center;
+  }
+
+  .file-input-area .layout div {
+    text-align: center;
+  }
+
+  .v-snack__content {
+    background: linear-gradient(180deg, #FF5F66, #FF9765);
+  }
+
+  .v-snack {
+    opacity: 0;
+  }
 
 </style>

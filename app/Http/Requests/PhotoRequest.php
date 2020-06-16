@@ -12,7 +12,7 @@ class PhotoRequest extends FormRequest
     public function rules()
     {
         return [
-            'image' => 'required|file|mimes:jpeg,gif,png',
+            'file' => 'required|file|mimes:jpeg,gif,png',
             'slug' => 'required|string|max:255',
             'delete-slug' => 'string|max:255',
             'type' => 'required|in:posts,users,products',

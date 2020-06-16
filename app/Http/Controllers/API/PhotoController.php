@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 class PhotoController extends ApiController
 {
     public function createPhoto(PhotoRequest $request) {
-        $file = $request->file('image');
+        $file = $request->file('file');
         $deleteSlug  = $request->get('delete-slug');
         $slug  = $request->get('slug');
         $type  = $request->get('type');
@@ -19,7 +19,7 @@ class PhotoController extends ApiController
     }
 
     public function createUserPhoto(PhotoRequest $request, $id) {
-        $file = $request->file('image');
+        $file = $request->file('file');
         $deleteSlug  = $request->get('delete-slug');
         $slug  = $request->get('slug');
         $type  = 'users';
