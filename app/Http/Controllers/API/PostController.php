@@ -50,7 +50,7 @@ class PostController extends ApiController
             if (isset($input['order'])) {
                 $entity = $entity->orderByRaw($input['order']);
             }
-            return $entity->get();
+            return $entity->with('top')->get();
         } catch (\Exception $ex) {
             return null;
         }

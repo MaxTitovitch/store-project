@@ -12,8 +12,9 @@ class ProductTagRequest extends FormRequest
     public function rules()
     {
         return [
-            'product_id' => 'required|exists:products,id',
-            'tag_id' => 'required|exists:tags,id',
+//            'product_id' => 'required|exists:products,id',
+//            'tag_id' => 'required|exists:tags,id',
+            'tags' => 'array'
         ];
     }
 }

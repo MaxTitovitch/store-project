@@ -11,6 +11,14 @@ import EmailVerifySend from '../components/Auth/EmailVerifySend';
 import AdminMain from '../components/Admin/Main';
 import MassUpload from '../components/Admin/MassUpload';
 import UsersList from '../components/Admin/Users/List';
+import CommentsList from '../components/Admin/Comments/List';
+import TagsList from '../components/Admin/Tags/List';
+import SaleCategoriesList from '../components/Admin/SaleCategories/List';
+import SalesList from '../components/Admin/SaleCategories/SaleList';
+import PostsList from '../components/Admin/Posts/List';
+import CharacteristicsList from '../components/Admin/Characteristics/List';
+
+
 import store from '../store/index'
 
 Vue.use(Router);
@@ -91,6 +99,54 @@ let router = new Router({
             component: UsersList,
             meta: {
                 requiredRole: ['Главный администратор']
+            }
+        },
+        {
+            name: 'comments',
+            path: '/admin/comments',
+            component: CommentsList,
+            meta: {
+                requiredRole: ['Администратор', 'Главный администратор']
+            }
+        },
+        {
+            name: 'tags',
+            path: '/admin/tags',
+            component: TagsList,
+            meta: {
+                requiredRole: ['Администратор', 'Главный администратор']
+            }
+        },
+        {
+            name: 'sale-categories',
+            path: '/admin/sale-categories',
+            component: SaleCategoriesList,
+            meta: {
+                requiredRole: ['Администратор', 'Главный администратор']
+            }
+        },
+        {
+            name: 'sales',
+            path: '/admin/sales',
+            component: SalesList,
+            meta: {
+                requiredRole: ['Администратор', 'Главный администратор']
+            }
+        },
+        {
+            name: 'posts',
+            path: '/admin/posts',
+            component: PostsList,
+            meta: {
+                requiredRole: ['Администратор', 'Главный администратор']
+            }
+        },
+        {
+            name: 'characteristics',
+            path: '/admin/characteristics',
+            component: CharacteristicsList,
+            meta: {
+                requiredRole: ['Администратор', 'Главный администратор']
             }
         },
         {

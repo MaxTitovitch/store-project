@@ -12,8 +12,9 @@ class ProductOrderRequest extends FormRequest
     public function rules()
     {
         return [
-            'product_id' => 'required|exists:products,id',
-            'order_id' => 'required|exists:orders,id',
+//            'product_id' => 'required|exists:products,id',
+//            'order_id' => 'required|exists:orders,id',
+            'products' => 'array'
         ];
     }
 }

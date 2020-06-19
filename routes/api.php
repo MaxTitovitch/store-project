@@ -63,10 +63,10 @@ Route::middleware('api-auth:true,false,admin')->group( function () {
     Route::resource('sale-categories', 'API\SaleCategoryController')->except(['create', 'edit']);
     Route::resource('tops', 'API\TopController')->except(['create', 'edit']);
 
-    Route::resource('category-characteristic', 'API\CategoryCharacteristicController')->only(['index', 'store', 'destroy']);
-    Route::resource('product-top', 'API\ProductTopController')->only(['index', 'store', 'destroy']);
-    Route::resource('product-tag', 'API\ProductTagController')->only(['index', 'store', 'destroy']);
-    Route::resource('product-order', 'API\ProductOrderController')->only(['index', 'store', 'destroy']);
+    Route::resource('category-characteristic', 'API\CategoryCharacteristicController')->only(['update']);
+    Route::resource('product-top', 'API\ProductTopController')->only(['update']);
+    Route::resource('product-tag', 'API\ProductTagController')->only(['update']);
+    Route::resource('product-order', 'API\ProductOrderController')->only(['update']);
 
 
     Route::post('photo', 'API\PhotoController@createPhoto');

@@ -10,6 +10,7 @@ let sendRequest = function (commit, data, path, method, file = false) {
         resolve(resp.data)
       })
       .catch(err => {
+        console.log(err.response)
         commit('request_error', err)
         reject(err)
       })
@@ -65,17 +66,18 @@ export default {
     getProducts ({ commit }, data) {
       return sendRequest(commit, data, '/api/products', 'GET')
     },
-    getUsers ({ commit }, data) {
-      return sendRequest(commit, data, '/api/users', 'GET')
+
+    getEntity ({ commit }, data) {
+      return sendRequest(commit, data.data, `/api/${data.entity}`, 'GET')
     },
-    postUsers ({ commit }, data) {
-      return sendRequest(commit, data, '/api/users', 'POST')
+    postEntity({ commit }, data) {
+      return sendRequest(commit, data.data, `/api/${data.entity}`, 'POST')
     },
-    putUsers ({ commit }, data) {
-      return sendRequest(commit, data.data, '/api/users/' + data.id, 'PUT')
+    putEntity ({ commit }, data) {
+      return sendRequest(commit, data.data, `/api/${data.entity}/${data.id}`, 'PUT')
     },
-    deleteUsers ({ commit }, data) {
-      return sendRequest(commit, null, '/api/users/' + data.id, 'DELETE')
+    deleteEntity ({ commit }, data) {
+      return sendRequest(commit, null, `/api/${data.entity}/${data.id}`, 'DELETE')
     },
   },
   getters: {

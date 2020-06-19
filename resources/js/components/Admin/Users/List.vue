@@ -11,6 +11,10 @@
         :loading="isLoading"
         color="#FF9765"
         loading-text="Загрузка... Пожалуйста, подаждите"
+        :footerProps="{
+          itemsPerPageText: 'Элементов на странице',
+          'items-per-page-options': [5, 10, 20, {text: 'Всё', value: -1}],
+        }"
     >
       <template v-slot:item.email_verified_at="{ item }">
         <v-chip>{{ item.email_verified_at ? 'Да' : 'Нет' }}</v-chip>
@@ -75,7 +79,7 @@
                         justify-content
                     >
                       <v-flex xs4 md3>
-                        <img :src="placeholderImage" width="100%" height="100%">
+                        <img :src="placeholderImage" onerror="if (this.src != '/storage/empty-user.jpg') this.src = '/storage/empty-user.jpg';" width="100%" height="100%">
                       </v-flex>
                     </ImagePicker>
                   </div>
@@ -232,9 +236,6 @@
 <script>
   import { ImagePicker, imageUploadingStates } from '@nagoos/vue-image-picker'
 
-  let placeholderImage
-  placeholderImage = require('../../../assets/empty-user.jpg')
-
   export default {
     components: {
       ImagePicker
@@ -252,7 +253,7 @@
         isChange: null,
         images: [],
         activeImageUploads: {},
-        placeholderImage,
+        placeholderImage: '',
         selected: [],
         roleItems: ['Пользователь', 'Администратор', 'Главный администратор'],
         sexItems: ['Мужчина', 'Женщина'],
@@ -298,7 +299,7 @@
           v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail должен быть валиден'
         ],
         nameRules: [
-          v => !!v || 'Заполните имя!',
+          // v => !!v || 'Заполните имя!',
           v => (v && v.length >= 3) || 'Имя должно быть длинной более 3-х символов'
         ],
         lastNameRules: [
@@ -354,7 +355,7 @@
         this.confirm_password = null
       },
       initialize () {
-        this.$store.dispatch('getUsers', { order: 'id asc' })
+        this.$store.dispatch('getEntity', {data: { order: 'id asc' }, entity: 'users'})
           .then((resp) => {
             this.items = resp.data
           })
@@ -380,13 +381,10 @@
       },
 
       editItem (item) {
-        console.log (item.slug)
         try {
-          this.placeholderImage = require(`../../../../../storage/app/public/users/${item.slug}.png`)
+          this.placeholderImage = `/storage/users/${item.slug}.png`;
           this.addImagesLabel = 'Сменить'
-        } catch (e) {
-          console.log (e)
-        }
+        } catch (e) { }
         this.password = ''
         this.confirm_password = ''
         this.passwordRules = this.passwordRulesEdit
@@ -406,7 +404,7 @@
       },
 
       deleteItem (item) {
-        this.$store.dispatch('deleteUsers', { id: item.id })
+        this.$store.dispatch('deleteEntity', {entity: 'users', id: item.id })
           .then((resp) => {
             const index = this.items.indexOf(item)
             this.items.splice(index, 1)
@@ -425,8 +423,9 @@
       },
 
       close () {
+        this.$refs.form.reset();
         this.addImagesLabel = 'Добавить'
-        this.placeholderImage = require('../../../assets/empty-user.jpg')
+        this.placeholderImage = ''
         this.dialog = false
         this.$nextTick(() => {
           this.password = ''
@@ -437,7 +436,6 @@
       },
 
       save () {
-        // console.log(this.images[0])
         let user = {
           name: this.editedItem.name,
           last_name: this.editedItem.last_name,
@@ -452,7 +450,7 @@
           user.confirm_password = this.confirm_password
         }
         if (this.editedIndex > -1) {
-          this.$store.dispatch('putUsers', { data: user, id: this.editedItem.id })
+          this.$store.dispatch('putEntity', { data: user, id: this.editedItem.id, entity: 'users'})
             .then((resp) => {
               this.createPhoto(resp.data)
               this.initialize()
@@ -465,7 +463,7 @@
               document.querySelectorAll('.v-btn--depressed')[0].click()
             })
         } else {
-          this.$store.dispatch('postUsers', user)
+          this.$store.dispatch('postEntity', {entity: 'users', data: user})
             .then((resp) => {
               this.createPhoto(resp.data)
               this.initialize()
@@ -483,11 +481,7 @@
       createPhoto (user) {
         if (this.images.length > 0) {
           this.$store.dispatch('uploadPhoto', { type: 'users', file: this.images[0], slug: user.slug })
-            .then((resp) => {
-              console.log(resp)
-            }).catch(err => {
-            console.log(err)
-          })
+            .then((resp) => {}).catch(err => {})
         }
       }
     }
@@ -518,6 +512,10 @@
 
   .v-snack {
     opacity: 0;
+  }
+
+  object {
+    width: 100%;
   }
 
 </style>

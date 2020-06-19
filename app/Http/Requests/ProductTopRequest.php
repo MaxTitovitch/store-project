@@ -12,8 +12,9 @@ class ProductTopRequest extends FormRequest
     public function rules()
     {
         return [
-            'product_id' => 'required|exists:products,id',
-            'top_id' => 'required|exists:tops,id',
+//            'product_id' => 'required|exists:products,id',
+//            'top_id' => 'required|exists:tops,id',
+            'products' => 'array'
         ];
     }
 }

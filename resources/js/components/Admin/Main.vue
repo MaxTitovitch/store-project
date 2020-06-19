@@ -72,17 +72,17 @@
           this.statistics = resp.data
         })
         .catch(err => this.$router.push('/'));
-      this.$store.dispatch('getProducts', {limit: 4, order: 'ranking desc'})
+      this.$store.dispatch('getEntity', {entity: 'products', data: {limit: 4, order: 'ranking desc'}})
         .then((resp) => {
           this.productsByRank = resp.data
         })
         .catch(err => this.$router.push('/'));
-      this.$store.dispatch('getProducts', {limit: 4, withCount: 'views', order: 'views_count desc'})
+      this.$store.dispatch('getEntity', {entity: 'products', data: {limit: 4, withCount: 'views', order: 'views_count desc'}})
         .then((resp) => {
           this.productsByViews = resp.data
         })
         .catch(err => this.$router.push('/'));
-      this.$store.dispatch('getProducts', {limit: 4, withCount: 'orders', order: 'orders_count desc'})
+      this.$store.dispatch('getEntity', {entity: 'products', data: {limit: 4, withCount: 'orders', order: 'orders_count desc'}})
         .then((resp) => {
           this.productsByOrders = resp.data
         })

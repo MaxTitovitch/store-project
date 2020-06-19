@@ -14,8 +14,8 @@ class CommentRequest extends FormRequest
         $type = $this->request->all()['entity_type'] . 's';
         return [
             'text' => 'required|max:2000',
-            'date' => 'required|date_equals:today',
-            'status' => 'required|in:post,product',
+            'date' => 'required|date',
+            'entity_type' => 'required|in:post,product',
             'entity_id' => 'required|exists:' .$type .',id',
             'user_id' => 'required|exists:users,id',
         ];

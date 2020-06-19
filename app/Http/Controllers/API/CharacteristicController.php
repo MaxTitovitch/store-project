@@ -49,7 +49,7 @@ class CharacteristicController extends ApiController
             if (isset($input['order'])) {
                 $entity = $entity->orderByRaw($input['order']);
             }
-            return $entity->get();
+            return $entity->with('characteristicValues')->get();
         } catch (\Exception $ex) {
             return null;
         }

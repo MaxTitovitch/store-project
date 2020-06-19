@@ -13,7 +13,7 @@ class SaleRequest extends FormRequest
     {
         return [
             'percent' => 'required|integer|min:1|max:100',
-            'date_start' => 'required|after_or_equal:today',
+            'date_start' => 'required',
             'date_end' => 'required|after_or_equal:date_start',
             'product_id' => 'required|exists:products,id',
             'sale_category_id' => 'required|exists:sale_categories,id',

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Requests\TopRequest;
 use App\Top;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TopController extends ApiController
 {
@@ -12,7 +13,7 @@ class TopController extends ApiController
     public function index(Request $request)
     {
         $entities = $this->filtrateQuery($request->all());
-        return $this->sendResponse($entities->toArray(), 'Tops retrieved successfully.');
+        return $this->sendResponse($entities, 'Tops retrieved successfully.');
     }
 
     public function store(TopRequest $request)
@@ -49,7 +50,17 @@ class TopController extends ApiController
             if (isset($input['order'])) {
                 $entity = $entity->orderByRaw($input['order']);
             }
-            return $entity->get();
+            $data = $entity->get();
+            $array = $data->toArray();
+            for ($i = 0; $i < count($data); $i++) {
+                $array[$i]['products'] = DB::table('product_top')
+                    ->selectRaw('products.*, product_top.id as main_id')
+                    ->where('product_top.top_id', '=', $array[$i])
+                    ->join('products', 'products.id', '=', 'product_top.product_id')
+                    ->orderByRaw('main_id desc')->get();
+            }
+            return $array;
+
         } catch (\Exception $ex) {
             return null;
         }

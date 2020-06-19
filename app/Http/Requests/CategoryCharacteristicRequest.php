@@ -12,8 +12,9 @@ class CategoryCharacteristicRequest extends FormRequest
     public function rules()
     {
         return [
-            'category_id' => 'required|exists:categories,id',
-            'characteristic_id' => 'required|exists:characteristics,id',
+//            'category_id' => 'required|exists:categories,id',
+//            'characteristic_id' => 'required|exists:characteristics,id',
+            'characteristics' => 'array'
         ];
     }
 }

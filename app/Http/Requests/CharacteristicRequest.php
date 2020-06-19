@@ -14,9 +14,8 @@ class CharacteristicRequest extends FormRequest
         return [
             'name' => 'required|max:255',
             'type' => 'required|in:boolean,number,string',
-            'int_value_start' => 'required_if:type,number|numeric',
-            'int_value_end' => 'required_if:type,number|numeric|required_with:int_value_start|gt:int_value_start',
-
+            'int_value_start' => 'required_if:type,number|numeric|nullable',
+            'int_value_end' => 'required_if:type,number|numeric|required_with:int_value_start|gt:int_value_start|nullable',
         ];
     }
 }

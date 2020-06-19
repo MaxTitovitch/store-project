@@ -25,11 +25,10 @@ trait ApiRequest
     }
 
 
-    public function sendError($error, $errorMessages = [], $code = 200)
+    public function sendError($error, $errorMessages = [], $code = 403)
     {
         $response = [
             'success' => false,
-//            'message' => $this->request->all()['entity_type'],
             'message' => $error,
         ];
         if(!empty($errorMessages)){
