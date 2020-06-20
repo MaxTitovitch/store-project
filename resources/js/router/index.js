@@ -22,6 +22,8 @@ import AddressesList from '../components/Admin/Addresses/List';
 import CategoriesList from '../components/Admin/Categories/List';
 import ProductsList from '../components/Admin/Products/List';
 import ProductCharacteristicList from '../components/Admin/Products/ProductCharacteristicList';
+import SchedulePie from '../components/Admin/Schedule/Pie';
+import ScheduleBar from '../components/Admin/Schedule/Bar';
 
 import store from '../store/index'
 
@@ -189,6 +191,22 @@ let router = new Router({
             name: 'product-characteristics',
             path: '/admin/product-characteristics',
             component: ProductCharacteristicList,
+            meta: {
+                requiredRole: ['Администратор', 'Главный администратор']
+            }
+        },
+        {
+            name: 'schedule-pie',
+            path: '/admin/schedule/pie',
+            component: SchedulePie,
+            meta: {
+                requiredRole: ['Администратор', 'Главный администратор']
+            }
+        },
+        {
+            name: 'schedule-bar',
+            path: '/admin/schedule/bar',
+            component: ScheduleBar,
             meta: {
                 requiredRole: ['Администратор', 'Главный администратор']
             }

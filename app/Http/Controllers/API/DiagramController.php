@@ -69,6 +69,7 @@ class DiagramController extends ApiController
 
     public function showBarChart(DateRequest $request, $entity, $param) {
         $input = $request->all();
+        $input['quantity'] = empty($input['quantity']) ? 5 : $input['quantity'];
         if(!$this->isCorrectParams($entity, $param)) {
             return $this->sendError('Show error', 'Param isn\'t corrected.');
         }

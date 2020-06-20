@@ -30,6 +30,15 @@
           <v-spacer/>
           <v-dialog v-model="dialog" max-width="500px">
             <template v-slot:activator="{ on, attrs }">
+
+              <v-btn
+                  color="#FF5F66"
+                  dark
+                  class="gradient-project mx-2"
+                  @click="showBarChart()"
+              >
+                Статистика
+              </v-btn>
               <v-btn
                   color="#FF5F66"
                   dark
@@ -489,7 +498,10 @@
             .then((resp) => {}).catch(err => {})
         }
         document.querySelectorAll('.v-btn--depressed')[0].click()
-      }
+      },
+      showBarChart () {
+        this.$router.push('/admin/schedule/bar?entity=user&param=orders')
+      },
     }
   }
 </script>

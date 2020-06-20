@@ -27,6 +27,15 @@
           <v-spacer/>
           <v-dialog v-model="dialog" max-width="1000px">
             <template v-slot:activator="{ on, attrs }">
+
+              <v-btn
+                  color="#FF5F66"
+                  dark
+                  class="gradient-project mx-2"
+                  @click="showBarChart()"
+              >
+                Статистика
+              </v-btn>
               <v-btn
                   color="#FF5F66"
                   dark
@@ -293,7 +302,10 @@ export default {
         }
       }
       return value
-    }
+    },
+    showBarChart () {
+      this.$router.push('/admin/schedule/bar?entity=sale-category&param=orders')
+    },
   }
 }
 </script>

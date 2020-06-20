@@ -54,6 +54,13 @@ export default {
     },
   },
   actions: {
+    getSchedulePie ({ commit }, data) {
+      return sendRequest(commit, data, `/api/pie-chart/${data.param}`, 'GET')
+    },
+    getScheduleBar ({ commit }, data) {
+      return sendRequest(commit, data.data, `/api/bar-chart/${data.entity}/${data.param}`, 'GET')
+    },
+
     getStatistics ({ commit }, data) {
       return sendRequest(commit, data, '/api/statistic', 'GET')
     },

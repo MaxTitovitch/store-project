@@ -37,6 +37,14 @@
                   color="#FF5F66"
                   dark
                   class="gradient-project mx-2"
+                  @click="showBarChart()"
+              >
+                Статистика
+              </v-btn>
+              <v-btn
+                  color="#FF5F66"
+                  dark
+                  class="gradient-project mx-2"
                   :disabled="selected.length < 1"
                   @click="deleteItems()"
               >Удалить
@@ -499,7 +507,10 @@
             .then((resp) => {}).catch(err => {})
         }
         document.querySelectorAll('.v-btn--depressed')[0].click()
-      }
+      },
+      showBarChart () {
+        this.$router.push('/admin/schedule/bar?entity=post&param=views')
+      },
     }
   }
 </script>

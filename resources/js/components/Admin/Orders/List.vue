@@ -43,6 +43,14 @@
                   color="#FF5F66"
                   dark
                   class="gradient-project mx-2"
+                  @click="showBarChart()"
+              >
+                Статистика
+              </v-btn>
+              <v-btn
+                  color="#FF5F66"
+                  dark
+                  class="gradient-project mx-2"
                   :disabled="selected.length < 1"
                   @click="deleteItems()"
               >
@@ -409,6 +417,10 @@ export default {
             this.error = 'Ошибка удаления'
           }
         )
+    },
+
+    showBarChart () {
+      this.$router.push('/admin/schedule/pie?param=sex')
     },
 
     deleteItems () {

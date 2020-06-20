@@ -18,7 +18,7 @@ class StatisticController  extends ApiController {
             ],
             'views' => [
                 'name' => 'Просмотры',
-                'link' => '/admin/schedule?entity=product&param=views',
+                'link' => '/admin/schedule/bar?entity=product&param=views',
                 'value' => View::where('entity_type', 'product')->get()->count(),
             ],
             'product-orders' => [
