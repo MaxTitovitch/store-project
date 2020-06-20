@@ -58,7 +58,7 @@ class OrderController extends ApiController
             if (isset($input['order'])) {
                 $entity = $entity->orderByRaw($input['order']);
             }
-            return $entity->get();
+            return $entity->with('products')->get();
         } catch (\Exception $ex) {
             return null;
         }

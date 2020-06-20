@@ -67,6 +67,24 @@
               </v-card-title>
               <v-card-text>
                 <v-container>
+                  <div class="file-input-area">
+                    <ImagePicker
+                        v-model="images"
+                        :max="1"
+                        :activeImageUploads="activeImageUploads"
+                        exceedMaxImagesError="Вы выбрали слишком много картинок"
+                        invalidFileTypeError="Загрузите картинку типа: png, jpg или gif"
+                        maxImagesUnit="Изображений"
+                        clearedImagesMessage="Очищено"
+                        clearImagesLabel="Очистить"
+                        :addImagesLabel="addImagesLabel"
+                        justify-content
+                    >
+                      <v-flex xs4 md3>
+                        <img :src="placeholderImage" onerror="if (this.src != '/storage/empty-user.jpg') this.src = '/storage/empty-user.jpg';" width="100%" height="100%">
+                      </v-flex>
+                    </ImagePicker>
+                  </div>
                   <v-form v-model="valid" ref="form" validation>
                     <v-row>
 
@@ -109,6 +127,7 @@
                             label="Товары (от лучшего к худшему)"
                             color="#ff9966"
                             multiple
+                            chips
                             :rules="selectedRules"
                         />
                       </v-col>
@@ -169,7 +188,12 @@
 </template>
 
 <script>
+  import { ImagePicker, imageUploadingStates } from '@nagoos/vue-image-picker'
+
   export default {
+    components: {
+      ImagePicker
+    },
     data () {
       return {
         addImagesLabel: 'Добавить',
@@ -181,6 +205,9 @@
         isTopStart: false,
         dialog: false,
         valid: false,
+        images: [],
+        activeImageUploads: {},
+        placeholderImage: '',
         selected: [],
         productItems: [],
         userItems: [],
@@ -282,6 +309,10 @@
       },
 
       editItem (item) {
+        try {
+          this.placeholderImage = `/storage/posts/${item.slug}.png?d=${new Date()}`;
+          this.addImagesLabel = 'Сменить'
+        } catch (e) { }
         this.editedIndex = this.items.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.isTop = this.editedItem.top_id ? true : false;
@@ -290,10 +321,11 @@
           this.$store.dispatch('getEntity', { data: { where: `id = ${this.editedItem.top_id}`, order: 'id asc' }, entity: 'tops' })
             .then((resp) => {
               this.editedItem.top = resp.data[0]
+              console.log(this.editedItem.top)
               for (let i = 0; i < this.editedItem.top.products.length; i++) {
                 this.editedItem.top.products[i] = {value: this.editedItem.top.products[i].id, text: this.editedItem.top.products[i].name };
               }
-              console.log(resp.data[0])
+              console.log(this.editedItem.top.products)
               this.dialog = true
             })
             .catch(err => this.$router.push('/'))
@@ -319,6 +351,9 @@
               // this.$store.dispatch('deleteEntity', { entity: 'tops', id: item.top_id })
               //   .then((resp) => {})
               //   .catch(err => {this.error = 'Ошибка удаления'})
+
+              this.$store.dispatch('postEntity', {entity: 'delete-photo', data: {type: 'posts', slug: resp.data.slug} })
+                .then((resp) => {console.log(resp)}).catch(err => {console.log(err)})
             }
             this.items.splice(index, 1)
           })
@@ -340,8 +375,13 @@
         }
       },
 
-      close () {
+      close (fromSave = false) {
         this.$refs.form.reset()
+        this.addImagesLabel = 'Добавить'
+        this.placeholderImage = ''
+        if(!fromSave) {
+          document.querySelectorAll('.v-btn--depressed')[0].click()
+        }
         this.dialog = false
         this.$nextTick(() => {
           this.editedItem = Object.assign({}, this.defaultItem)
@@ -359,11 +399,11 @@
 
         if (this.editedIndex > -1) {
           if(!this.isTop) {
-            this.updateEntity('posts', post, this.editedItem.id)
+            this.updateEntity('posts', post, this.editedItem.id, (post) => {this.createPhoto(post)})
             if(this.isTopStart !== -1) {
               this.deleteTop(this.isTopStart)
             }
-            this.close()
+            this.close(true)
           } else {
             let top = {
               name: this.editedItem.top.name,
@@ -373,30 +413,32 @@
               this.saveEntity('tops', top, (top) => {
                 post.top_id = top.id
                 this.updateEntity('posts', post, this.editedItem.id, (post) => {
+                  this.createPhoto(post)
                   let ids = [];
                   for (let i = 0; i < this.editedItem.top.products.length; i++) {
-                    ids.push(this.editedItem.top.products[i])
+                    ids.push(this.editedItem.top.products[i].value || this.editedItem.top.products[i])
                   }
-                  this.updateEntity('product-top', { 'products': ids }, post.top_id, () => { this.close() })
+                  this.updateEntity('product-top', { 'products': ids }, post.top_id, () => { this.close(true) })
                 })
               })
             } else {
               this.updateEntity('tops', top, this.editedItem.top_id, (top) => {
                 post.top_id = top.id
                 this.updateEntity('posts', post, this.editedItem.id, (post) => {
+                  this.createPhoto(post)
                   let ids = [];
                   for (let i = 0; i < this.editedItem.top.products.length; i++) {
-                    ids.push(this.editedItem.top.products[i])
+                    ids.push(this.editedItem.top.products[i].value || this.editedItem.top.products[i])
                   }
-                  this.updateEntity('product-top', { 'products': ids }, post.top_id, () => { this.close() })
+                  this.updateEntity('product-top', { 'products': ids }, post.top_id, () => { this.close(true) })
                 })
               })
             }
           }
         } else {
           if(!this.isTop) {
-            this.saveEntity('posts', post)
-            this.close()
+            this.saveEntity('posts', post, (post) => { this.createPhoto(post)})
+            this.close(true)
           } else {
             let top = {
               name: this.editedItem.top.name,
@@ -405,11 +447,12 @@
             this.saveEntity('tops', top, (top) => {
               post.top_id = top.id
               this.saveEntity('posts', post, (post) => {
+                this.createPhoto(post)
                 let ids = [];
                 for (let i = 0; i < this.editedItem.top.products.length; i++) {
-                  ids.push(this.editedItem.top.products[i])
+                  ids.push(this.editedItem.top.products[i].value || this.editedItem.top.products[i])
                 }
-                this.updateEntity('product-top', {'products': ids}, post.top_id, () => { this.close() })
+                this.updateEntity('product-top', {'products': ids}, post.top_id, () => { this.close(true) })
               })
             })
           }
@@ -431,7 +474,6 @@
           )
       },
       updateEntity(entity, data, id, fun = false) {
-        console.log({entity, data, id})
         this.$store.dispatch('putEntity', {entity, data, id})
           .then((resp) => {
             if(fun) {
@@ -452,11 +494,41 @@
           }
         }
         return value
+      },
+      createPhoto (post) {
+        if (this.images.length > 0) {
+          this.$store.dispatch('uploadPhoto', { type: 'posts', file: this.images[0], slug: post.slug })
+            .then((resp) => {}).catch(err => {})
+        }
+        document.querySelectorAll('.v-btn--depressed')[0].click()
       }
     }
   }
 </script>
 
 <style>
+  .file-input {
+    display: none !important;
+  }
 
+  .file-input-area i {
+    display: none !important;
+  }
+
+  .file-input-area .layout {
+    display: flex;
+    justify-content: center;
+  }
+
+  .file-input-area .layout div {
+    text-align: center;
+  }
+
+  .v-snack__content {
+    background: linear-gradient(180deg, #FF5F66, #FF9765);
+  }
+
+  .v-snack {
+    opacity: 0;
+  }
 </style>

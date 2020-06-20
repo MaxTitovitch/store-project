@@ -382,7 +382,7 @@
 
       editItem (item) {
         try {
-          this.placeholderImage = `/storage/users/${item.slug}.png`;
+          this.placeholderImage = `/storage/users/${item.slug}.png?d=${new Date()}`;
           this.addImagesLabel = 'Сменить'
         } catch (e) { }
         this.password = ''
@@ -408,6 +408,8 @@
           .then((resp) => {
             const index = this.items.indexOf(item)
             this.items.splice(index, 1)
+            this.$store.dispatch('postEntity', {entity: 'delete-photo', data: {type: 'users', slug: resp.data.slug} })
+              .then((resp) => {console.log(resp)}).catch(err => {console.log(err)})
           })
           .catch(err => {
               this.initialize()
@@ -422,10 +424,13 @@
         }
       },
 
-      close () {
+      close (fromSave = false) {
         this.$refs.form.reset();
         this.addImagesLabel = 'Добавить'
         this.placeholderImage = ''
+        if(!fromSave) {
+          document.querySelectorAll('.v-btn--depressed')[0].click()
+        }
         this.dialog = false
         this.$nextTick(() => {
           this.password = ''
@@ -476,13 +481,14 @@
               document.querySelectorAll('.v-btn--depressed')[0].click()
             })
         }
-        this.close()
+        this.close(true)
       },
       createPhoto (user) {
         if (this.images.length > 0) {
           this.$store.dispatch('uploadPhoto', { type: 'users', file: this.images[0], slug: user.slug })
-            .then((resp) => {}).catch(err => {})
+            .then((resp) => {console.log(resp)}).catch(err => {console.log(err)})
         }
+        document.querySelectorAll('.v-btn--depressed')[0].click()
       }
     }
   }
@@ -513,9 +519,4 @@
   .v-snack {
     opacity: 0;
   }
-
-  object {
-    width: 100%;
-  }
-
 </style>

@@ -373,6 +373,7 @@
         { title: 'Акции', url: '/admin/sale-categories' },
         { title: 'Теги', url: '/admin/tags' },
         { title: 'Комментарии', url: '/admin/comments' },
+        { title: 'Адреса', url: '/admin/addresses' },
         { title: 'Пользователи', url: '/admin/users' },
         { title: 'Массовая загрузка', url: '/admin/mass-upload' },
       ],

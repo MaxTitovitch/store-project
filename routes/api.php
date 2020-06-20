@@ -52,6 +52,7 @@ Route::middleware('api-auth:true,false,admin')->group( function () {
     Route::resource('categories', 'API\CategoryController')->except(['create', 'edit']);
     Route::resource('characteristics', 'API\CharacteristicController')->except(['create', 'edit']);
     Route::resource('characteristic-values', 'API\CharacteristicValueController')->except(['create', 'edit']);
+    Route::delete('characteristic-values-delete-by-characteristic/{id}', 'API\CharacteristicValueController@destroyByCharacteristic');
     Route::resource('comments', 'API\CommentController')->except(['create', 'edit']);
     Route::resource('likes', 'API\LikeController')->except(['create', 'edit']);
     Route::resource('views', 'API\ViewController')->except(['create', 'edit']);
@@ -66,10 +67,11 @@ Route::middleware('api-auth:true,false,admin')->group( function () {
     Route::resource('category-characteristic', 'API\CategoryCharacteristicController')->only(['update']);
     Route::resource('product-top', 'API\ProductTopController')->only(['update']);
     Route::resource('product-tag', 'API\ProductTagController')->only(['update']);
-    Route::resource('product-order', 'API\ProductOrderController')->only(['update']);
+    Route::resource('order-product', 'API\ProductOrderController')->only(['update']);
 
 
     Route::post('photo', 'API\PhotoController@createPhoto');
+    Route::post('delete-photo', 'API\PhotoController@deletePhoto');
 });
 
 Route::middleware('api-auth:true,false,main')->group( function () {

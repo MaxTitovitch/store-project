@@ -75,4 +75,10 @@ class CharacteristicValueController extends ApiController
         $entity->delete();
         return $this->sendResponse($entity->toArray(), 'Characteristic value deleted successfully.');
     }
+
+    public function destroyByCharacteristic($id)
+    {
+        $entity  = CharacteristicValue::where('characteristic_id', $id)->delete();
+        return $this->sendResponse($entity, 'Characteristic value deleted successfully.');
+    }
 }

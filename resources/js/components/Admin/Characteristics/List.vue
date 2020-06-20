@@ -13,7 +13,7 @@
         loading-text="Загрузка... Пожалуйста, подаждите"
         :footerProps="{
           itemsPerPageText: 'Элементов на странице',
-          'items-per-page-options': [5, 10, 20, {text: 'Всё', value: -1}],
+          'items-per-page-options': [10, 20, 40, {text: 'Всё', value: -1}],
         }"
     >
       <template v-slot:item.int_value_start="{ item }">
@@ -114,9 +114,9 @@
                       <v-col cols="12" sm="12" md="12" v-if="editedItem.type === 'string'">
                         <v-text-field
                             color="#FF9765"
-                            v-model="editedItem.value"
+                            v-model="editedItem.values"
                             :rules="valueRules"
-                            label="Значения (через запятую"/>
+                            label="Значения (через запятую с пробелом)"/>
                       </v-col>
 
                     </v-row>
@@ -176,6 +176,7 @@
         message: '',
         error: '',
         dialog: false,
+        isStartString: false,
         valid: false,
         selected: [],
         typeItems: [{text: 'Булев', value: 'boolean'}, {text: 'Числовой', value: 'number'}, {text: 'Строковый', value: 'string'}],
@@ -209,7 +210,7 @@
         ],
         intStartRules: [
           v => !!v || 'Введите начало диапазона!',
-          v => (v && !isNaN(v)) || 'Введите меньше конца!',
+          v => (v && !isNaN(v)) || 'Введите число!',
         ],
         intEndRules: [
           v => !!v || 'Введите начало диапазона!',
@@ -265,6 +266,7 @@
       editItem (item) {
         this.editedIndex = this.items.indexOf(item)
         this.editedItem = Object.assign({}, item)
+        this.isStartString = this.editedItem.type === 'string';
         this.dialog = true
       },
 
@@ -311,15 +313,26 @@
           characteristic.int_value_start = this.editedItem.int_value_start;
           characteristic.int_value_end = this.editedItem.int_value_end;
         } else {
-          characteristic.int_value_start = null;
-          characteristic.int_value_end = null;
+          characteristic.int_value_start = '';
+          characteristic.int_value_end = '';
         }
-        // if (characteristic.type === 'string') {
-        //
-        // }
         if (this.editedIndex > -1) {
+          if (this.isStartString) {
+            this.$store.dispatch('deleteEntity', {entity: 'characteristic-values-delete-by-characteristic', id: this.editedItem.id })
+              .then((resp) => {console.log(resp)})
+              .catch(err => {console.log(err)})
+          }
+          let characteristicValues = this.editedItem.values.split(',') || this.editedItem.values;
           this.$store.dispatch('putEntity', { data: characteristic, id: this.editedItem.id, entity: 'characteristics'})
             .then((resp) => {
+              let editedItem = resp.data;
+              if(editedItem.type === 'string') {
+                for (let i = 0; i < characteristicValues.length; i++) {
+                  characteristicValues[i] = {value: characteristicValues[i], characteristic_id: resp.data.id};
+                  this.$store.dispatch('postEntity', {entity: 'characteristic-values', data: characteristicValues[i] })
+                    .then((resp) => {this.initialize()}).catch(err => {this.error = 'Ошибка добавления'})
+                }
+              }
               this.initialize()
             })
             .catch(err => {
@@ -328,8 +341,17 @@
               }
             )
         } else {
+          let characteristicValues = this.editedItem.values.split(',') || this.editedItem.values;
           this.$store.dispatch('postEntity', {entity: 'characteristics', data: characteristic})
             .then((resp) => {
+              let editedItem = resp.data;
+              if(editedItem.type === 'string') {
+                for (let i = 0; i < characteristicValues.length; i++) {
+                  characteristicValues[i] = {value: characteristicValues[i], characteristic_id: resp.data.id};
+                  this.$store.dispatch('postEntity', {entity: 'characteristic-values', data: characteristicValues[i] })
+                    .then((resp) => {this.initialize()}).catch(err => {this.error = 'Ошибка добавления'})
+                }
+              }
               this.initialize()
             })
             .catch(err => {

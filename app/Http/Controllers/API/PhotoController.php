@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Requests\PhotoRequest;
-use App\Post;
 use App\User;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
 
 class PhotoController extends ApiController
 {
@@ -16,6 +16,16 @@ class PhotoController extends ApiController
         $type  = $request->get('type');
 
         return $this->storePhoto($file, $type, $slug, $deleteSlug);
+    }
+
+    public function deletePhoto(Request $request) {
+        $deleteSlug  = $request->get('slug');
+        $type = $request->get('type');
+
+        if(!empty($deleteSlug) && !empty($type)) {
+            Storage::delete("public/$type/" .$deleteSlug . '.png');
+        }
+        return $this->sendResponse([], 'File has deleted successfully.');
     }
 
     public function createUserPhoto(PhotoRequest $request, $id) {
@@ -34,14 +44,12 @@ class PhotoController extends ApiController
     }
 
     private function storePhoto($file, $type, $slug, $deleteSlug) {
-
         if(!empty($deleteSlug)) {
             Storage::delete("public/$type/" .$deleteSlug . '.png');
         }
         $path = Storage::disk('public')->putFileAs($type, $file, $slug . '.png');
         $path = env('APP_URL') . '/storage/' . $path;
         return $this->sendResponse($path, 'File has saved successfully.');
-
     }
 
 

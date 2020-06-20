@@ -49,7 +49,7 @@ class CategoryController extends ApiController
             if (isset($input['order'])) {
                 $entity = $entity->orderByRaw($input['order']);
             }
-            return $entity->get();
+            return $entity->with('characteristics')->get();
         } catch (\Exception $ex) {
             return null;
         }
@@ -62,6 +62,7 @@ class CategoryController extends ApiController
         if (is_null($entity)) {
             return $this->sendError('Category not found.');
         }
+        if(empty($input['parent_id'])) $input['parent_id'] = null;
         $entity->update($input);
         return $this->sendResponse($entity->toArray(), 'Category updated successfully.');
     }

@@ -17,7 +17,9 @@ import SaleCategoriesList from '../components/Admin/SaleCategories/List';
 import SalesList from '../components/Admin/SaleCategories/SaleList';
 import PostsList from '../components/Admin/Posts/List';
 import CharacteristicsList from '../components/Admin/Characteristics/List';
-
+import OrdersList from '../components/Admin/Orders/List';
+import AddressesList from '../components/Admin/Addresses/List';
+import CategoriesList from '../components/Admin/Categories/List';
 
 import store from '../store/index'
 
@@ -145,6 +147,30 @@ let router = new Router({
             name: 'characteristics',
             path: '/admin/characteristics',
             component: CharacteristicsList,
+            meta: {
+                requiredRole: ['Администратор', 'Главный администратор']
+            }
+        },
+        {
+            name: 'orders',
+            path: '/admin/orders',
+            component: OrdersList,
+            meta: {
+                requiredRole: ['Администратор', 'Главный администратор']
+            }
+        },
+        {
+            name: 'addresses',
+            path: '/admin/addresses',
+            component: AddressesList,
+            meta: {
+                requiredRole: ['Администратор', 'Главный администратор']
+            }
+        },
+        {
+            name: 'categories',
+            path: '/admin/categories',
+            component: CategoriesList,
             meta: {
                 requiredRole: ['Администратор', 'Главный администратор']
             }

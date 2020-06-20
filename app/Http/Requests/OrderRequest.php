@@ -12,10 +12,10 @@ class OrderRequest extends FormRequest
     public function rules()
     {
         return [
-            'date' => 'required|date_equals:today',
-            'delivery_date' => 'required|after_or_equal:today',
+            'date' => 'required|date',
+            'delivery_date' => 'required|after_or_equal:date',
             'status' => 'required|in:В обработке,Выполнен,Отменён|max:255',
-            'comment' => 'required|max:2000',
+            'comment' => 'max:2000',
             'user_id' => 'exists:users,id',
             'address_id' => 'exists:addresses,id',
         ];

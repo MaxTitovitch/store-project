@@ -60,8 +60,9 @@ class CategoryCharacteristicController extends ApiController
     {
         $input = $request->all();
         $category = Category::find($id);
+        if(!isset($input['characteristics'])) $input['characteristics'] = [];
         $category->characteristics()->sync($input['characteristics']);
         $response = ['category' => $category, 'characteristics' => $category->characteristics];
-        return $this->sendResponse($response, 'ProductOrder created successfully.');
+        return $this->sendResponse($response, 'CategoryCharacteristic created successfully.');
     }
 }
