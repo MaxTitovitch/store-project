@@ -5,6 +5,8 @@ namespace App\Http\Requests;
 use App\Characteristic;
 use App\Http\Requests\API\ApiRequest;
 use Illuminate\Foundation\Http\FormRequest;
+use App\ProductCharacteristic;
+use Illuminate\Http\Request;
 
 class ProductCharacteristicRequest extends FormRequest
 {
@@ -13,9 +15,20 @@ class ProductCharacteristicRequest extends FormRequest
     private $intMax=0;
     private $intMin=10000;
 
-    public function rules()
+    public function rules(Request $request)
     {
-        $characteristic = Characteristic::find($this->request->all()['characteristic_id']);
+//        $id = $this->route()->parameters['product_characteristic'] ?? 0;
+//        $productCharacteristic = ProductCharacteristic::find($id);
+//        if($productCharacteristic != null) {
+//            $characteristic = $productCharacteristic->characteristic;
+//            if($characteristic->type == "number") {
+//                $this->prepareNumberValues($characteristic);
+//            } else if ($characteristic->type == "string") {
+//                $this->prepareStringValues($characteristic);
+//            }
+//        }
+        var_dump($request->all());
+        $characteristic = Characteristic::find($request->all()['characteristic_id']);
         if($characteristic != null) {
             if($characteristic->type == "number") {
                 $this->prepareNumberValues($characteristic);
@@ -24,9 +37,9 @@ class ProductCharacteristicRequest extends FormRequest
             }
         }
         return [
-            'boolean_value' => 'boolean',
-            'number_value' => 'numeric|min:' . $this->intMin . '|max:' . $this->intMax,
-            'string_value' => 'max:255' . $this->stringValues,
+            'boolean_value' => 'boolean|nullable',
+            'number_value' => 'numeric|nullable|min:' . $this->intMin . '|max:' . $this->intMax,
+            'string_value' => 'max:255' . $this->stringValues . '|nullable',
             'product_id' => 'required|exists:products,id',
             'characteristic_id' => 'required|exists:characteristics,id',
         ];

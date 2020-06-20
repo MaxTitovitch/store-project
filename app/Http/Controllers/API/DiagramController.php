@@ -18,8 +18,8 @@ class DiagramController extends ApiController
             case 'product':
                 if($param == 'orders') {
                     $data = DB::table('products')
-                        ->join('product_order', 'products.id', '=', 'product_order.product_id')
-                        ->join('orders', 'orders.id', '=', 'product_order.order_id')
+                        ->join('order_product', 'products.id', '=', 'order_product.product_id')
+                        ->join('orders', 'orders.id', '=', 'order_product.order_id')
                         ->select(DB::raw("products.name, orders.date"))
                         ->whereRaw('\''. $input['date_start'] . '\' < orders.date AND \'' . $input['date_end'] . '\' > orders.date')
                         ->where("products.id", $id)->get()->toArray();
@@ -46,7 +46,7 @@ class DiagramController extends ApiController
             case 'user':
                 $data = DB::table('users')
                     ->join('orders', 'users.id', '=', 'orders.user_id')
-                    ->join('product_order', 'orders.id', '=', 'product_order.order_id')
+                    ->join('order_product', 'orders.id', '=', 'order_product.order_id')
                     ->select(DB::raw("users.last_name as name, orders.date"))
                     ->whereRaw('\''. $input['date_start'] . '\' < orders.date AND \'' . $input['date_end'] . '\' > orders.date')
                     ->where('users.id', $id)->get()->toArray();
@@ -55,8 +55,8 @@ class DiagramController extends ApiController
                 $data = DB::table('sale_categories')
                     ->join('sales', 'sale_categories.id', '=', 'sales.sale_category_id')
                     ->join('products', 'products.id', '=', 'sales.product_id')
-                    ->join('product_order', 'products.id', '=', 'product_order.product_id')
-                    ->join('orders', 'orders.id', '=', 'product_order.order_id')
+                    ->join('order_product', 'products.id', '=', 'order_product.product_id')
+                    ->join('orders', 'orders.id', '=', 'order_product.order_id')
                     ->select(DB::raw("`sale_categories`.name, orders.date"))
                     ->whereRaw('sales.date_start < orders.date AND sales.date_end > orders.date')
                     ->where('sale_categories.id', $id)->get()->toArray();
@@ -76,8 +76,8 @@ class DiagramController extends ApiController
             case 'product':
                 if($param == 'orders') {
                     $data = DB::table('products')
-                        ->join('product_order', 'products.id', '=', 'product_order.product_id')
-                        ->join('orders', 'orders.id', '=', 'product_order.order_id')
+                        ->join('order_product', 'products.id', '=', 'order_product.product_id')
+                        ->join('orders', 'orders.id', '=', 'order_product.order_id')
                         ->select(DB::raw("products.name, count(*) as count"))
                         ->whereRaw('\''. $input['date_start'] . '\' < orders.date AND \'' . $input['date_end'] . '\' > orders.date')
                         ->groupBy("products.id")
@@ -107,7 +107,7 @@ class DiagramController extends ApiController
             case 'user':
                 $data = DB::table('users')
                     ->join('orders', 'users.id', '=', 'orders.user_id')
-                    ->join('product_order', 'orders.id', '=', 'product_order.order_id')
+                    ->join('order_product', 'orders.id', '=', 'order_product.order_id')
                     ->select(DB::raw("users.last_name, count(*) as count"))
                     ->whereRaw('\''. $input['date_start'] . '\' < orders.date AND \'' . $input['date_end'] . '\' > orders.date')
                     ->groupBy("users.id")
@@ -117,8 +117,8 @@ class DiagramController extends ApiController
                 $data = DB::table('sale_categories')
                     ->join('sales', 'sale_categories.id', '=', 'sales.sale_category_id')
                     ->join('products', 'products.id', '=', 'sales.product_id')
-                    ->join('product_order', 'products.id', '=', 'product_order.product_id')
-                    ->join('orders', 'orders.id', '=', 'product_order.order_id')
+                    ->join('order_product', 'products.id', '=', 'order_product.product_id')
+                    ->join('orders', 'orders.id', '=', 'order_product.order_id')
                     ->select(DB::raw("`sale_categories`.name, count(*) as count"))
                     ->whereRaw('sales.date_start < orders.date AND sales.date_end > orders.date')
                     ->groupBy("sale_categories.id")

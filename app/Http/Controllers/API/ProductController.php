@@ -32,6 +32,37 @@ class ProductController extends ApiController
         return $this->sendResponse($entity->toArray(), 'Product retrieved successfully.');
     }
 
+    public function showCharacteristic($id)
+    {
+//        $product  = Product::where('id', $id)->with('category')->first();
+//        if (is_null($product)) {
+//            return $this->sendError('Product not found.');
+//        }
+//        $entity = $product->category->characteristics;
+//        $characteristicArray = [];
+//        foreach ($entity as $characteristic) {
+//            $isHave = false;
+//            foreach ($characteristic->productCharacteristics as $productCharacteristic) {
+//                if($product->id == $productCharacteristic->product_id)  {
+//                    $isHave = true;
+//                }
+//            }
+//            if(!$isHave) $characteristicArray[] = $characteristic;
+//        }
+//        return $this->sendResponse($characteristicArray, 'Product\'s characteristic retrieved successfully.');
+
+        $entity  = Product::where('id', $id)->with('category')->first();
+        if (is_null($entity)) {
+            return $this->sendError('Product not found.');
+        }
+        $entity = $entity->category->characteristics;
+        $entityArray = $entity->toArray();
+        for ($i = 0; $i < count($entity); $i++) {
+            $entityArray[$i]['values'] = $entity[$i]->characteristicValues;
+        }
+        return $this->sendResponse($entity->toArray(), 'Product\'s characteristic retrieved successfully.');
+    }
+
     private function filtrateQuery($input){
         try {
             $entity = Product::select();
@@ -53,7 +84,7 @@ class ProductController extends ApiController
             if (isset($input['order'])) {
                 $entity = $entity->orderByRaw($input['order']);
             }
-            return $entity->get();
+            return $entity->with('tags')->get();
         } catch (\Exception $ex) {
             return null;
         }

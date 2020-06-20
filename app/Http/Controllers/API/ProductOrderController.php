@@ -59,6 +59,7 @@ class ProductOrderController extends ApiController
     {
         $input = $request->all();
         $order = Order::find($id);
+        if(!isset($input['products'])) $input['products'] = [];
         $order->products()->sync($input['products']);
         $response = ['order' => $order, 'products' => $order->products];
         return $this->sendResponse($response, 'ProductOrder created successfully.');

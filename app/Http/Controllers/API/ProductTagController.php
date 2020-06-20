@@ -58,6 +58,7 @@ class ProductTagController extends ApiController
     {
         $input = $request->all();
         $product = Product::find($id);
+        if(!isset($input['tags'])) $input['tags'] = [];
         $product->tags()->sync($input['tags']);
         $response = ['product' => $product, 'tags' => $product->tags];
         return $this->sendResponse($response, 'ProductTag created successfully.');

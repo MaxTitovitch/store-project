@@ -79,7 +79,7 @@
                         justify-content
                     >
                       <v-flex xs4 md3>
-                        <img :src="placeholderImage" onerror="if (this.src != '/storage/empty-user.jpg') this.src = '/storage/empty-user.jpg';" width="100%" height="100%">
+                        <img :src="placeholderImage" onerror="if (this.src != '/images/empty-user.jpg') this.src = '/images/empty-user.jpg';" width="100%" height="100%">
                       </v-flex>
                     </ImagePicker>
                   </div>
@@ -409,7 +409,7 @@
             const index = this.items.indexOf(item)
             this.items.splice(index, 1)
             this.$store.dispatch('postEntity', {entity: 'delete-photo', data: {type: 'users', slug: resp.data.slug} })
-              .then((resp) => {console.log(resp)}).catch(err => {console.log(err)})
+              .then((resp) => {}).catch(err => {})
           })
           .catch(err => {
               this.initialize()
@@ -486,7 +486,7 @@
       createPhoto (user) {
         if (this.images.length > 0) {
           this.$store.dispatch('uploadPhoto', { type: 'users', file: this.images[0], slug: user.slug })
-            .then((resp) => {console.log(resp)}).catch(err => {console.log(err)})
+            .then((resp) => {}).catch(err => {})
         }
         document.querySelectorAll('.v-btn--depressed')[0].click()
       }

@@ -27,4 +27,14 @@ class Product extends Model
     {
         return $this->belongsToMany('App\Order');
     }
+
+    public function tags()
+    {
+        return $this->belongsToMany('App\Tag');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo('App\Category');
+    }
 }

@@ -58,6 +58,7 @@ Route::middleware('api-auth:true,false,admin')->group( function () {
     Route::resource('views', 'API\ViewController')->except(['create', 'edit']);
     Route::resource('posts', 'API\PostController')->except(['create', 'edit']);
     Route::resource('products', 'API\ProductController')->except(['create', 'edit']);
+    Route::get('product-get-characteristics/{id}', 'API\ProductController@showCharacteristic');
     Route::resource('product-characteristics', 'API\ProductCharacteristicController')->except(['create', 'edit']);
     Route::resource('rankings', 'API\RankingController')->except(['create', 'edit']);
     Route::resource('sales', 'API\SaleController')->except(['create', 'edit']);

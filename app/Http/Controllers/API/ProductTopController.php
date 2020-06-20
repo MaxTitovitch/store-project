@@ -58,6 +58,7 @@ class ProductTopController extends ApiController
     {
         $input = $request->all();
         $top = Top::find($id);
+        if(!isset($input['products'])) $input['products'] = [];
         $top->products()->sync($input['products']);
         $response = ['top' => $top, 'products' => $top->products];
         return $this->sendResponse($response, 'ProductTop created successfully.');

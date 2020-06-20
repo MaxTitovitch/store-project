@@ -67,6 +67,9 @@ export default {
       return sendRequest(commit, data, '/api/products', 'GET')
     },
 
+    getOneEntity ({ commit }, data) {
+      return sendRequest(commit, data.data, `/api/${data.entity}/${data.id}`, 'GET')
+    },
     getEntity ({ commit }, data) {
       return sendRequest(commit, data.data, `/api/${data.entity}`, 'GET')
     },

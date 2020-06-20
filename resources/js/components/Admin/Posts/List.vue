@@ -81,7 +81,7 @@
                         justify-content
                     >
                       <v-flex xs4 md3>
-                        <img :src="placeholderImage" onerror="if (this.src != '/storage/empty-user.jpg') this.src = '/storage/empty-user.jpg';" width="100%" height="100%">
+                        <img :src="placeholderImage" onerror="if (this.src != '/images/empty-post.jpg') this.src = '/images/empty-post.jpg';" width="100%" height="100%">
                       </v-flex>
                     </ImagePicker>
                   </div>
@@ -321,11 +321,9 @@
           this.$store.dispatch('getEntity', { data: { where: `id = ${this.editedItem.top_id}`, order: 'id asc' }, entity: 'tops' })
             .then((resp) => {
               this.editedItem.top = resp.data[0]
-              console.log(this.editedItem.top)
               for (let i = 0; i < this.editedItem.top.products.length; i++) {
                 this.editedItem.top.products[i] = {value: this.editedItem.top.products[i].id, text: this.editedItem.top.products[i].name };
               }
-              console.log(this.editedItem.top.products)
               this.dialog = true
             })
             .catch(err => this.$router.push('/'))
@@ -352,9 +350,9 @@
               //   .then((resp) => {})
               //   .catch(err => {this.error = 'Ошибка удаления'})
 
-              this.$store.dispatch('postEntity', {entity: 'delete-photo', data: {type: 'posts', slug: resp.data.slug} })
-                .then((resp) => {console.log(resp)}).catch(err => {console.log(err)})
             }
+            this.$store.dispatch('postEntity', {entity: 'delete-photo', data: {type: 'posts', slug: resp.data.slug} })
+              .then((resp) => {}).catch(err => {})
             this.items.splice(index, 1)
           })
           .catch(err => {

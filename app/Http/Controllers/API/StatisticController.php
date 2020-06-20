@@ -24,7 +24,7 @@ class StatisticController  extends ApiController {
             'product-orders' => [
                 'name' => 'Продано',
                 'link' => '/admin/orders',
-                'value' =>  DB::table('product_order')->get()->count(),
+                'value' =>  DB::table('order_product')->get()->count(),
             ],
         ];
         return $this->sendResponse($data, 'Statistic retrieved successfully.');
