@@ -82,7 +82,6 @@
                         password: user.password,
                         password_confirmation: user.password_confirmation,
                     }
-                    console.log(resetData)
                     this.$store.dispatch('resetSave', resetData)
                         .then(() => {
                             this.$router.push('/')

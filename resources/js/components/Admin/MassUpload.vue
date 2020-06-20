@@ -36,6 +36,7 @@
         </v-card>
       </v-flex>
     </v-layout>
+    <div v-if="isLoggedRole !== 'Главный администратор'" class="lock"></div>
   </v-container>
 </template>
 
@@ -53,6 +54,9 @@
         ],
       }
     },
+    computed: {
+      isLoggedRole: function () { return this.$store.getters.isLoggedRole },
+    },
     methods: {
       onSubmit () {
         this.error = false
@@ -67,3 +71,17 @@
     }
   }
 </script>
+
+<style>
+
+  .lock {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-image: url('/lock.jpg');
+    background-position: center;
+    background-size: 100% 100%;
+  }
+</style>

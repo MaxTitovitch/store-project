@@ -319,8 +319,8 @@
         if (this.editedIndex > -1) {
           if (this.isStartString) {
             this.$store.dispatch('deleteEntity', {entity: 'characteristic-values-delete-by-characteristic', id: this.editedItem.id })
-              .then((resp) => {console.log(resp)})
-              .catch(err => {console.log(err)})
+              .then((resp) => {})
+              .catch(err => {})
           }
           let characteristicValues = this.editedItem.values.split(',') || this.editedItem.values;
           this.$store.dispatch('putEntity', { data: characteristic, id: this.editedItem.id, entity: 'characteristics'})

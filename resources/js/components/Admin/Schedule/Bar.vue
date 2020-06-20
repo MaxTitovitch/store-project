@@ -21,7 +21,7 @@
                       y-name=""
                       zoom
                       rainbow
-                      style="min-height: 200px"
+                      style="min-height: 400px"
                       :bar-max-width="`${thickness}%`"
                   />
                 </div>
@@ -175,7 +175,6 @@
 
         this.$store.dispatch('getScheduleBar', { entity: this.entity.value, param: this.param.value, data })
           .then((resp) => {
-            console.log(resp.data)
             let sections = resp.data
             this.sections[0].data = this.parseData(sections)
             this.sections[0].name = this.param.text

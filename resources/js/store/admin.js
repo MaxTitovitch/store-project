@@ -10,7 +10,6 @@ let sendRequest = function (commit, data, path, method, file = false) {
         resolve(resp.data)
       })
       .catch(err => {
-        console.log(err.response)
         commit('request_error', err)
         reject(err)
       })
@@ -59,6 +58,9 @@ export default {
     },
     getScheduleBar ({ commit }, data) {
       return sendRequest(commit, data.data, `/api/bar-chart/${data.entity}/${data.param}`, 'GET')
+    },
+    getScheduleLine ({ commit }, data) {
+      return sendRequest(commit, data.data, `/api/line-chart/${data.entity}/${data.id}/${data.param}`, 'GET')
     },
 
     getStatistics ({ commit }, data) {

@@ -238,6 +238,12 @@
         >
           mdi-delete
         </v-icon>
+        <v-icon
+            small
+            @click="showLineBar(item.id)"
+        >
+          mdi-chart-bell-curve-cumulative
+        </v-icon>
       </template>
       <template v-slot:no-data>
         <v-btn dark class="gradient-project" @click="initialize">Повторить загрузку</v-btn>
@@ -513,6 +519,9 @@
       },
       showBarChart () {
         this.$router.push('/admin/schedule/bar?entity=product&param=views')
+      },
+      showLineBar (id) {
+        this.$router.push('/admin/schedule/line?entity=product&param=views&id=' + id)
       },
     }
   }

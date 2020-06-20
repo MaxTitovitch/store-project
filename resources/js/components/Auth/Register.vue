@@ -188,7 +188,6 @@
                 this.$store.dispatch('register', this.user)
                     .then(() => this.$router.push('/'))
                     .catch(err => {
-                        console.log(err)
                         this.error = 'Данные некорректны!'
                     })
             }

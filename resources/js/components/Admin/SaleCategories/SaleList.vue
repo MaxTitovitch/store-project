@@ -392,7 +392,6 @@
               this.initialize()
             })
             .catch(err => {
-                console.log(err)
                 this.initialize()
                 this.error = 'Ошибка добавления'
               }

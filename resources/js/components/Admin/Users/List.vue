@@ -216,16 +216,16 @@
         </v-icon>
         <v-icon
             small
-            @click="showChart(item.id)"
-        >
-          mdi-chart-bell-curve-cumulative
-        </v-icon>
-        <v-icon
-            small
             @click="sendVerify(item)"
             v-if="!item.email_verified_at"
         >
           mdi-shield-check
+        </v-icon>
+        <v-icon
+            small
+            @click="showLineBar(item.id)"
+        >
+          mdi-chart-bell-curve-cumulative
         </v-icon>
       </template>
       <template v-slot:no-data>
@@ -238,6 +238,7 @@
     <v-alert type="error" v-if="error">
       {{ error }}
     </v-alert>
+    <div v-if="isLoggedRole !== 'Главный администратор'" class="lock"></div>
   </div>
 
 </template>
@@ -352,7 +353,8 @@
       formTitle () {
         return this.editedIndex === -1 ? 'Создание пользователя' : 'Редактирование пользователя'
       },
-      isLoading: function () {return this.$store.getters.isLoading }
+      isLoading: function () {return this.$store.getters.isLoading },
+      isLoggedRole: function () { return this.$store.getters.isLoggedRole },
     },
     watch: {
       dialog (val) {
@@ -502,6 +504,9 @@
       showBarChart () {
         this.$router.push('/admin/schedule/bar?entity=user&param=orders')
       },
+      showLineBar (id) {
+        this.$router.push('/admin/schedule/line?entity=user&param=orders&id=' + id)
+      },
     }
   }
 </script>
@@ -530,5 +535,16 @@
 
   .v-snack {
     opacity: 0;
+  }
+
+  .lock {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-image: url('/lock.jpg');
+    background-position: center;
+    background-size: 100% 100%;
   }
 </style>

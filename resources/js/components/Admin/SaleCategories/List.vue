@@ -147,6 +147,12 @@
         >
           mdi-delete
         </v-icon>
+        <v-icon
+            small
+            @click="showLineBar(item.id)"
+        >
+          mdi-chart-bell-curve-cumulative
+        </v-icon>
       </template>
       <template v-slot:no-data>
         <v-btn dark class="gradient-project" @click="initialize">Повторить загрузку</v-btn>
@@ -164,150 +170,153 @@
 
 <script>
 
-export default {
-  data () {
-    return {
-      search: '',
-      message: '',
-      error: '',
-      dialog: false,
-      valid: false,
-      selected: [],
-      headers: [
-        { text: 'ИД', value: 'id' },
-        { text: 'Название', value: 'name' },
-        { text: 'Описание', value: 'description' },
-        { text: 'Действия', value: 'actions', sortable: false },
-      ],
-      items: [],
-      editedIndex: -1,
-      editedItem: {
-        name: '',
-        description: '',
-      },
-      defaultItem: {
-        name: '',
-        description: '',
-      },
-      nameRules: [
-        v => (v && v.length >= 3) || 'Название должно быть длинной более 3-х символов'
-      ],
-      descRules: [
-        v => (v && v.length >= 10) || 'Описание должно быть длинной более 10-х символов'
-      ],
-    }
-  },
-
-  created () {
-    this.initialize()
-  },
-  computed: {
-    formTitle () {
-      return this.editedIndex === -1 ? 'Создание акции' : 'Редактирование акции'
-    },
-    isLoading: function () { return this.$store.getters.isLoading }
-  },
-  watch: {
-    dialog (val) {
-      val || this.close()
-    },
-  },
-  methods: {
-    initialize () {
-      this.$store.dispatch('getEntity', { data: { order: 'id asc' }, entity: 'sale-categories' })
-        .then((resp) => {
-          this.items = resp.data
-        })
-        .catch(err => this.$router.push('/'))
-    },
-
-    showItem (id) {
-      this.$router.push('/sales/' + id)
-    },
-
-    showSales (id) {
-      this.$router.push('/admin/sales?id=' + id)
-    },
-
-    editItem (item) {
-      this.editedIndex = this.items.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialog = true
-    },
-    createItem () {
-      this.editedIndex = -1
-      this.dialog = true
-    },
-
-    deleteItem (item) {
-      this.$store.dispatch('deleteEntity', { entity: 'sale-categories', id: item.id })
-        .then((resp) => {
-          const index = this.items.indexOf(item)
-          this.items.splice(index, 1)
-        })
-        .catch(err => {
-            this.initialize()
-            this.error = 'Ошибка удаления'
-          }
-        )
-    },
-
-    deleteItems () {
-      for (let i = 0; i < this.selected.length; i++) {
-        this.deleteItem(this.selected[i])
+  export default {
+    data () {
+      return {
+        search: '',
+        message: '',
+        error: '',
+        dialog: false,
+        valid: false,
+        selected: [],
+        headers: [
+          { text: 'ИД', value: 'id' },
+          { text: 'Название', value: 'name' },
+          { text: 'Описание', value: 'description' },
+          { text: 'Действия', value: 'actions', sortable: false },
+        ],
+        items: [],
+        editedIndex: -1,
+        editedItem: {
+          name: '',
+          description: '',
+        },
+        defaultItem: {
+          name: '',
+          description: '',
+        },
+        nameRules: [
+          v => (v && v.length >= 3) || 'Название должно быть длинной более 3-х символов'
+        ],
+        descRules: [
+          v => (v && v.length >= 10) || 'Описание должно быть длинной более 10-х символов'
+        ],
       }
     },
 
-    close () {
-      this.$refs.form.reset()
-      this.dialog = false
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
+    created () {
+      this.initialize()
+    },
+    computed: {
+      formTitle () {
+        return this.editedIndex === -1 ? 'Создание акции' : 'Редактирование акции'
+      },
+      isLoading: function () { return this.$store.getters.isLoading }
+    },
+    watch: {
+      dialog (val) {
+        val || this.close()
+      },
+    },
+    methods: {
+      initialize () {
+        this.$store.dispatch('getEntity', { data: { order: 'id asc' }, entity: 'sale-categories' })
+          .then((resp) => {
+            this.items = resp.data
+          })
+          .catch(err => this.$router.push('/'))
+      },
+
+      showItem (id) {
+        this.$router.push('/sales/' + id)
+      },
+
+      showSales (id) {
+        this.$router.push('/admin/sales?id=' + id)
+      },
+
+      editItem (item) {
+        this.editedIndex = this.items.indexOf(item)
+        this.editedItem = Object.assign({}, item)
+        this.dialog = true
+      },
+      createItem () {
         this.editedIndex = -1
-      })
-    },
+        this.dialog = true
+      },
 
-    save () {
-      let saleCategory = {
-        name: this.editedItem.name,
-        description: this.editedItem.description,
-      }
-      if (this.editedIndex > -1) {
-        this.$store.dispatch('putEntity', { data: saleCategory, id: this.editedItem.id, entity: 'sale-categories' })
+      deleteItem (item) {
+        this.$store.dispatch('deleteEntity', { entity: 'sale-categories', id: item.id })
           .then((resp) => {
-            this.initialize()
+            const index = this.items.indexOf(item)
+            this.items.splice(index, 1)
           })
           .catch(err => {
               this.initialize()
-              this.error = 'Ошибка обновления'
+              this.error = 'Ошибка удаления'
             }
           )
-      } else {
-        this.$store.dispatch('postEntity', { entity: 'sale-categories', data: saleCategory })
-          .then((resp) => {
-            this.initialize()
-          })
-          .catch(err => {
-              this.initialize()
-              this.error = 'Ошибка добавления'
-            }
-          )
-      }
-      this.close()
-    },
-    getTextByValue (value, items) {
-      for (let i = 0; i < items.length; i++) {
-        if (items[i].value === value) {
-          return items[i].text
+      },
+
+      deleteItems () {
+        for (let i = 0; i < this.selected.length; i++) {
+          this.deleteItem(this.selected[i])
         }
-      }
-      return value
-    },
-    showBarChart () {
-      this.$router.push('/admin/schedule/bar?entity=sale-category&param=orders')
-    },
+      },
+
+      close () {
+        this.$refs.form.reset()
+        this.dialog = false
+        this.$nextTick(() => {
+          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        })
+      },
+
+      save () {
+        let saleCategory = {
+          name: this.editedItem.name,
+          description: this.editedItem.description,
+        }
+        if (this.editedIndex > -1) {
+          this.$store.dispatch('putEntity', { data: saleCategory, id: this.editedItem.id, entity: 'sale-categories' })
+            .then((resp) => {
+              this.initialize()
+            })
+            .catch(err => {
+                this.initialize()
+                this.error = 'Ошибка обновления'
+              }
+            )
+        } else {
+          this.$store.dispatch('postEntity', { entity: 'sale-categories', data: saleCategory })
+            .then((resp) => {
+              this.initialize()
+            })
+            .catch(err => {
+                this.initialize()
+                this.error = 'Ошибка добавления'
+              }
+            )
+        }
+        this.close()
+      },
+      getTextByValue (value, items) {
+        for (let i = 0; i < items.length; i++) {
+          if (items[i].value === value) {
+            return items[i].text
+          }
+        }
+        return value
+      },
+      showBarChart () {
+        this.$router.push('/admin/schedule/bar?entity=sale-category&param=orders')
+      },
+      showLineBar (id) {
+        this.$router.push('/admin/schedule/line?entity=sale-category&param=orders&id=' + id)
+      },
+    }
   }
-}
 </script>
 
 <style>

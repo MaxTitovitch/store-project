@@ -24,6 +24,7 @@ import ProductsList from '../components/Admin/Products/List';
 import ProductCharacteristicList from '../components/Admin/Products/ProductCharacteristicList';
 import SchedulePie from '../components/Admin/Schedule/Pie';
 import ScheduleBar from '../components/Admin/Schedule/Bar';
+import ScheduleLine from '../components/Admin/Schedule/Line';
 
 import store from '../store/index'
 
@@ -96,7 +97,7 @@ let router = new Router({
             path: '/admin/mass-upload',
             component: MassUpload,
             meta: {
-                requiredRole: ['Главный администратор']
+                requiredRole: ['Администратор', 'Главный администратор']
             }
         },
         {
@@ -104,7 +105,7 @@ let router = new Router({
             path: '/admin/users',
             component: UsersList,
             meta: {
-                requiredRole: ['Главный администратор']
+                requiredRole: ['Администратор', 'Главный администратор']
             }
         },
         {
@@ -207,6 +208,14 @@ let router = new Router({
             name: 'schedule-bar',
             path: '/admin/schedule/bar',
             component: ScheduleBar,
+            meta: {
+                requiredRole: ['Администратор', 'Главный администратор']
+            }
+        },
+        {
+            name: 'schedule-line',
+            path: '/admin/schedule/line',
+            component: ScheduleLine,
             meta: {
                 requiredRole: ['Администратор', 'Главный администратор']
             }

@@ -336,7 +336,6 @@
         if(this.getCharacteristic(this.editedItem.characteristic_id).type !== 'string') {
           productCharacteristic.string_value = '';
         }
-        console.log(productCharacteristic)
         if (this.editedIndex > -1) {
           this.$store.dispatch('putEntity', { data: productCharacteristic, id: this.editedItem.id, entity: 'product-characteristics' })
             .then((resp) => {

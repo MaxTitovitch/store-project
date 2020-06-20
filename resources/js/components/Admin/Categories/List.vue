@@ -288,7 +288,6 @@
           name: this.editedItem.name,
           parent_id: this.editedItem.parent_id || null,
         }, ids = [];
-        console.log(category)
         for (let i = 0; i < this.editedItem.characteristics.length; i++) {
           ids.push(this.editedItem.characteristics[i].value || this.editedItem.characteristics[i])
         }
