@@ -25,6 +25,9 @@ import ProductCharacteristicList from '../components/Admin/Products/ProductChara
 import SchedulePie from '../components/Admin/Schedule/Pie';
 import ScheduleBar from '../components/Admin/Schedule/Bar';
 import ScheduleLine from '../components/Admin/Schedule/Line';
+import About from '../components/Static/About';
+import PayAndGet from '../components/Static/PayAndGet';
+import Contact from '../components/Static/Contact';
 
 import store from '../store/index'
 
@@ -38,14 +41,24 @@ let router = new Router({
             component: Home
         },
         {
+            name: 'about',
+            path: '/about',
+            component: About
+        },
+        {
+            name: 'delivery',
+            path: '/delivery',
+            component: PayAndGet
+        },
+        {
+            name: 'contacts',
+            path: '/contacts',
+            component: Contact
+        },
+        {
             name: 'register',
             path: '/register',
             component: Register
-        },
-        {
-            name: 'login',
-            path: '/login',
-            component: Login
         },
         {
             name: 'login',

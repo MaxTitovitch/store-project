@@ -302,8 +302,8 @@
     </v-app-bar>
 
     <v-content>
-          <div v-if="isLoading" class="loading-image"></div>
-      <router-view :style="isLoading ? 'opacity: 0' : ''"></router-view>
+      <div v-if="isLoading" class="loading-image"></div>
+        <router-view :style="isLoading ? 'opacity: 0' : ''"></router-view>
     </v-content>
 
     <v-footer app class="text-center gradient-project">

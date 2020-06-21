@@ -7,8 +7,10 @@ import Axios from 'axios'
 import { ImagePicker } from "@nagoos/vue-image-picker"
 import Donut from 'vue-css-donut-chart';
 import { BarChart, LineChart} from 'dr-vue-echarts';
+import VueAwesomeSwiper from 'vue-awesome-swiper'
 
-
+// import style
+import 'swiper/css/swiper.css'
 import 'vue-css-donut-chart/dist/vcdonut.css';
 
 Vue.prototype.$http = Axios;
@@ -24,6 +26,7 @@ Vue.use(ImagePicker);
 Vue.use(Donut);
 Vue.use(BarChart);
 Vue.use(LineChart);
+Vue.use(VueAwesomeSwiper)
 
 let vue = new Vue({
     el: '#app',
