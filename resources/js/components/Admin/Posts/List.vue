@@ -335,6 +335,11 @@
           this.$store.dispatch('getEntity', { data: { where: `id = ${this.editedItem.top_id}`, order: 'id asc' }, entity: 'tops' })
             .then((resp) => {
               this.editedItem.top = resp.data[0]
+              this.editedItem.top.products.sort(function (a, b) {
+                if (a.pivot.top > b.pivot.top) {return 1;}
+                if (a.pivot.top < b.pivot.top) {return -1;}
+                return 0;
+              });
               for (let i = 0; i < this.editedItem.top.products.length; i++) {
                 this.editedItem.top.products[i] = {value: this.editedItem.top.products[i].id, text: this.editedItem.top.products[i].name };
               }

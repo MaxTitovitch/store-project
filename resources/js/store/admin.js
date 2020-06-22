@@ -10,6 +10,7 @@ let sendRequest = function (commit, data, path, method, file = false) {
         resolve(resp.data)
       })
       .catch(err => {
+        console.log(err.response.data)
         commit('request_error', err)
         reject(err)
       })
@@ -71,6 +72,9 @@ export default {
     },
     uploadPhoto ({ commit }, data) {
       return sendFileRequest (commit, data, '/api/photo');
+    },
+    uploadPhotoUser ({ commit }, data) {
+      return sendFileRequest (commit, data.data, '/api/photo/user-image/' + data.id);
     },
     getProducts ({ commit }, data) {
       return sendRequest(commit, data, '/api/products', 'GET')

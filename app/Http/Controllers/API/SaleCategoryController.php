@@ -12,7 +12,7 @@ class SaleCategoryController extends ApiController
     public function index(Request $request)
     {
         $entities = $this->filtrateQuery($request->all());
-        return $this->sendResponse($entities->toArray(), 'Sale categories retrieved successfully.');
+        return $this->sendResponse($entities, 'Sale categories retrieved successfully.');
     }
 
     public function store(SaleCategoryRequest $request)
@@ -24,7 +24,7 @@ class SaleCategoryController extends ApiController
 
     public function show(Request $request, $id)
     {
-        $entity  = SaleCategory::find($id);
+        $entity  = SaleCategory::with(['sales', 'products'])->find($id);
         if (is_null($entity)) {
             return $this->sendError('SaleCategory not found.');
         }
@@ -49,7 +49,13 @@ class SaleCategoryController extends ApiController
             if (isset($input['order'])) {
                 $entity = $entity->orderByRaw($input['order']);
             }
-            return $entity->get();
+            if (isset($input['with'])) {
+                $entity = $entity->with($input['with']);
+            }
+            if (isset($input['count'])) {
+                return $entity->count();
+            }
+            return $entity->get()->toArray();
         } catch (\Exception $ex) {
             return null;
         }

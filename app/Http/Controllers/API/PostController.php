@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Requests\PostRequest;
 use App\Post;
 use Illuminate\Http\Request;
+use App\View;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends ApiController
 {
@@ -12,7 +14,7 @@ class PostController extends ApiController
     public function index(Request $request)
     {
         $entities = $this->filtrateQuery($request->all());
-        return $this->sendResponse($entities->toArray(), 'Posts retrieved successfully.');
+        return $this->sendResponse($entities, 'Posts retrieved successfully.');
     }
 
     public function store(PostRequest $request)
@@ -23,12 +25,24 @@ class PostController extends ApiController
         return $this->sendResponse($entity->toArray(), 'Post created successfully.');
     }
 
+    private function createView($id){
+        $userId = auth('api')->user() ? auth('api')->user()->id : null;
+        View::create([
+            'entity_type' => 'post',
+            'entity_id' => $id,
+            'date' => date ('Y-m-d'),
+            'user_id' => $userId,
+        ]);
+    }
+
     public function show(Request $request, $id)
     {
-        $entity  = Post::find($id);
+        $entity  = Post::with(['user', 'top', 'top.products'])->find($id);
+
         if (is_null($entity)) {
             return $this->sendError('Post not found.');
         }
+        $this->createView($entity->id);
         return $this->sendResponse($entity->toArray(), 'Post retrieved successfully.');
     }
 
@@ -50,7 +64,10 @@ class PostController extends ApiController
             if (isset($input['order'])) {
                 $entity = $entity->orderByRaw($input['order']);
             }
-            return $entity->with('top')->get();
+            if (isset($input['count'])) {
+                return $entity->count();
+            }
+            return $entity->with('top')->get()->toArray();
         } catch (\Exception $ex) {
             return null;
         }

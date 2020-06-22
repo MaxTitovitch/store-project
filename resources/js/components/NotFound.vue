@@ -7,7 +7,7 @@
 <script>
     export default {
         mounted() {
-            console.log('Page not found.')
+            console.log('Pages not found.')
         }
     }
 </script>

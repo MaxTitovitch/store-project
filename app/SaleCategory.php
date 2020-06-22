@@ -17,4 +17,8 @@ class SaleCategory extends Model
     {
         return $this->hasMany('App\Sale');
     }
+    public function products()
+    {
+        return $this->belongsToMany('App\Product', 'App\Sale');
+    }
 }

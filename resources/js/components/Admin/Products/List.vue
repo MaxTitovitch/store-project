@@ -397,6 +397,7 @@
       createItem () {
         this.editedIndex = -1
         this.dialog = true
+        setTimeout(() => {document.querySelectorAll('.v-btn--depressed')[0].click()}, 100)
       },
 
       deleteItem (item) {
@@ -516,6 +517,7 @@
               this.deletePhoto(product.slug + '-' + (i))
           }
         }
+        setTimeout(() => {document.querySelectorAll('.v-btn--depressed')[0].click()}, 100)
       },
       showBarChart () {
         this.$router.push('/admin/schedule/bar?entity=product&param=views')

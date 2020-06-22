@@ -71,7 +71,7 @@ class UserController extends ApiController
     public function updateUser(UserRequest $request, $id)
     {
         $input = $request->all();
-        $input['slug'] = str_slug($input['name']);
+        $input['slug'] = str_slug($input['email']);
         $entity = auth('api')->user();
 
         if (is_null($entity)) {

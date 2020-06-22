@@ -22,14 +22,15 @@ Route::post('verify/send', 'API\RegisterController@verifySend')->middleware('api
 Route::post('verify/save', 'API\RegisterController@verifySave');
 
 Route::middleware('api-auth:true,false,user')->group( function () {
-    Route::put('users/update-user/{id}', 'API\UserController@updateUser');
-    Route::delete('users/delete-user/{id}', 'API\UserController@destroyUser');
+    Route::put('users/update-user/{user}', 'API\UserController@updateUser');
+    Route::delete('users/delete-user/{user}', 'API\UserController@destroyUser');
 
     Route::post('rankings/store-user/{id}', 'API\RankingController@storeUser');
     Route::put('rankings/update-user/{id}', 'API\RankingController@updateUser');
     Route::delete('rankings/delete-user/{id}', 'API\RankingController@destroyUser');
 
-    Route::post('orders/store-user/{id}', 'API\OrderController@storeUser');
+    Route::get('orders/index-user', 'API\OrderController@indexUser');
+    Route::post('orders/store-user', 'API\OrderController@storeUser');
     Route::put('orders/update-user/{id}', 'API\OrderController@updateUser');
 
     Route::post('likes/store-user/{id}', 'API\LikeController@storeUser');
@@ -40,7 +41,7 @@ Route::middleware('api-auth:true,false,user')->group( function () {
 
     Route::get('addresses/index-user', 'API\AddressController@indexUser');
     Route::get('addresses/show-user/{id}', 'API\AddressController@showUser');
-    Route::post('addresses/store-user/{id}', 'API\AddressController@storeUser');
+    Route::post('addresses/store-user', 'API\AddressController@storeUser');
     Route::put('addresses/update-user/{id}', 'API\AddressController@updateUser');
     Route::delete('addresses/delete-user/{id}', 'API\AddressController@destroyUser');
 

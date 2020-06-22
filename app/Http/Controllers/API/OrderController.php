@@ -15,6 +15,13 @@ class OrderController extends ApiController
         return $this->sendResponse($entities->toArray(), 'Orders retrieved successfully.');
     }
 
+
+    public function indexUser(Request $request)
+    {
+        $entities = $this->filtrateQuery($request->all(), true);
+        return $this->sendResponse($entities->toArray(), 'Orders retrieved successfully.');
+    }
+
     public function store(OrderRequest $request)
     {
         $input = $request->all();
@@ -40,7 +47,7 @@ class OrderController extends ApiController
         return $this->sendResponse($entity->toArray(), 'Order retrieved successfully.');
     }
 
-    private function filtrateQuery($input){
+    private function filtrateQuery($input, $isForUser = false){
         try {
             $entity = Order::select();
             if(isset($input['trash'])) {
@@ -54,6 +61,9 @@ class OrderController extends ApiController
             }
             if (isset($input['where'])) {
                 $entity = $entity->whereRaw($input['where']);
+            }
+            if ($isForUser) {
+                $entity = $entity->whereRaw('user_id = ' . auth('api')->user()->id)->with('products');
             }
             if (isset($input['order'])) {
                 $entity = $entity->orderByRaw($input['order']);
@@ -75,7 +85,7 @@ class OrderController extends ApiController
         return $this->sendResponse($entity->toArray(), 'Order updated successfully.');
     }
 
-    public function updateStore(OrderRequest $request, $id)
+    public function updateUser(OrderRequest $request, $id)
     {
         $input = $request->all();
         $user = auth('api')->user();

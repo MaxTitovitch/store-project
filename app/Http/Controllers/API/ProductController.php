@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Requests\ProductRequest;
 use App\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\View;
 
 class ProductController extends ApiController
 {
@@ -29,9 +31,19 @@ class ProductController extends ApiController
         if (is_null($entity)) {
             return $this->sendError('Product not found.');
         }
+        $this->createView($entity->id);
         return $this->sendResponse($entity->toArray(), 'Product retrieved successfully.');
     }
 
+    private function createView($id){
+        $userId = auth('api')->user() ? auth('api')->user()->id : null;
+        View::create([
+            'entity_type' => 'product',
+            'entity_id' => $id,
+            'date' => date ('Y-m-d'),
+            'user_id' => $userId,
+        ]);
+    }
     public function showCharacteristic($id)
     {
 //        $product  = Product::where('id', $id)->with('category')->first();

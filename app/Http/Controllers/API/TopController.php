@@ -50,16 +50,16 @@ class TopController extends ApiController
             if (isset($input['order'])) {
                 $entity = $entity->orderByRaw($input['order']);
             }
-            $data = $entity->get();
-            $array = $data->toArray();
-            for ($i = 0; $i < count($data); $i++) {
-                $array[$i]['products'] = DB::table('product_top')
-                    ->selectRaw('products.*, product_top.id as main_id')
-                    ->where('product_top.top_id', '=', $array[$i])
-                    ->join('products', 'products.id', '=', 'product_top.product_id')
-                    ->orderByRaw('main_id desc')->get();
-            }
-            return $array;
+            $data = $entity->with('products')->get();
+//            $array = $data->toArray();
+//            for ($i = 0; $i < count($data); $i++) {
+//                $array[$i]['products'] = DB::table('product_top')
+//                    ->selectRaw('products.*, product_top.id as main_id')
+//                    ->where('product_top.top_id', '=', $array[$i])
+//                    ->join('products', 'products.id', '=', 'product_top.product_id')
+//                    ->orderByRaw('main_id desc')->get();
+//            }
+            return $data->toArray();
 
         } catch (\Exception $ex) {
             return null;

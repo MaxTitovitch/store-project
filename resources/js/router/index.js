@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '../components/Home';
 import NotFound from '../components/NotFound';
+import Personal from '../components/Auth/Personal';
 import Register from '../components/Auth/Register';
 import Login from '../components/Auth/Login';
 import ResetSend from '../components/Auth/ResetSend';
@@ -28,6 +29,13 @@ import ScheduleLine from '../components/Admin/Schedule/Line';
 import About from '../components/Static/About';
 import PayAndGet from '../components/Static/PayAndGet';
 import Contact from '../components/Static/Contact';
+import Posts from '../components/Pages/Posts/Posts';
+import Post from '../components/Pages/Posts/Post';
+import Tops from '../components/Pages/Tops/Tops';
+import Top from '../components/Pages/Tops/Top';
+import Sales from '../components/Pages/Sales/Sales';
+import Sale from '../components/Pages/Sales/Sale';
+import User from '../components/Pages/Users/User';
 
 import store from '../store/index'
 
@@ -61,6 +69,41 @@ let router = new Router({
             component: Register
         },
         {
+            name: 'pages',
+            path: '/pages',
+            component: Posts
+        },
+        {
+            name: 'page',
+            path: '/pages/:id',
+            component: Post
+        },
+        {
+            name: 'tops',
+            path: '/tops',
+            component: Tops
+        },
+        {
+            name: 'tops',
+            path: '/tops/:id',
+            component: Top
+        },
+        {
+            name: 'sales',
+            path: '/sales',
+            component: Sales
+        },
+        {
+            name: 'sales',
+            path: '/sales/:id',
+            component: Sale
+        },
+        {
+            name: 'users',
+            path: '/users/:id',
+            component: User
+        },
+        {
             name: 'login',
             path: '/login',
             component: Login
@@ -73,7 +116,7 @@ let router = new Router({
         {
             name: 'personal',
             path: '/personal',
-            component: AdminMain,
+            component: Personal,
             meta: {
                 requiredRole: ['Пользователь','Администратор', 'Главный администратор']
             }

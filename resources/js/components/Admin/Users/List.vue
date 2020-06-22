@@ -439,9 +439,6 @@
         this.$refs.form.reset();
         this.addImagesLabel = 'Добавить'
         this.placeholderImage = ''
-        if(!fromSave) {
-          document.querySelectorAll('.v-btn--depressed')[0].click()
-        }
         this.dialog = false
         this.$nextTick(() => {
           this.password = ''
@@ -495,6 +492,7 @@
         this.close(true)
       },
       createPhoto (user) {
+        console.log(this.images.length)
         if (this.images.length > 0) {
           this.$store.dispatch('uploadPhoto', { type: 'users', file: this.images[0], slug: user.slug })
             .then((resp) => {}).catch(err => {})
