@@ -29,6 +29,8 @@ import ScheduleLine from '../components/Admin/Schedule/Line';
 import About from '../components/Static/About';
 import PayAndGet from '../components/Static/PayAndGet';
 import Contact from '../components/Static/Contact';
+import Products from '../components/Pages/Products/Products';
+import Product from '../components/Pages/Products/Product';
 import Posts from '../components/Pages/Posts/Posts';
 import Post from '../components/Pages/Posts/Post';
 import Tops from '../components/Pages/Tops/Tops';
@@ -69,6 +71,16 @@ let router = new Router({
             component: Register
         },
         {
+            name: 'categories-many',
+            path: '/categories',
+            component: Products
+        },
+        {
+            name: 'product',
+            path: '/products/:id',
+            component: Product
+        },
+        {
             name: 'pages',
             path: '/pages',
             component: Posts
@@ -84,7 +96,7 @@ let router = new Router({
             component: Tops
         },
         {
-            name: 'tops',
+            name: 'top',
             path: '/tops/:id',
             component: Top
         },
@@ -94,12 +106,12 @@ let router = new Router({
             component: Sales
         },
         {
-            name: 'sales',
+            name: 'sale',
             path: '/sales/:id',
             component: Sale
         },
         {
-            name: 'users',
+            name: 'user',
             path: '/users/:id',
             component: User
         },

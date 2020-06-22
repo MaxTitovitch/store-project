@@ -95,6 +95,13 @@ export default {
     deleteEntity ({ commit }, data) {
       return sendRequest(commit, null, `/api/${data.entity}/${data.id}`, 'DELETE')
     },
+    checkDeviceType ({ commit }, data) {
+      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        return true;
+      } else {
+        return false;
+      }
+    },
   },
   getters: {
     error: state => state.error,

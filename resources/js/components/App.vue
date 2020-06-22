@@ -350,7 +350,7 @@
       mainColor: 'red darken-4',
       linkList: [
         { title: 'Акции', icon: 'mdi-sale', url: '/sales' },
-        { title: 'Товары', icon: 'mdi-cart-outline', url: '/products' },
+        { title: 'Товары', icon: 'mdi-cart-outline', url: '/categories' },
         { title: 'Статьи', icon: 'mdi-post-outline', url: '/pages' },
         { title: 'Топы', icon: 'mdi-medal-outline', url: '/tops' }
       ],
