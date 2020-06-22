@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="mt-5 mb-5">
-    <v-layout align-center justify-center>
+    <v-layout align-center justify-center class="flex-wrap">
       <v-flex xs12>
         <v-card class="elevation-12 py-2">
           <v-layout class="flex-wrap" align-flex-start justify-center>
@@ -99,6 +99,32 @@
           </v-layout>
         </v-card>
       </v-flex>
+
+      <v-flex  xs12 mt-5>
+        <h2 class="display-1 subheader-card title-admin">Вам может быть интересно:</h2>
+      </v-flex>
+      <v-flex xs12 mt-5 px-5 align-items-center>
+        <swiper class="swiper" :options="swiperOption">
+          <swiper-slide
+              v-for="product in bestProducts"
+              :key="'bp-' + product.id + Math.random() "
+          >
+            <v-card class="card-info card-product d-flex flex-wrap flex-column" color="#white" fill-height hover>
+              <a :href="'/products/' + product.id" style="height: 100%; width: 100%; display: flex; justify-content: center; align-items: center">
+                <img :src="'/storage/products/' + product.slug + '-1.png'" :alt="product.name" class="card-image">
+              </a>
+              <v-card-actions>
+                <a :href="'/products/' + product.id" style="width: 100%;" class="text-gray-footer title text-center">
+                  {{product.name}}
+                </a>
+              </v-card-actions>
+            </v-card>
+
+          </swiper-slide>
+          <div class="swiper-button-prev" slot="button-prev"></div>
+          <div class="swiper-button-next" slot="button-next"></div>
+        </swiper>
+      </v-flex>
     </v-layout>
   </v-container>
 </template>
@@ -108,6 +134,7 @@
     data () {
       return {
         id: null,
+        bestProducts: [],
         image: '/images/empty-product.jpg',
         images: ['/images/empty-product.jpg'],
         product: { sales: {}, category: {}, product_characteristics: {} },
@@ -140,6 +167,12 @@
           }
         })
         .catch(err => {this.$router.push('/')})
+
+      this.$store.dispatch('getEntity', {entity: 'products', data: {'user-products': 'true'}})
+        .then((resp) => {
+          this.bestProducts = resp.data
+        })
+        .catch(err => {this.$router.push('/')});
     },
     methods: {
       initialize () {
@@ -192,5 +225,75 @@
   }
   .category-hover:hover {
     text-decoration: underline;
+  }
+
+
+
+
+
+
+
+
+  .card-info > div {
+    width: 100%;
+  }
+
+  .text-gray-head {
+    color: #727271 !important;
+    border-bottom: 2px solid white;
+    border-radius: 0 !important;
+  }
+
+  .text-gray-footer {
+    color: #727271 !important;
+    border-top: 2px solid white;
+    border-radius: 0 !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .text-gray-footer a {
+    color: #727271 !important;
+  }
+
+  .text-gray-main {
+    font-size: 30px;
+    color: white !important;
+    text-shadow: 1px 0 1px black,
+    0 1px 1px black,
+    -1px 0 1px black,
+    0 -1px 1px black;
+  }
+
+  .subheader-card {
+    color: #646464;
+    width: 100%;
+    border-bottom: 1px solid #646464;
+  }
+
+  .card-image {
+    height: 200px;
+    width: 100%;
+  }
+
+  @media screen  and (max-device-width: 960px) {
+    .card-image {
+      height: 300px;
+      width: 100%;
+    }
+  }
+
+  .card-product {
+    border: 1px solid!important;
+  }
+
+  .image-card {
+    border-bottom: 1px solid!important;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center
   }
 </style>

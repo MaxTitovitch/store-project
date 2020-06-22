@@ -17,6 +17,31 @@
         </v-carousel>
       </v-flex>
       <v-flex  xs12 mt-5>
+        <h2 class="display-1 subheader-card title-admin">Вам может быть интересно:</h2>
+      </v-flex>
+      <v-flex xs12 mt-5 px-5 align-items-center>
+        <swiper class="swiper" :options="swiperOption">
+          <swiper-slide
+              v-for="product in bestProducts"
+              :key="'bp-' + product.id + Math.random() "
+          >
+            <v-card class="card-info card-product d-flex flex-wrap flex-column" color="#white" fill-height hover>
+              <a :href="'/products/' + product.id" style="height: 100%; width: 100%; display: flex; justify-content: center; align-items: center">
+                <img :src="'/storage/products/' + product.slug + '-1.png'" :alt="product.name" class="card-image">
+              </a>
+              <v-card-actions>
+                <a :href="'/products/' + product.id" style="width: 100%;" class="text-gray-footer title text-center">
+                  {{product.name}}
+                </a>
+              </v-card-actions>
+            </v-card>
+
+          </swiper-slide>
+          <div class="swiper-button-prev" slot="button-prev"></div>
+          <div class="swiper-button-next" slot="button-next"></div>
+        </swiper>
+      </v-flex>
+      <v-flex  xs12 mt-5>
         <h2 class="display-1 subheader-card title-admin">Новинки в магазине</h2>
       </v-flex>
       <v-flex xs12 mt-5 px-5 align-items-center>
@@ -109,6 +134,7 @@
         productsByRank: {},
         productsByViews: {},
         productsByOrders: {},
+        bestProducts: {},
         newProducts: {},
         swiperOption: {
           slidesPerView: 3,
@@ -147,6 +173,11 @@
           this.newProducts = resp.data
         })
         .catch(err => this.$router.push('/'));
+      this.$store.dispatch('getEntity', {entity: 'products', data: {'user-products': 'true'}})
+        .then((resp) => {
+          this.bestProducts = resp.data
+        })
+        .catch(err => {this.$router.push('/')});
     },
     methods: {
       isByMobile (){

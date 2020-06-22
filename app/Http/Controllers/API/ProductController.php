@@ -7,6 +7,8 @@ use App\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\View;
+use Illuminate\Support\Facades\App;
+use App\Order;
 
 class ProductController extends ApiController {
 
@@ -77,6 +79,9 @@ class ProductController extends ApiController {
     private function filtrateQuery($input) {
         try {
             $entity = Product::select();
+            if (isset($input['user-products'])) {
+                return $this->getUserProducts();
+            }
             if (isset($input['trash'])) {
                 $entity = $entity->onlyTrashed();
             }
@@ -131,5 +136,33 @@ class ProductController extends ApiController {
         }
         $entity->delete();
         return $this->sendResponse($entity->toArray(), 'Product deleted successfully.');
+    }
+
+    private function getUserProducts() {
+        $user = auth('api')->user();
+        if($user) {
+            $id = $user->id;
+            $orders = Order::where('user_id', $id)->with('products')->get();
+
+            $categoryIds = []; $bestId = ['id'=> 0, 'quantity' => 0];
+            foreach ($orders as $order) {
+                foreach ($order->products as $product) {
+                    if(!empty($categoryIds[$product->category_id])) {
+                        $categoryIds[$product->category_id]++;
+                    } else {
+                        $categoryIds[$product->category_id] = 1;
+                    }
+                }
+            }
+            foreach ($categoryIds as $categoryId => $quantity) {
+                if($quantity > $bestId['quantity']) {
+                    $bestId = ['quantity'=>$quantity, 'id' => $categoryId];
+                }
+            }
+            $products = $this->filtrateQuery(['where'=>"category_id = ${bestId['id']}", 'order'=>'ranking desc', 'limit'=>8]);
+            return array_merge ($products, $this->filtrateQuery(['limit'=>8-count($products), 'order'=>'ranking desc']));
+        } else {
+            return $this->filtrateQuery(['order'=>'ranking desc', 'limit'=>8]);
+        }
     }
 }
