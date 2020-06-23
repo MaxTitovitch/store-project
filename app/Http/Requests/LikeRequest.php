@@ -13,7 +13,7 @@ class LikeRequest extends FormRequest
     {
         $type = $this->request->all()['entity_type'] . 's';
         return [
-            'entity_type' => 'required|in:post,product',
+            'entity_type' => 'required|in:post,comment',
             'entity_id' => 'required|exists:' .$type .',id',
             'user_id' => 'required|exists:users,id',
         ];

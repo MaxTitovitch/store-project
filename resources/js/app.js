@@ -8,6 +8,7 @@ import { ImagePicker } from "@nagoos/vue-image-picker"
 import Donut from 'vue-css-donut-chart';
 import { BarChart, LineChart} from 'dr-vue-echarts';
 import VueAwesomeSwiper from 'vue-awesome-swiper'
+import { saveAs } from 'file-saver';
 
 // import style
 import 'swiper/css/swiper.css'

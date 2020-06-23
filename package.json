@@ -26,6 +26,7 @@
     "dependencies": {
         "@nagoos/vue-image-picker": "1.0.3",
         "dr-vue-echarts": "^1.0.13",
+        "file-saver": "^2.0.2",
         "swiper": "^5.4.5",
         "vue-awesome-swiper": "^4.1.1",
         "vue-css-donut-chart": "^1.3.0",

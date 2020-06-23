@@ -28,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
             'post' => \App\Post::class,
             'product' => \App\Product::class,
             'like' => \App\Like::class,
+            'comment' => \App\Comment::class,
         ]);
     }
 }

@@ -45,15 +45,19 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item
-            class="gradient-project"
-        >
+        <v-list-item class="gradient-project">
+          <v-btn text fab @click="findData()">
+            <v-icon >
+              mdi-magnify
+            </v-icon>
+          </v-btn>
           <v-text-field
               hide-details
-              prepend-icon="mdi-magnify"
+              v-model="search"
               label="Искать..."
               color="black"
               regular
+              @keyup.enter="findData()"
           />
         </v-list-item>
 
@@ -212,12 +216,18 @@
         <v-list-item
             class="gradient-project"
         >
+          <v-btn text fab @click="findData()">
+            <v-icon >
+              mdi-magnify
+            </v-icon>
+          </v-btn>
           <v-text-field
               hide-details
-              prepend-icon="mdi-magnify"
+              v-model="search"
               label="Искать..."
               color="white"
               regular
+              @keyup.enter="findData()"
           />
         </v-list-item>
         <v-menu
@@ -357,6 +367,7 @@
   export default {
     data: () => ({
       drawer: false,
+      search: '',
       drawerAdmin: false,
       mainColor: 'red darken-4',
       linkList: [
@@ -395,6 +406,12 @@
           if (this.$router.history.current.fullPath !== '/')
             this.$router.push('/')
         })
+      },
+      findData () {
+        if (this.search.trim().length > 0) {
+          let route = this.$router.resolve({name: 'categories-many', query: {search: this.search.trim()}});
+          window.open(route.href, '_self');
+        }
       }
     },
     computed: {
@@ -430,7 +447,7 @@
   }
 
   .gradient-project {
-    background: linear-gradient(180deg, #FF5F66, #FF9765);
+    background: linear-gradient(180deg, #FF5F66, #FF9765) !important;
   }
 
   .gradient-project-text {

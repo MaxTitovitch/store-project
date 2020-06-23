@@ -146,75 +146,11 @@
       </v-flex>
 
       <v-flex xs12 mt-5 px-5 align-items-center>
-
-        <v-list subheader class="product-list">
-          <h3 class="text--secondary px-3">Комментарии</h3>
-          <v-list-item two-line v-if="isLoggedId > 0">
-
-            <v-list-item-avatar height="150px" width="150px" style="border-radius: 0!important;">
-              <v-img
-                  style="border-radius: 100%"
-                  :src="user.slug ? '/storage/users/' + user.slug + '.png' : '/images/empty-user.jpg'"
-                  onerror="if (this.src != '/images/empty-user.jpg') this.src = '/images/empty-user.jpg';"
-              />
-            </v-list-item-avatar>
-
-            <v-list-item-content>
-
-              <v-form v-model="valid" ref="form" validation>
-                <v-textarea
-                    color="#FF9765"
-                    v-model="newComment"
-                    :rules="textRules"
-                    label="Комментарий"
-                    filled
-                    auto-grow
-                />
-              </v-form>
-            </v-list-item-content>
-
-            <v-list-item-action>
-              <v-btn large dark color="#FF9765" :disabled="!valid" v-bind:dark="valid" @click="saveComment()">
-                  <span class="text-decoration-none">
-                    Отправить
-                  </span>
-              </v-btn>
-            </v-list-item-action>
-          </v-list-item>
-
-          <v-list-item
-              v-for="(item, index) of comments"
-              :key="'products' + item.id"
-              two-line
-          >
-            <v-list-item-avatar height="150px" width="150px" style="border-radius: 0!important;" >
-              <v-img class="pointer-cursor" @click="goTo(`/users/${item.user.id}`)" style="border-radius: 100%" :src="'/storage/users/' + item.user.slug + '.png'"/>
-            </v-list-item-avatar>
-
-            <v-list-item-content>
-              <strong class="pointer-cursor" @click="goTo(`/users/${item.user.id}`)">
-                <v-list-item-title class="product-list-content" v-text="item.user.name + ' ' + item.user.last_name"/>
-              </strong>
-              <v-list-item-content class="post-text product-list-content" v-text="item.text"/>
-              <small class="font-weight-bold">
-                <v-list-item-content class="post-text product-list-content" v-html="item.date"/>
-              </small>
-            </v-list-item-content>
-
-            <v-list-item-action v-if="item.user.id == isLoggedId || isLoggedRole === 'Главный администратор'">
-              <v-btn small fab dark color="red" @click="removeComment(item.id)">
-                  <span class="text-decoration-none">x</span>
-              </v-btn>
-            </v-list-item-action>
-          </v-list-item>
-        </v-list>
-        <v-pagination
-            v-model="page"
-            :length="total"
-            :total-visible="7"
-            circle
-            color="#FF9765"
-            @input="runToPage"
+        <comment
+            :page="Number.parseInt($route.query.page) || 1"
+            :entity_id="Number.parseInt($route.params.id)"
+            entity_type="product"
+            entity_type_href="products"
         />
       </v-flex>
     </v-layout>
@@ -222,24 +158,20 @@
 </template>
 
 <script>
+  import Comment from '../Comments/Comment';
   export default {
+    components: {
+      Comment
+    },
     data () {
       return {
         id: null,
         bestProducts: [],
-        page: 1,
-        total: 1,
-        comments: [],
         userRanking: null,
-        newComment: '',
-        valid: false,
         user: {},
         image: '/images/empty-product.jpg',
         images: ['/images/empty-product.jpg'],
         product: { sales: {}, category: {}, product_characteristics: {} },
-        textRules: [
-          v => (v && v.length >= 10) || 'Текст должен быть длинной более 10-х символов'
-        ],
         swiperOption: {
           slidesPerView: 3,
           spaceBetween: 30,
@@ -257,7 +189,6 @@
     },
     computed: {
       isLoggedId: function () { return this.$store.getters.isLoggedId },
-      isLoggedRole: function () { return this.$store.getters.isLoggedRole },
     },
     created () {
       this.swiperOption.slidesPerView = this.isByMobile() ? 1 : 3
@@ -286,8 +217,6 @@
               })
               .catch(err => {this.$router.push('/')})
           }
-          this.initializeComment()
-
         })
         .catch(err => {this.$router.push('/')})
 
@@ -299,28 +228,6 @@
 
     },
     methods: {
-      runToPage(page) {
-        this.$router.push(`/products/${this.product.id}?page=` + page).catch(()=>{});;
-        this.initializeComment();
-      },
-      initializeComment () {
-        this.page = Number.parseInt(this.$route.query.page) || 1
-        let offset = (this.page - 1) * 10
-        let data = { where: `entity_id = ${this.product.id} AND entity_type="product"`, with: 'user', offset, limit: 10, order: 'id desc' }
-
-        this.$store.dispatch('getEntity', { entity: 'comments', data })
-          .then((resp) => {
-            this.comments = resp.data
-          })
-          .catch(err => {this.$router.push('/')})
-
-        let newData = {count: 'true', where: `entity_id = ${this.product.id} AND entity_type="product"`}
-        this.$store.dispatch('getEntity', { entity: 'comments', data: newData })
-          .then((resp) => {
-            this.total= Math.ceil(resp.data / 10)
-          })
-          .catch(err => {this.$router.push('/')})
-      },
       isByMobile () {
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
           return true
@@ -337,9 +244,6 @@
       goToPay () {
         this.addToCart()
         this.$router.push('/order')
-      },
-      goTo (path) {
-        this.$router.push(path)
       },
       changeRank (value) {
         let ranking = {
@@ -358,30 +262,6 @@
             .catch(err => {this.error = 'Ошибка добавления'})
         }
       },
-      saveComment () {
-        let comment = {
-          text: this.newComment,
-          date: new Date().toISOString().substr(0, 10),
-          user_id: this.isLoggedId,
-          entity_type: 'product',
-          entity_id: this.product.id
-        }
-        this.$store.dispatch('postEntity', { entity: 'comments/store-user', data: comment })
-          .then((resp) => {})
-          .catch(err => {this.error = 'Ошибка добавления'})
-          .finally(() => {
-            this.newComment = '';
-            this.$refs.form.reset();
-            this.initializeComment()
-          })
-      },
-      removeComment (id) {
-        this.$store.dispatch('deleteEntity', { entity: 'comments/delete-user', id })
-          .then((resp) => {}).catch(err => {this.error = 'Ошибка удаления'})
-          .finally(() => {
-            this.initializeComment()
-          })
-      }
     }
   }
 </script>

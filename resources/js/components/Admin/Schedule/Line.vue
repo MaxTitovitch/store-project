@@ -18,7 +18,7 @@
                     '')}"`}}
                   </h2>
                 </div>
-                <div v-if="sections[0].data.length > 0">
+                <div v-if="sections[0].data.length > 0" class="flex align-center justify-center flex-wrap" style="display: flex">
                   <line-chart
                       :data="sections"
                       x-name="Название"
@@ -27,6 +27,14 @@
                       style="min-height: 400px"
                       :area="thickness"
                   />
+                  <v-btn
+                      color="#FF5F66"
+                      dark
+                      class="gradient-project mx-2 mt-5"
+                      @click="downloadChart"
+                  >
+                    Сохранить график
+                  </v-btn>
                 </div>
                 <div v-if="sections[0].data.length <= 0">
                   <div style="color: #FF9966">
@@ -224,6 +232,12 @@
         let date = new Date()
         date.setFullYear(date.getFullYear() - 1)
         return date.toISOString().substr(0, 10)
+      },
+      downloadChart () {
+        var canvas = document.querySelectorAll("canvas")[0];
+        canvas.toBlob(function(blob) {
+          saveAs(blob, "Диаграмма - На настолке.png");
+        });
       }
     }
   }

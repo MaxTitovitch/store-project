@@ -97,6 +97,9 @@ class ProductController extends ApiController {
             if (isset($input['where'])) {
                 $entity = $entity->whereRaw($input['where']);
             }
+            if (isset($input['search'])) {
+                $entity = $entity->whereRaw("name LIKE '%${input['search']}%' OR description LIKE '%${input['search']}%'");
+            }
             if (isset($input['order'])) {
                 $entity = $entity->orderByRaw($input['order']);
             }

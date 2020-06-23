@@ -8,9 +8,9 @@
         <v-card class="card-info card-product d-flex flex-wrap flex-column" color="#white" fill-height hover>
           <div class="my-5">
             <v-layout row wrap>
-              <v-flex xs12 md8>
+              <v-flex xs12 md8  class="flex align-center justify-center flex-wrap">
                 <div>
-                  <h2 class="display-1 subheader-card title-admin" style="color: #FF9966">
+                  <h2 class="display-1 title-admin" style="color: #FF9966">
                     {{ param === 'sex' ? 'Заказы по Полу' : (param === 'age' ? 'Заказы по Возрасту' : 'Заказы по Городу') }}
                   </h2>
                 </div>
@@ -31,6 +31,7 @@
                     </div>
                   </div>
                 </vc-donut>
+
               </v-flex>
               <v-flex xs12 md4>
                 <v-form v-model="valid" ref="form" validation>
@@ -150,7 +151,7 @@
       onSubmit () {
         this.$router.push(`/admin/schedule/pie?param=${this.radios}`)
         this.initialize()
-      }
+      },
     }
   }
 </script>

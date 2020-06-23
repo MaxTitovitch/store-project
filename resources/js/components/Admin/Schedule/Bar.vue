@@ -14,7 +14,7 @@
                     {{ `Статистика по показателю: "${param.text + (entity.value === 'sale-category' ? ' на акции' : '')}"`}}
                   </h2>
                 </div>
-                <div v-if="sections[0].data.length > 0">
+                <div v-if="sections[0].data.length > 0" class="flex align-center justify-center flex-wrap" style="display: flex">
                   <BarChart
                       :data="sections"
                       x-name="Название"
@@ -24,6 +24,14 @@
                       style="min-height: 400px"
                       :bar-max-width="`${thickness}%`"
                   />
+                  <v-btn
+                      color="#FF5F66"
+                      dark
+                      class="gradient-project mx-2 mt-5"
+                      @click="downloadChart"
+                  >
+                    Сохранить график
+                  </v-btn>
                 </div>
                 <div v-if="sections[0].data.length <= 0">
                   <div style="color: #FF9966">
@@ -200,6 +208,12 @@
         }
         this.$router.push(`/admin/schedule/bar?entity=${this.entity.value}&param=${this.radios}&quantity=${this.quantity}` + dataValues).catch(()=>{});
         this.initialize()
+      },
+      downloadChart () {
+        var canvas = document.querySelectorAll("canvas")[0];
+        canvas.toBlob(function(blob) {
+          saveAs(blob, "Диаграмма - На настолке.png");
+        });
       }
     }
   }

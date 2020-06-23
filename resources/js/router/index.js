@@ -79,7 +79,7 @@ let router = new Router({
         },
         {
             name: 'categories-many',
-            path: '/categories',
+            path: '/categories/:id?',
             component: Products
         },
         {
