@@ -61,7 +61,10 @@ class CommentController extends ApiController
             if (isset($input['with'])) {
                 $entity = $entity->with($input['with']);
             }
-            return $entity->get();
+            if (isset($input['count'])) {
+                return $entity->count();
+            }
+            return $entity->get()->toArray();
         } catch (\Exception $ex) {
             return null;
         }

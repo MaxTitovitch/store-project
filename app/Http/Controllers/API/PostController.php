@@ -37,7 +37,7 @@ class PostController extends ApiController
 
     public function show(Request $request, $id)
     {
-        $entity  = Post::with(['user', 'top', 'top.products'])->find($id);
+        $entity  = Post::with(['user', 'top', 'top.products'])->withCount('likes')->find($id);
 
         if (is_null($entity)) {
             return $this->sendError('Post not found.');

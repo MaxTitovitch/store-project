@@ -34,10 +34,10 @@ Route::middleware('api-auth:true,false,user')->group( function () {
 
     Route::get('orders/index-user', 'API\OrderController@indexUser');
 
-    Route::post('likes/store-user/{id}', 'API\LikeController@storeUser');
+    Route::post('likes/store-user', 'API\LikeController@storeUser');
     Route::delete('likes/delete-user/{id}', 'API\LikeController@destroyUser');
 
-    Route::post('comments/store-user/{id}', 'API\CommentController@storeUser');
+    Route::post('comments/store-user', 'API\CommentController@storeUser');
     Route::delete('comments/delete-user/{id}', 'API\CommentController@destroyUser');
 
     Route::get('addresses/index-user', 'API\AddressController@indexUser');
