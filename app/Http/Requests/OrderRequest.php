@@ -16,8 +16,8 @@ class OrderRequest extends FormRequest
             'delivery_date' => 'required|after_or_equal:date',
             'status' => 'required|in:В обработке,Выполнен,Отменён|max:255',
             'comment' => 'max:2000',
-            'user_id' => 'exists:users,id',
-            'address_id' => 'exists:addresses,id',
+            'user_id' => 'nullable|exists:users,id',
+            'address_id' => 'nullable|exists:addresses,id',
         ];
 
 

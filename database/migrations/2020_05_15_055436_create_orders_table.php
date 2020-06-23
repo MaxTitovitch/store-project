@@ -19,6 +19,7 @@ class CreateOrdersTable extends Migration
             $table->date('delivery_date');
             $table->enum('status', ['В обработке', 'Выполнен', 'Отменён'])->default('В обработке');
             $table->text('comment')->nullable(true);
+            $table->unsignedDouble('total', 7, 2)->default(0);
             $table->bigInteger('user_id')->unsigned()->nullable();
             $table->bigInteger('address_id')->unsigned()->nullable();
             $table->timestamps();

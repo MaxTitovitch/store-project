@@ -14,7 +14,8 @@
 
               <swiper class="swiper mt-3" :options="swiperOption" style="height: 150px" v-if="images.length>0">
                 <swiper-slide v-for="oneImage in images" :key="'a-' + oneImage" class="h-100">
-                  <v-card class="card-info card-product d-flex flex-wrap flex-column px-1 h-100" color="#white" fill-height hover>
+                  <v-card class="card-info card-product d-flex flex-wrap flex-column px-1 h-100" color="#white"
+                          fill-height hover>
                     <img
                         :src="oneImage"
                         :alt="product.name"
@@ -29,6 +30,7 @@
 
               <v-flex xs12 class="align-items-center">
                 <v-rating
+                    v-if="userRanking == null"
                     v-model="product.ranking"
                     class="flex justify-content-center"
                     color="#FF9765"
@@ -37,6 +39,20 @@
                     style="display:flex;"
                     dense
                     hover
+                    @input="changeRank"
+                    :readonly="isLoggedId > 0 ? false : true"
+                />
+                <v-rating
+                    v-if="userRanking !== null"
+                    v-model="userRanking.point"
+                    class="flex justify-content-center"
+                    color="#FF9765"
+                    background-color="#FF5F66"
+                    size="40"
+                    style="display:flex;"
+                    dense
+                    hover
+                    @input="changeRank"
                 />
               </v-flex>
             </v-flex>
@@ -47,29 +63,30 @@
                   <h1 class="text-lg-left text--secondary">{{product.name}}</h1>
                 </v-flex>
                 <v-flex xs12>
-                  <a class="text-lg-left text--secondary subtitle-1 category-hover" :href="`/categories/${product.category.id}`">{{product.category.name}}</a>
+                  <a class="text-lg-left text--secondary subtitle-1 category-hover"
+                     :href="`/categories/${product.category.id}`">{{product.category.name}}</a>
                 </v-flex>
-<!--                <v-flex xs12>-->
-<!--                  <v-rating v-model="product.ranking" color="#FF9765" background-color="#FF5F66" size="30"/>-->
-<!--                </v-flex>-->
+                <!--                <v-flex xs12>-->
+                <!--                  <v-rating v-model="product.ranking" color="#FF9765" background-color="#FF5F66" size="30"/>-->
+                <!--                </v-flex>-->
                 <v-flex xs12 class="mt-3">
                   <div v-if="product.sales.length > 0">
-                  <h2 class="display-1">
-                    <span class="red--text font-weight-bold">{{ Math.floor((product.price - (product.price * product.sales[0].percent / 100))*100)/100 }} руб.</span>
-                    <small class="text-decoration-line-through">{{product.price}} руб.</small>
-                  </h2>
-                </div>
+                    <h2 class="display-1">
+                      <span class="red--text font-weight-bold">{{ Math.floor((product.price - (product.price * product.sales[0].percent / 100))*100)/100 }} руб.</span>
+                      <small class="text-decoration-line-through">{{product.price}} руб.</small>
+                    </h2>
+                  </div>
                   <div v-if="product.sales.length <= 0">
                     <h2>
-                      <span class="font-weight-bold red--text">{{product.price}}</span>
+                      <span class="font-weight-bold red--text">{{product.price}} руб.</span>
                     </h2>
                   </div>
                 </v-flex>
                 <v-flex xs12>
-                  <v-btn dark color="#FF9765">
+                  <v-btn dark color="#FF9765" @click="goToPay()">
                     Купить в 1 клик
                   </v-btn>
-                  <v-btn dark  color="#FF5F66">
+                  <v-btn dark color="#FF5F66" @click="addToCart()">
                     В корзину
                   </v-btn>
                 </v-flex>
@@ -86,8 +103,8 @@
                     </p>
                   </div>
                   <div
-                    class="text-sm-left text--secondary"
-                    v-for="charact in product.product_characteristics"
+                      class="text-sm-left text--secondary"
+                      v-for="charact in product.product_characteristics"
                   >
                     <p>
                       <strong>{{charact.characteristic.name}}:</strong>
@@ -100,7 +117,7 @@
         </v-card>
       </v-flex>
 
-      <v-flex  xs12 mt-5>
+      <v-flex xs12 mt-5>
         <h2 class="display-1 subheader-card title-admin">Вам может быть интересно:</h2>
       </v-flex>
       <v-flex xs12 mt-5 px-5 align-items-center>
@@ -110,7 +127,8 @@
               :key="'bp-' + product.id + Math.random() "
           >
             <v-card class="card-info card-product d-flex flex-wrap flex-column" color="#white" fill-height hover>
-              <a :href="'/products/' + product.id" style="height: 100%; width: 100%; display: flex; justify-content: center; align-items: center">
+              <a :href="'/products/' + product.id"
+                 style="height: 100%; width: 100%; display: flex; justify-content: center; align-items: center">
                 <img :src="'/storage/products/' + product.slug + '-1.png'" :alt="product.name" class="card-image">
               </a>
               <v-card-actions>
@@ -135,6 +153,7 @@
       return {
         id: null,
         bestProducts: [],
+        userRanking: null,
         image: '/images/empty-product.jpg',
         images: ['/images/empty-product.jpg'],
         product: { sales: {}, category: {}, product_characteristics: {} },
@@ -153,6 +172,9 @@
         }
       }
     },
+    computed: {
+      isLoggedId: function () { return this.$store.getters.isLoggedId },
+    },
     created () {
       this.swiperOption.slidesPerView = this.isByMobile() ? 1 : 3
       let id = Number.parseInt(this.$route.params.id)
@@ -165,18 +187,24 @@
           for (let i = 2; i <= 5; i++) {
             this.images.push(`/storage/products/${this.product.slug}-${i}.png`)
           }
+          if(this.isLoggedId)
+            this.$store.dispatch('getEntity', { entity: 'rankings', data: { where: `product_id = ${this.product.id} AND user_id = ${this.isLoggedId}`} })
+              .then((resp) => {
+                this.userRanking = resp.data[0] || null
+                console.log(this.userRanking)
+              })
+              .catch(err => {this.$router.push('/')})
         })
         .catch(err => {this.$router.push('/')})
 
-      this.$store.dispatch('getEntity', {entity: 'products', data: {'user-products': 'true'}})
+      this.$store.dispatch('getEntity', { entity: 'products', data: { 'user-products': 'true' } })
         .then((resp) => {
           this.bestProducts = resp.data
         })
-        .catch(err => {this.$router.push('/')});
+        .catch(err => {this.$router.push('/')})
+
     },
     methods: {
-      initialize () {
-      },
       isByMobile () {
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
           return true
@@ -184,9 +212,33 @@
           return false
         }
       },
-      popSlide() {
+      popSlide () {
         this.images.pop()
       },
+      addToCart () {
+        this.$store.dispatch('pushProductToCart', this.product)
+      },
+      goToPay () {
+        this.addToCart()
+        this.$router.push('/order');
+      },
+      changeRank(value) {
+        let ranking = {
+          point: value,
+          user_id: this.isLoggedId,
+          product_id: this.product.id
+        }
+        if (this.userRanking === null) {
+          this.$store.dispatch('postEntity', { entity: 'rankings/store-user', data: ranking })
+            .then((resp) => {})
+            .catch(err => {this.error = 'Ошибка добавления'})
+        } else {
+          console.log(11)
+          this.$store.dispatch('putEntity', { entity: 'rankings/update-user', data: ranking, id: this.userRanking.id })
+            .then((resp) => {})
+            .catch(err => {this.error = 'Ошибка добавления'})
+        }
+      }
     }
   }
 </script>
@@ -212,27 +264,25 @@
     color: #FF9765;
     border: 2px solid #FF9765;
     border-radius: 100%;
-    background-color: rgba(255,255,255,0.8);
+    background-color: rgba(255, 255, 255, 0.8);
     width: 30px;
     height: 30px;
   }
+
   .swiper-button-prev:hover, .swiper-button-next:hover {
-    background-color: rgba(255,255,255,1);
+    background-color: rgba(255, 255, 255, 1);
   }
+
   .swiper-button-prev:after, .swiper-button-next:after {
     font-size: 20px;
     font-weight: bold;
   }
+
   .category-hover:hover {
     text-decoration: underline;
   }
 
-
-
-
-
-
-
+  /*Customer's products*/
 
   .card-info > div {
     width: 100%;
@@ -285,11 +335,11 @@
   }
 
   .card-product {
-    border: 1px solid!important;
+    border: 1px solid !important;
   }
 
   .image-card {
-    border-bottom: 1px solid!important;
+    border-bottom: 1px solid !important;
     height: 100%;
     width: 100%;
     display: flex;

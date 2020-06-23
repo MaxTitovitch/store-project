@@ -303,7 +303,18 @@
 
     <v-content>
       <div v-if="isLoading" class="loading-image"></div>
-        <router-view :style="isLoading ? 'opacity: 0' : ''"></router-view>
+      <router-view :style="isLoading ? 'opacity: 0' : ''"></router-view>
+      <v-btn
+          color="#FF9765" dark small fixed large text
+          title="Корзина"
+          style="top: 10%; right: 0;"
+          :to="'/order'"
+          v-if="isHave"
+          class="cart-item"
+      >
+        <v-icon>mdi-cart</v-icon>
+        Корзина: {{ isHave }}
+      </v-btn>
     </v-content>
 
     <v-footer app class="text-center gradient-project">
@@ -391,7 +402,8 @@
       isLoggedInForVerify: function () { return this.$store.getters.isLoggedInForVerify },
       isLoggedRole: function () { return this.$store.getters.isLoggedRole },
       isLoggedName: function () { return this.$store.getters.isLoggedName },
-      isLoading: function () {return this.$store.getters.isLoading }
+      isLoading: function () {return this.$store.getters.isLoading },
+      isHave: function () {return this.$store.getters.isHave },
     },
     created () {
       this.$http.interceptors.response.use(undefined, function (err) {
@@ -481,5 +493,9 @@
     position: absolute;
     left: 0;
     top: 0;
+  }
+
+  .cart-item {
+    background-color: rgba(255, 151, 101, 0.3) !important;
   }
 </style>

@@ -226,6 +226,16 @@
                             :rules="selectedManyRules"
                         />
                       </v-col>
+                      <v-col cols="12" sm="12" md="12" >
+                        <v-textarea
+                            color="#FF9765"
+                            v-model="editedItem.products"
+                            :rules="commentRules"
+                            label="Комментарий к заказу"
+                            filled
+                            auto-grow
+                        />
+                      </v-col>
                     </v-row>
                   </v-form>
                 </v-container>
@@ -297,6 +307,7 @@ export default {
         { text: 'Дата доставки', value: 'delivery_date' },
         { text: 'Статус', value: 'status' },
         { text: 'Комментарий', value: 'comment' },
+        { text: 'Сумма', value: 'total' },
         { text: 'Пользователь', value: 'user_id' },
         { text: 'Адрес', value: 'address_id' },
         { text: 'Товары', value: 'products' },

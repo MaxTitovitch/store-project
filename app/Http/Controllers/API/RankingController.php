@@ -18,7 +18,8 @@ class RankingController extends ApiController
     public function store(RankingRequest $request)
     {
         $input = $request->all();
-        $entity = Ranking::create($input);
+        $entity = Ranking::create($input);        
+        $this->changeRankingTotal($entity);
         return $this->sendResponse($entity->toArray(), 'Ranking created successfully.');
     }
 
@@ -28,6 +29,7 @@ class RankingController extends ApiController
         $input = $request->all();
         $input['user_id'] = $user->id;
         $entity = Ranking::create($input);
+        $this->changeRankingTotal($entity);
         return $this->sendResponse($entity->toArray(), 'Ranking created successfully.');
     }
 
@@ -72,6 +74,7 @@ class RankingController extends ApiController
             return $this->sendError('Ranking not found.');
         }
         $entity->update($input);
+        $this->changeRankingTotal($entity);
         return $this->sendResponse($entity->toArray(), 'Ranking updated successfully.');
     }
 
@@ -84,6 +87,7 @@ class RankingController extends ApiController
             return $this->sendError('Ranking not found.');
         }
         $entity->update($input);
+        $this->changeRankingTotal($entity);
         return $this->sendResponse($entity->toArray(), 'Ranking updated successfully.');
     }
 
@@ -94,6 +98,7 @@ class RankingController extends ApiController
             return $this->sendError('Ranking not found.');
         }
         $entity->delete();
+        $this->changeRankingTotal($entity);
         return $this->sendResponse($entity->toArray(), 'Ranking deleted successfully.');
     }
 
@@ -105,6 +110,18 @@ class RankingController extends ApiController
             return $this->sendError('Ranking not found.');
         }
         $entity->delete();
+        $this->changeRankingTotal($entity);
         return $this->sendResponse($entity->toArray(), 'Ranking deleted successfully.');
+    }
+
+    private function changeRankingTotal($rankingFirst) {
+        $product = $rankingFirst->product;
+        $quantity = 0; $sum = 0;
+        foreach ($product->rankings as $ranking) {
+            $quantity++;
+            $sum += $ranking->point;
+        }
+        $product->ranking = ((int)(((double)$sum) / $quantity * 100)) / 100;
+        $product->save();
     }
 }

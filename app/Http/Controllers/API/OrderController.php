@@ -33,7 +33,7 @@ class OrderController extends ApiController
     {
         $user = auth('api')->user();
         $input = $request->all();
-        $input['user_id'] = $user->id;
+        $input['user_id'] = $user ? $user->id : null;
         $entity = Order::create($input);
         return $this->sendResponse($entity->toArray(), 'Order created successfully.');
     }

@@ -33,6 +33,11 @@ class Product extends Model
         return $this->belongsToMany('App\Tag');
     }
 
+    public function rankings()
+    {
+        return $this->hasMany('App\Ranking');
+    }
+
     public function sales()
     {
         return $this->hasMany('App\Sale');

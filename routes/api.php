@@ -21,17 +21,18 @@ Route::post('reset/save', 'API\RegisterController@reset');
 Route::post('verify/send', 'API\RegisterController@verifySend')->middleware('api-auth:false,false,user');
 Route::post('verify/save', 'API\RegisterController@verifySave');
 
+Route::post('orders/store-user', 'API\OrderController@storeUser');
+Route::put('order-product/update-user/{id}', 'API\ProductOrderController@updateUser');
+
 Route::middleware('api-auth:true,false,user')->group( function () {
     Route::put('users/update-user/{user}', 'API\UserController@updateUser');
     Route::delete('users/delete-user/{user}', 'API\UserController@destroyUser');
 
-    Route::post('rankings/store-user/{id}', 'API\RankingController@storeUser');
+    Route::post('rankings/store-user', 'API\RankingController@storeUser');
     Route::put('rankings/update-user/{id}', 'API\RankingController@updateUser');
     Route::delete('rankings/delete-user/{id}', 'API\RankingController@destroyUser');
 
     Route::get('orders/index-user', 'API\OrderController@indexUser');
-    Route::post('orders/store-user', 'API\OrderController@storeUser');
-    Route::put('orders/update-user/{id}', 'API\OrderController@updateUser');
 
     Route::post('likes/store-user/{id}', 'API\LikeController@storeUser');
     Route::delete('likes/delete-user/{id}', 'API\LikeController@destroyUser');

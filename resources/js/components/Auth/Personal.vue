@@ -382,6 +382,7 @@
           { text: 'Статус', value: 'status' },
           { text: 'Комментарий', value: 'comment' },
           { text: 'Адрес', value: 'address_id' },
+          { text: 'Общая сумма', value: 'total' },
           { text: 'Покупатель', value: 'user_id' },
           { text: 'Товары', value: 'products' },
           { text: 'Действия', value: 'actions', sortable: false },

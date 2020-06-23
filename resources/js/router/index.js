@@ -1,7 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '../components/Home';
-import NotFound from '../components/NotFound';
+import store from '../store/index'
+
+import Home from '../components/Main/Home';
+import Order from '../components/Main/Order';
+import NotFound from '../components/Main/NotFound';
 import Personal from '../components/Auth/Personal';
 import Register from '../components/Auth/Register';
 import Login from '../components/Auth/Login';
@@ -39,7 +42,6 @@ import Sales from '../components/Pages/Sales/Sales';
 import Sale from '../components/Pages/Sales/Sale';
 import User from '../components/Pages/Users/User';
 
-import store from '../store/index'
 
 Vue.use(Router);
 
@@ -49,6 +51,11 @@ let router = new Router({
             name: 'home',
             path: '',
             component: Home
+        },
+        {
+            name: 'order',
+            path: '/order',
+            component: Order
         },
         {
             name: 'about',
