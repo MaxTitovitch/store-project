@@ -72,7 +72,7 @@
             this.total= Math.ceil(resp.data / 10);
           })
           .catch(err => this.$router.push('/'));
-        this.$store.dispatch('getEntity', {entity: 'sale-categories', data: {with: 'products',offset, limit: 10, order: 'id desc'}})
+        this.$store.dispatch('getEntity', {entity: 'sale-categories', data: {with: 'products', offset, limit: 10, order: 'id desc'}})
           .then((resp) => {
             this.sales = resp.data
           })

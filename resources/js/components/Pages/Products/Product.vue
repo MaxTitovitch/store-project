@@ -113,6 +113,7 @@
                 </v-flex>
               </v-layout>
             </v-flex>
+
           </v-layout>
         </v-card>
       </v-flex>
@@ -143,6 +144,52 @@
           <div class="swiper-button-next" slot="button-next"></div>
         </swiper>
       </v-flex>
+
+      <v-flex xs12 mt-5 px-5 align-items-center>
+
+        <v-list subheader class="product-list" >
+          <h2 class="text--secondary">Комментарии</h2>
+          <v-list-item two-line>
+
+            <v-list-item-content>
+            </v-list-item-content>
+
+            <v-list-item-action>
+              <v-btn color="red" x-large fab dark>
+                  <span class="text-decoration-none">
+                    Save
+                  </span>
+              </v-btn>
+            </v-list-item-action>
+          </v-list-item>
+
+          <v-list-item
+              v-for="(item, index) of comments"
+              :key="'products' + item.id"
+              :to="'/users/' + item.user.id"
+              two-line
+          >
+            <v-list-item-avatar height="150px" width="150px" style="border-radius: 0!important;">
+              <v-img :src="'/storage/users/' + item.user.slug + '.png'"/>
+            </v-list-item-avatar>
+
+            <v-list-item-content>
+              <strong>
+                <v-list-item-title class="product-list-content" v-text="item.user.name + ' ' + item.user.last_name"/>
+              </strong>
+              <v-list-item-content class="post-text product-list-content" v-html="item.text"/>
+            </v-list-item-content>
+
+            <v-list-item-action>
+              <v-btn color="red" x-large fab dark>
+                  <span class="text-decoration-none">
+                    L
+                  </span>
+              </v-btn>
+            </v-list-item-action>
+          </v-list-item>
+        </v-list>
+      </v-flex>
     </v-layout>
   </v-container>
 </template>
@@ -153,6 +200,7 @@
       return {
         id: null,
         bestProducts: [],
+        comments: [],
         userRanking: null,
         image: '/images/empty-product.jpg',
         images: ['/images/empty-product.jpg'],
@@ -190,10 +238,19 @@
           if(this.isLoggedId)
             this.$store.dispatch('getEntity', { entity: 'rankings', data: { where: `product_id = ${this.product.id} AND user_id = ${this.isLoggedId}`} })
               .then((resp) => {
-                this.userRanking = resp.data[0] || null
-                console.log(this.userRanking)
+                this.userRanking = resp.data[0] || null;
               })
               .catch(err => {this.$router.push('/')})
+
+
+          this.page = Number.parseInt(this.$route.query.page) || 1;
+          let offset = (this.page - 1) * 10;
+          let data = { where: `entity_id = ${this.product.id} AND entity_type="product"`, with: 'user', offset, limit: 10, order: 'id desc'};
+          this.$store.dispatch('getEntity', { entity: 'comments', data})
+            .then((resp) => {
+              this.comments = resp.data
+            })
+            .catch(err => {this.$router.push('/')})
         })
         .catch(err => {this.$router.push('/')})
 

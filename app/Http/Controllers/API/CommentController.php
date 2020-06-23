@@ -12,7 +12,7 @@ class CommentController extends ApiController
     public function index(Request $request)
     {
         $entities = $this->filtrateQuery($request->all());
-        return $this->sendResponse($entities->toArray(), 'Comments retrieved successfully.');
+        return $this->sendResponse($entities, 'Comments retrieved successfully.');
     }
 
     public function store(CommentRequest $request)
@@ -57,6 +57,9 @@ class CommentController extends ApiController
             }
             if (isset($input['order'])) {
                 $entity = $entity->orderByRaw($input['order']);
+            }
+            if (isset($input['with'])) {
+                $entity = $entity->with($input['with']);
             }
             return $entity->get();
         } catch (\Exception $ex) {
