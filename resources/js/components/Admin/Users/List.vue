@@ -35,6 +35,15 @@
                   color="#FF5F66"
                   dark
                   class="gradient-project mx-2"
+                  @click="showArchive()"
+              >
+                Архив
+              </v-btn>
+
+              <v-btn
+                  color="#FF5F66"
+                  dark
+                  class="gradient-project mx-2"
                   @click="showBarChart()"
               >
                 Статистика
@@ -504,6 +513,9 @@
       },
       showLineBar (id) {
         this.$router.push('/admin/schedule/line?entity=user&param=orders&id=' + id)
+      },
+      showArchive () {
+        this.$router.push('/admin/users/archive')
       },
     }
   }

@@ -12,9 +12,11 @@ import ResetSend from '../components/Auth/ResetSend';
 import EmailVerify from '../components/Auth/EmailVerify';
 import PasswordReset from '../components/Auth/PasswordReset';
 import EmailVerifySend from '../components/Auth/EmailVerifySend';
+
 import AdminMain from '../components/Admin/Main';
 import MassUpload from '../components/Admin/MassUpload';
 import UsersList from '../components/Admin/Users/List';
+import UsersArchive from '../components/Admin/Users/Archive';
 import CommentsList from '../components/Admin/Comments/List';
 import TagsList from '../components/Admin/Tags/List';
 import SaleCategoriesList from '../components/Admin/SaleCategories/List';
@@ -25,10 +27,13 @@ import OrdersList from '../components/Admin/Orders/List';
 import AddressesList from '../components/Admin/Addresses/List';
 import CategoriesList from '../components/Admin/Categories/List';
 import ProductsList from '../components/Admin/Products/List';
+import ProductsArchive from '../components/Admin/Products/Archive';
 import ProductCharacteristicList from '../components/Admin/Products/ProductCharacteristicList';
+
 import SchedulePie from '../components/Admin/Schedule/Pie';
 import ScheduleBar from '../components/Admin/Schedule/Bar';
 import ScheduleLine from '../components/Admin/Schedule/Line';
+
 import About from '../components/Static/About';
 import PayAndGet from '../components/Static/PayAndGet';
 import Contact from '../components/Static/Contact';
@@ -184,6 +189,14 @@ let router = new Router({
             }
         },
         {
+            name: 'users-archive',
+            path: '/admin/users/archive',
+            component: UsersArchive,
+            meta: {
+                requiredRole: ['Администратор', 'Главный администратор']
+            }
+        },
+        {
             name: 'comments',
             path: '/admin/comments',
             component: CommentsList,
@@ -259,6 +272,14 @@ let router = new Router({
             name: 'products',
             path: '/admin/products',
             component: ProductsList,
+            meta: {
+                requiredRole: ['Администратор', 'Главный администратор']
+            }
+        },
+        {
+            name: 'products-archive',
+            path: '/admin/products/archive',
+            component: ProductsArchive,
             meta: {
                 requiredRole: ['Администратор', 'Главный администратор']
             }

@@ -123,8 +123,10 @@ class ProductController extends ApiController {
 
     public function update(ProductRequest $request, $id) {
         $input = $request->all();
-        $input['slug'] = str_slug($input['name']);
-        $entity = Product::find($id);
+        $input['slug'] = str_slug($input['name']); $entity = null;
+        $entity = Product::withTrashed()->find($id);
+        if($entity->deleted_at != null)
+            $entity->restore();
         if (is_null($entity)) {
             return $this->sendError('Product not found.');
         }

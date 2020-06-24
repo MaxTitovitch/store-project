@@ -114,6 +114,17 @@
             </v-card>
           </v-flex>
 
+          <v-flex xs12>
+            <v-btn
+                class="gradient-project"
+                dark
+                v-bind="attrs"
+                v-on="{ ...tooltip, ...menu }"
+                style="width: 100%;"
+            >
+              Филтры
+            </v-btn>
+          </v-flex>
         </v-layout>
       </v-flex>
 

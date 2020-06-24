@@ -60,7 +60,9 @@ class UserController extends ApiController
     {
         $input = $request->all();
         $input['slug'] = str_slug($input['email']);
-        $entity  = User::find($id);
+        $entity  = User::withTrashed()->find($id);
+        if($entity->deleted_at != null)
+            $entity->restore();
         if (is_null($entity)) {
             return $this->sendError('Users not found.');
         }
